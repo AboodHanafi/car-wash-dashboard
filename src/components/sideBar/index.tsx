@@ -9,6 +9,7 @@ import {
   ListItemIcon,
   ListItemText,
   Stack,
+  useTheme,
 } from "@mui/material";
 import { SVG, sideBarItems } from "../../assets";
 
@@ -17,6 +18,7 @@ interface PropsType extends PropsWithChildren {
 }
 
 const SideBar: React.FC<PropsType> = ({ open }) => {
+  const { palette } = useTheme();
   return (
     <Drawer variant="permanent" open={open}>
       <Stack alignItems={"center"} p={"30px 0"}>
@@ -55,10 +57,25 @@ const SideBar: React.FC<PropsType> = ({ open }) => {
           />
         </SVG>
       </Stack>
-      <List>
-        {sideBarItems.map((item, index) => (
+      <List
+        sx={{
+          // selected and (selected + hover) states
+          "&& .Mui-selected, && .Mui-selected:hover": {
+            bgcolor: `${palette.primary.dark}`,
+            // "&, & .MuiListItemIcon-root": {
+            //   color: "pink",
+            // },
+          },
+          // hover states
+          "& .MuiListItemButton-root:hover": {
+            bgcolor: `${palette.primary.light}`,
+          },
+        }}
+      >
+        {sideBarItems.map((item) => (
           <ListItem key={item.id} disablePadding sx={{ display: "block" }}>
             <ListItemButton
+              selected={item.name === "الرئيسية"}
               sx={{
                 minHeight: 48,
                 justifyContent: open ? "initial" : "center",

@@ -4,6 +4,7 @@ import {
   Stack,
   Toolbar,
   Typography,
+  useMediaQuery,
   useTheme,
 } from "@mui/material";
 import { PropsWithChildren } from "react";
@@ -17,6 +18,7 @@ interface PropsType extends PropsWithChildren {
 }
 
 const NavBar: React.FC<PropsType> = ({ open, handleDrawerOpen }) => {
+  const smallWidth = useMediaQuery("(min-width:800px)");
   const theme = useTheme();
   return (
     <AppBar position="fixed" open={open}>
@@ -36,7 +38,11 @@ const NavBar: React.FC<PropsType> = ({ open, handleDrawerOpen }) => {
             >
               <MenuIcon />
             </IconButton>
-            <Typography fontWeight="bold" color={theme.palette.primary.dark}>
+            <Typography
+              display={!smallWidth ? "none" : ""}
+              fontWeight="bold"
+              color={theme.palette.primary.dark}
+            >
               أغرس اليوم شجرة تنم في ظلها غداً
             </Typography>
           </Stack>

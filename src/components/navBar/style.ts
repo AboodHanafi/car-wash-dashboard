@@ -16,6 +16,7 @@ export const AppBar = styled(MuiAppBar, {
   }),
   width: `calc(100% - 65px)`,
   backgroundColor: "#E5E5E5",
+  padding: "10px 0",
   boxShadow: "none",
   ...(open && {
     marginLeft: drawerWidth,
