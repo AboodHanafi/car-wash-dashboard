@@ -159,3 +159,18 @@ export const sideBarItems = [
     ),
   },
 ];
+
+export const Months = [
+  { label: "يناير", id: 1 },
+  { label: "فبراير", id: 2 },
+  { label: "مارس", id: 3 },
+  { label: "أبريل", id: 4 },
+  { label: "مايو", id: 5 },
+  { label: "يونيو", id: 6 },
+  { label: "يوليو", id: 7 },
+  { label: "أغسطس", id: 8 },
+  { label: "سبتمبر", id: 9 },
+  { label: "أكتوبر", id: 10 },
+  { label: "نوفمبر", id: 11 },
+  { label: "ديسمبر", id: 12 },
+];

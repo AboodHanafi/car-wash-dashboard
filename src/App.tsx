@@ -4,6 +4,8 @@ import rtlPlugin from "stylis-plugin-rtl";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import { prefixer } from "stylis";
+import { Route, Routes } from "react-router-dom";
+import HomePage from "./screens/homePage";
 
 function App() {
   // Create rtl cache
@@ -30,7 +32,11 @@ function App() {
   return (
     <CacheProvider value={cacheRtl}>
       <ThemeProvider theme={theme}>
-        <LayOut />
+        <LayOut>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+          </Routes>
+        </LayOut>
       </ThemeProvider>
     </CacheProvider>
   );

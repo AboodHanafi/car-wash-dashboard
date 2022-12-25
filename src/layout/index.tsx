@@ -21,7 +21,15 @@ const LayOut: React.FC<React.PropsWithChildren> = ({ children }) => {
       <SideBar open={open} />
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3, bgcolor: "#E5E5E5", minHeight: "100vh" }}
+        sx={{
+          flexGrow: 1,
+          paddingLeft: 3,
+          paddingTop: 10,
+          paddingBottom: 1,
+          bgcolor: "#E5E5E5",
+          overflow: "auto",
+          height: "100vh",
+        }}
       >
         {children}
       </Box>

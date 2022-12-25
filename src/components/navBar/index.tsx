@@ -18,7 +18,8 @@ interface PropsType extends PropsWithChildren {
 }
 
 const NavBar: React.FC<PropsType> = ({ open, handleDrawerOpen }) => {
-  const smallWidth = useMediaQuery("(min-width:800px)");
+  const mediumWidth = useMediaQuery("(min-width:1000px)");
+  const xsmall = useMediaQuery("(min-width:650px)");
   const theme = useTheme();
   return (
     <AppBar position="fixed" open={open}>
@@ -39,7 +40,7 @@ const NavBar: React.FC<PropsType> = ({ open, handleDrawerOpen }) => {
               <MenuIcon />
             </IconButton>
             <Typography
-              display={!smallWidth ? "none" : ""}
+              display={!mediumWidth ? "none" : ""}
               fontWeight="bold"
               color={theme.palette.primary.dark}
             >
@@ -52,7 +53,11 @@ const NavBar: React.FC<PropsType> = ({ open, handleDrawerOpen }) => {
               alt="user name"
               src={images.profile}
             />
-            <Typography fontWeight="medium" color="#191919">
+            <Typography
+              display={!xsmall ? "none" : ""}
+              fontWeight="medium"
+              color="#191919"
+            >
               نواف البشري
             </Typography>
           </Stack>
