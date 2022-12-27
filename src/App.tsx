@@ -23,11 +23,22 @@ function App() {
     },
     typography: {
       fontFamily: "Tajawal",
-      fontSize: 21,
+      fontSize: 18,
       fontWeightRegular: 400,
       fontWeightMedium: 500,
       fontWeightBold: 700,
     },
+    // components: {
+    //   MuiPaper: {
+    //     styleOverrides: {
+    //       root: {
+    //         color: "red",
+    //         fontSize: "0.9rem",
+    //         fontWeight: 300,
+    //       },
+    //     },
+    //   },
+    // },
   });
   return (
     <CacheProvider value={cacheRtl}>

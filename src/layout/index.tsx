@@ -5,7 +5,6 @@ import CssBaseline from "@mui/material/CssBaseline";
 
 import NavBar from "../components/navBar";
 import SideBar from "../components/sideBar";
-import { minHeight } from "@mui/system";
 
 const LayOut: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [open, setOpen] = React.useState(false);
@@ -24,8 +23,7 @@ const LayOut: React.FC<React.PropsWithChildren> = ({ children }) => {
         sx={{
           flexGrow: 1,
           paddingLeft: 3,
-          paddingTop: 10,
-          paddingBottom: 1,
+          paddingTop: 11,
           bgcolor: "#E5E5E5",
           overflow: "auto",
           height: "100vh",

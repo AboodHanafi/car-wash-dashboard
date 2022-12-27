@@ -1,8 +1,6 @@
 import { PropsWithChildren } from "react";
-import { Drawer, DrawerHeader } from "./style";
+import { Drawer } from "./style";
 import {
-  Divider,
-  IconButton,
   List,
   ListItem,
   ListItemButton,
@@ -59,6 +57,9 @@ const SideBar: React.FC<PropsType> = ({ open }) => {
       </Stack>
       <List
         sx={{
+          "&& .MuiTypography-root": {
+            fontSize: "1rem",
+          },
           // selected and (selected + hover) states
           "&& .Mui-selected, && .Mui-selected:hover": {
             bgcolor: `${palette.primary.dark}`,
@@ -77,7 +78,7 @@ const SideBar: React.FC<PropsType> = ({ open }) => {
             <ListItemButton
               selected={item.name === "الرئيسية"}
               sx={{
-                minHeight: 48,
+                minHeight: 35,
                 justifyContent: open ? "initial" : "center",
                 px: 2.5,
               }}

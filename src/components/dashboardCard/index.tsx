@@ -16,8 +16,8 @@ const DashCard: React.FC<cardType> = ({ title, counter, color, shadow }) => {
     <Card
       sx={{
         width: "23%",
-        minWidth: 240,
-        height: 120,
+        minWidth: "180px",
+        height: 100,
         borderRadius: "10px",
         background: color,
         boxShadow: shadow,
@@ -30,13 +30,11 @@ const DashCard: React.FC<cardType> = ({ title, counter, color, shadow }) => {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            gap: "15px",
+            // gap: "15px",
           }}
         >
-          <Typography fontWeight="medium" color="#fff">
-            {counter}
-          </Typography>
-          <Typography fontWeight="medium" color="#fff">
+          <Typography color="#fff">{counter}</Typography>
+          <Typography fontSize="1rem" color="#fff">
             {title}
           </Typography>
         </Box>

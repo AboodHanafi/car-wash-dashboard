@@ -41,8 +41,9 @@ const NavBar: React.FC<PropsType> = ({ open, handleDrawerOpen }) => {
             </IconButton>
             <Typography
               display={!mediumWidth ? "none" : ""}
-              fontWeight="bold"
+              fontWeight="medium"
               color={theme.palette.primary.dark}
+              fontSize="1rem"
             >
               أغرس اليوم شجرة تنم في ظلها غداً
             </Typography>
@@ -57,6 +58,7 @@ const NavBar: React.FC<PropsType> = ({ open, handleDrawerOpen }) => {
               display={!xsmall ? "none" : ""}
               fontWeight="medium"
               color="#191919"
+              fontSize="1rem"
             >
               نواف البشري
             </Typography>

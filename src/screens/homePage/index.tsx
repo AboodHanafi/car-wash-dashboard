@@ -1,11 +1,4 @@
-import {
-  Autocomplete,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Autocomplete, Stack, Typography } from "@mui/material";
 import { Months } from "../../assets";
 import { useState } from "react";
 import { CustomizedTextField } from "../../globalStyle";
@@ -23,35 +16,45 @@ const HomePage = () => {
 
   return (
     <Stack spacing={2}>
-      <Stack spacing={2}>
-        <Typography fontWeight="medium" color="#191919">
-          الرئيسية
-        </Typography>
-        <Autocomplete
-          sx={{
-            width: "150px",
-            "& .MuiAutocomplete-input": {
-              color: "#191919",
-              fontWeight: 400,
-            },
-          }}
-          disablePortal
-          id="combo-box-demo"
-          options={Months}
-          getOptionLabel={(option) => option.label}
-          value={monthValue}
-          onChange={(e: any, value: autoType | null) => setMonthValue(value)}
-          renderInput={(params) => (
-            <CustomizedTextField
-              placeholder="Month"
-              {...params}
-              inputProps={{
-                ...params.inputProps,
-              }}
-            />
-          )}
-        />
-      </Stack>
+      <Autocomplete
+        sx={{
+          width: "150px",
+          "& .MuiAutocomplete-input": {
+            color: "#191919",
+            fontWeight: 400,
+            fontSize: "0.9rem",
+          },
+          "&& .MuiSvgIcon-root": {
+            fontSize: "1rem",
+          },
+          "&& .MuiPopperUnstyled-root": {
+            backgroundColor: "red",
+            color: "red",
+          },
+        }}
+        disablePortal
+        id="combo-box-demo"
+        size="small"
+        options={Months}
+        getOptionLabel={(option) => option.label}
+        ListboxProps={{
+          style: {
+            fontSize: "0.9rem",
+            color: "#191919",
+          },
+        }}
+        value={monthValue}
+        onChange={(e: any, value: autoType | null) => setMonthValue(value)}
+        renderInput={(params) => (
+          <CustomizedTextField
+            placeholder="Month"
+            {...params}
+            inputProps={{
+              ...params.inputProps,
+            }}
+          />
+        )}
+      />
       <Stack direction="row" flexWrap="wrap" gap={2}>
         <DashCard
           title="الحجوزات"
@@ -78,21 +81,17 @@ const HomePage = () => {
           shadow="0px 2px 5px rgba(254, 201, 120, 0.5)"
         />
       </Stack>
-      <Stack
-        width="100%"
-        direction="row"
-        flexWrap="wrap"
-        gap={10}
-        paddingRight="65px"
-      >
-        <BasicTable />
+      <Stack width="100%" direction="row" flexWrap="wrap" gap={3}>
+        <Stack>
+          <BasicTable />
+        </Stack>
         <Stack spacing={1}>
-          {/* <Stack
+          <Stack
             direction="row"
             justifyContent="space-between"
             alignItems="center"
           >
-            <Typography fontWeight="bold" color="#191919">
+            <Typography fontSize="0.9rem" color="#191919">
               عدد الحجوزات
             </Typography>
             <Autocomplete
@@ -100,13 +99,28 @@ const HomePage = () => {
                 width: "150px",
                 "& .MuiAutocomplete-input": {
                   color: "#191919",
-                  fontWeight: 500,
+                  fontWeight: 400,
+                  fontSize: "0.9rem",
+                },
+                "&& .MuiSvgIcon-root": {
+                  fontSize: "1rem",
+                },
+                "&& .MuiPopperUnstyled-root": {
+                  backgroundColor: "red",
+                  color: "red",
                 },
               }}
               disablePortal
               id="combo-box-demo"
+              size="small"
               options={Months}
               getOptionLabel={(option) => option.label}
+              ListboxProps={{
+                style: {
+                  fontSize: "0.9rem",
+                  color: "#191919",
+                },
+              }}
               value={monthValue}
               onChange={(e: any, value: autoType | null) =>
                 setMonthValue(value)
@@ -121,7 +135,7 @@ const HomePage = () => {
                 />
               )}
             />
-          </Stack> */}
+          </Stack>
           <ChartBar />
         </Stack>
       </Stack>

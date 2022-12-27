@@ -1,34 +1,32 @@
-import Paper from "@mui/material/Paper";
-// import { DataGrid } from "@mui/x-data-grid";
-import { Box, Skeleton, Stack, styled } from "@mui/material";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { Box, Skeleton, styled, useMediaQuery } from "@mui/material";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useState } from "react";
 const columns: GridColDef[] = [
   {
     field: "reservationNum",
     headerName: "رقم الحجز",
-    minWidth: 100,
+    maxWidth: 75,
   },
   {
     field: "name",
     headerName: "الإسم",
-    minWidth: 150,
+    maxWidth: 120,
   },
 
   {
     field: "mobileNum",
     headerName: "رقم الهاتف",
-    minWidth: 150,
+    minWidth: 120,
   },
   {
     field: "price",
-    headerName: "قيمة الحجز",
-    minWidth: 90,
+    headerName: "السعر",
+    maxWidth: 65,
   },
   {
     field: "date",
     headerName: "تاريخ الحجز",
-    minWidth: 150,
+    // minWidth: 150,
   },
   // {
   //   field: "fullName",
@@ -116,21 +114,24 @@ const rows = [
   },
 ];
 export default function BasicTable() {
-  const [pageSize, setPageSize] = useState<number>(5);
+  const bigLabtob = useMediaQuery("(max-width:1024px)");
+  const [pageSize, setPageSize] = useState<number>(10);
   const [page, setPage] = useState<number>(0);
 
   const StyledTable = styled(DataGrid)(({ theme }) => ({
     border: "none",
-    minHeight: "450px",
-    fontWeight: 500,
-    fontSize: "18px",
-    width: "100%",
-    minWidth: "650px",
+    width: bigLabtob ? "450px" : "650px",
+    minHeight: "327px",
+    fontWeight: 400,
+    fontSize: "0.9rem",
+    "& .MuiDataGrid-main": {
+      width: bigLabtob ? "450px" : "650px",
+    },
 
     "& .paxton-table--row": {
       border: "none",
-      marginTop: "5px",
-      marginBottom: "5px",
+      // marginTop: "5px",
+      // marginBottom: "5px",
       backgroundColor: " #F6F6F6",
       color: "#404040",
     },
@@ -139,12 +140,14 @@ export default function BasicTable() {
     },
     "& .MuiDataGrid-columnHeaders": {
       backgroundColor: "#FCFCFC",
-      width: "100%",
-      minwidth: "100vw",
+      // width: "100%",
+      // minwidth: "100vw",
       color: "#191919",
     },
     "& .MuiDataGrid-footerContainer": {
       backgroundColor: "#fff",
+      width: bigLabtob ? "450px" : "650px",
+      height: "5px",
       direction: "rtl",
     },
   }));
@@ -163,28 +166,28 @@ export default function BasicTable() {
 
   if (!false) {
     return (
-      <Stack
-        sx={{
-          backgroundColor: "#f4f4f4",
-          boxShadow: "none",
-          width: "50%",
-          minWidth: "650px",
-        }}
-        component={Paper}
-      >
-        <StyledTable
-          rows={rows}
-          columns={columns}
-          page={page}
-          onPageChange={(newPage: number) => setPage(newPage)}
-          pageSize={pageSize}
-          onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
-          rowsPerPageOptions={[5, 10, 20, 100]}
-          pagination
-          disableSelectionOnClick
-          getRowClassName={() => "paxton-table--row"}
-        />
-      </Stack>
+      // <Stack
+      //   sx={{
+      //     backgroundColor: "#f4f4f4",
+      //     boxShadow: "none",
+      //     width: "50%",
+      //     minWidth: "650px",
+      //   }}
+      //   component={Paper}
+      // >
+      <StyledTable
+        rows={rows}
+        columns={columns}
+        page={page}
+        onPageChange={(newPage: number) => setPage(newPage)}
+        pageSize={pageSize}
+        onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
+        rowsPerPageOptions={[10, 20, 100]}
+        pagination
+        disableSelectionOnClick
+        getRowClassName={() => "paxton-table--row"}
+      />
+      // </Stack>
     );
   } else {
     return <LoadingSkeleton />;
