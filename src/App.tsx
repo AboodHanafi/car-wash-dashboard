@@ -6,6 +6,8 @@ import createCache from "@emotion/cache";
 import { prefixer } from "stylis";
 import { Route, Routes } from "react-router-dom";
 import HomePage from "./screens/homePage";
+import Reservations from "./screens/reservations";
+import ReservationForm from "./screens/reservations/form";
 
 function App() {
   // Create rtl cache
@@ -28,17 +30,6 @@ function App() {
       fontWeightMedium: 500,
       fontWeightBold: 700,
     },
-    // components: {
-    //   MuiPaper: {
-    //     styleOverrides: {
-    //       root: {
-    //         color: "red",
-    //         fontSize: "0.9rem",
-    //         fontWeight: 300,
-    //       },
-    //     },
-    //   },
-    // },
   });
   return (
     <CacheProvider value={cacheRtl}>
@@ -46,6 +37,8 @@ function App() {
         <LayOut>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/reservations" element={<Reservations />} />
+            <Route path="/reservations-form" element={<ReservationForm />} />
           </Routes>
         </LayOut>
       </ThemeProvider>

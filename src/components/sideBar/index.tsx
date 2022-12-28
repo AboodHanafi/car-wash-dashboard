@@ -10,6 +10,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { SVG, sideBarItems } from "../../assets";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface PropsType extends PropsWithChildren {
   open: boolean;
@@ -17,6 +18,8 @@ interface PropsType extends PropsWithChildren {
 
 const SideBar: React.FC<PropsType> = ({ open }) => {
   const { palette } = useTheme();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
   return (
     <Drawer variant="permanent" open={open}>
       <Stack alignItems={"center"} p={"30px 0"}>
@@ -76,7 +79,8 @@ const SideBar: React.FC<PropsType> = ({ open }) => {
         {sideBarItems.map((item) => (
           <ListItem key={item.id} disablePadding sx={{ display: "block" }}>
             <ListItemButton
-              selected={item.name === "الرئيسية"}
+              selected={item.path === pathname}
+              onClick={() => navigate(item.path ? item.path : "/")}
               sx={{
                 minHeight: 35,
                 justifyContent: open ? "initial" : "center",
