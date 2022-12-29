@@ -25,7 +25,7 @@ function App() {
     },
     typography: {
       fontFamily: "Tajawal",
-      fontSize: 18,
+      fontSize: 12,
       fontWeightRegular: 400,
       fontWeightMedium: 500,
       fontWeightBold: 700,

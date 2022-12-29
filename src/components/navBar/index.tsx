@@ -50,7 +50,7 @@ const NavBar: React.FC<PropsType> = ({ open, handleDrawerOpen }) => {
           </Stack>
           <Stack direction={"row"} spacing={1} alignItems="center">
             <Avatar
-              sx={{ width: 56, height: 56 }}
+              sx={{ width: 40, height: 40 }}
               alt="user name"
               src={images.profile}
             />
