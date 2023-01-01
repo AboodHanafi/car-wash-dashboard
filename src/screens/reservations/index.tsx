@@ -2,6 +2,7 @@ import {
   Autocomplete,
   FormLabel,
   Icon,
+  IconButton,
   InputAdornment,
   Stack,
   Typography,
@@ -41,6 +42,7 @@ const Reservations = () => {
   const bigLabtob = useMediaQuery("(max-width:1024px)");
   const navigate = useNavigate();
   const theme = useTheme();
+
   return (
     <Stack id="mainWrapper" pr="20px" spacing={2}>
       <Stack
@@ -84,13 +86,19 @@ const Reservations = () => {
           >
             تاريخ الحجز
           </FormLabel>
-          <Stack direction="row">
+          <Stack direction="row" alignItems="center">
             <CustomizedTextField fullWidth value={"16-12-2022"} />
-            <Icon>{Icons.fromToDate}</Icon>
+            <IconButton>{Icons.fromToDate}</IconButton>
             <CustomizedTextField fullWidth value={"16-12-2022"} />
           </Stack>
         </Stack>
-        <Stack id="status" spacing={1} width="15%" minWidth="140px">
+        <Stack
+          id="status"
+          spacing={1}
+          width="15%"
+          justifyContent="center"
+          minWidth="140px"
+        >
           <FormLabel
             sx={{
               color: "#191919",
@@ -147,6 +155,7 @@ const Reservations = () => {
           spacing={1}
           width={bigLabtob ? "24%" : "30%"}
           minWidth="200px"
+          justifyContent="center"
         >
           <FormLabel
             sx={{
@@ -174,7 +183,8 @@ const Reservations = () => {
           id="pdf"
           spacing={1}
           width={bigLabtob ? "14%" : "17%"}
-          justifyContent="flex-end"
+          justifyContent="center"
+          mt="25px"
           minWidth="100px"
         >
           <CustomButton
@@ -189,6 +199,18 @@ const Reservations = () => {
           >
             تصدير pdf
           </CustomButton>
+          {/* <CustomButton
+            sx={{
+              color: "#404040",
+              bgcolor: "#FCFCFC",
+              border: "1px solid #DDDDDD",
+              borderRadius: "10px",
+            }}
+            fullWidth
+            startIcon={Icons.pdfButton}
+          >
+            تصدير excel
+          </CustomButton> */}
         </Stack>
       </Stack>
       <Stack id="table">

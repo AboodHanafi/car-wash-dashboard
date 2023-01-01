@@ -12,8 +12,10 @@ import {
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { CustomButton } from "../../globalStyle";
+import { useNavigate } from "react-router-dom";
 
 const ReservationForm = () => {
+  const navigate = useNavigate();
   const theme = useTheme();
   return (
     <Stack spacing={2}>
@@ -23,7 +25,7 @@ const ReservationForm = () => {
           sx={{
             display: "flex",
             flexDirection: "column",
-            width: "40%%",
+            width: "40%",
             minWidth: "250px",
             backgroundColor: "#F6F6F6",
             border: "1px solid #DDDDDD",
@@ -53,7 +55,7 @@ const ReservationForm = () => {
         <Stack
           spacing={2}
           sx={{
-            width: "40%%",
+            width: "40%",
             minWidth: "250px",
           }}
         >
@@ -138,6 +140,7 @@ const ReservationForm = () => {
                 color: theme.palette.primary.main,
                 width: "50%",
               }}
+              onClick={() => navigate("/reservations")}
             >
               إلغاء
             </CustomButton>

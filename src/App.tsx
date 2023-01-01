@@ -8,6 +8,8 @@ import { Route, Routes } from "react-router-dom";
 import HomePage from "./screens/homePage";
 import Reservations from "./screens/reservations";
 import ReservationForm from "./screens/reservations/form";
+import ReservationDetails from "./screens/reservations/details";
+import CustomizedSteppers from "./components/stepper";
 
 function App() {
   // Create rtl cache
@@ -38,7 +40,9 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/reservations" element={<Reservations />} />
+            <Route path="/reservations/:id" element={<ReservationDetails />} />
             <Route path="/reservations-form" element={<ReservationForm />} />
+            {/* <Route path="/stepper" element={<CustomizedSteppers />} /> */}
           </Routes>
         </LayOut>
       </ThemeProvider>

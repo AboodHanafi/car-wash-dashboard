@@ -1,8 +1,9 @@
 import { Box, IconButton, Skeleton, Typography, styled } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useState } from "react";
+import { DataGrid, GridColDef, GridEventListener } from "@mui/x-data-grid";
+import { PropsWithChildren, useState } from "react";
 import { Icons } from "../../assets";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+import { Navigate, useNavigate } from "react-router-dom";
 const columns: GridColDef[] = [
   {
     field: "reservationNum",
@@ -218,54 +219,64 @@ const rows = [
     biker: "خليل الحنفي",
   },
 ];
-export default function ReservationsTable() {
+
+interface PropType extends PropsWithChildren {
+  onRowClick: () => void;
+}
+const StyledTable = styled(DataGrid)(({ theme }) => ({
+  border: "none",
+  minHeight: "350px",
+  fontWeight: 400,
+  fontSize: "0.9rem",
+  width: "100%",
+  "& .MuiDataGrid-main": {
+    width: "100%",
+  },
+
+  "& .paxton-table--row": {
+    border: "none",
+    cursor: "pointer",
+    // marginTop: "1px",
+    // marginBottom: "1px",
+    backgroundColor: " #F6F6F6",
+    color: "#404040",
+  },
+  "& .paxton-table--cell": {
+    border: "none",
+    height: "20px",
+  },
+  "& .MuiDataGrid-columnHeaders": {
+    backgroundColor: "#FCFCFC",
+    borderRadius: "10px",
+    width: "100%",
+    color: "#191919",
+  },
+  "& .MuiDataGrid-footerContainer": {
+    backgroundColor: "#fff",
+    borderRadius: "10px",
+    width: "100%",
+    direction: "rtl",
+  },
+}));
+const LoadingSkeleton = () => (
+  <Box
+    sx={{
+      height: "max-content",
+    }}
+  >
+    {[...Array(10)].map((_, index) => (
+      <Skeleton key={index} variant="rectangular" sx={{ my: 4, mx: 1 }} />
+    ))}
+  </Box>
+);
+const ReservationsTable = () => {
   const [pageSize, setPageSize] = useState<number>(10);
   const [page, setPage] = useState<number>(0);
+  const nvigate = useNavigate();
 
-  const StyledTable = styled(DataGrid)(({ theme }) => ({
-    border: "none",
-    minHeight: "370px",
-    fontWeight: 400,
-    fontSize: "0.9rem",
-
-    "& .paxton-table--row": {
-      border: "none",
-      // marginTop: "1px",
-      // marginBottom: "1px",
-      backgroundColor: " #F6F6F6",
-      color: "#404040",
-    },
-    "& .paxton-table--cell": {
-      border: "none",
-      height: "20px",
-    },
-    "& .MuiDataGrid-columnHeaders": {
-      backgroundColor: "#FCFCFC",
-      borderRadius: "10px",
-
-      // width: "100%",
-      // minwidth: "100vw",
-      color: "#191919",
-    },
-    "& .MuiDataGrid-footerContainer": {
-      backgroundColor: "#fff",
-      borderRadius: "10px",
-
-      direction: "rtl",
-    },
-  }));
-
-  const LoadingSkeleton = () => (
-    <Box
-      sx={{
-        height: "max-content",
-      }}
-    >
-      {[...Array(10)].map((_, index) => (
-        <Skeleton key={index} variant="rectangular" sx={{ my: 4, mx: 1 }} />
-      ))}
-    </Box>
-  );
+  const handleRowClick: GridEventListener<"rowClick"> = (params) => {
+    nvigate(`/reservations/${params.row.id}`);
+  };
 
   if (!false) {
     return (
@@ -279,6 +290,7 @@ export default function ReservationsTable() {
         rowsPerPageOptions={[10, 20, 100]}
         pagination
         disableSelectionOnClick
+        onRowClick={handleRowClick}
         rowHeight={48}
         headerHeight={40}
         getRowClassName={() => "paxton-table--row"}
@@ -287,4 +299,5 @@ export default function ReservationsTable() {
   } else {
     return <LoadingSkeleton />;
   }
-}
+};
+export default ReservationsTable;
