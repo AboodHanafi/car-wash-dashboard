@@ -10,6 +10,8 @@ import Reservations from "./screens/reservations";
 import ReservationForm from "./screens/reservations/form";
 import ReservationDetails from "./screens/reservations/details";
 import CustomizedSteppers from "./components/stepper";
+import Users from "./screens/users";
+import Employees from "./screens/employees";
 
 function App() {
   // Create rtl cache
@@ -41,7 +43,10 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/reservations" element={<Reservations />} />
             <Route path="/reservations/:id" element={<ReservationDetails />} />
-            <Route path="/reservations-form" element={<ReservationForm />} />
+
+            <Route path="/reservations" element={<Reservations />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/employees" element={<Employees />} />
             {/* <Route path="/stepper" element={<CustomizedSteppers />} /> */}
           </Routes>
         </LayOut>
