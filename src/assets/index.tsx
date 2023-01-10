@@ -120,7 +120,7 @@ export const sideBarItems = [
   {
     id: 5,
     name: "أماكن الحجز",
-    path: "/popularReservations",
+    path: "/locations",
     icon: (
       <SVG width={24} height={24}>
         <path

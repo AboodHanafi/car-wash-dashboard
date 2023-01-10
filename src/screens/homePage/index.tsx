@@ -85,11 +85,15 @@ const HomePage = () => {
         <Stack>
           <BasicTable />
         </Stack>
-        <Stack spacing={1}>
+        <Stack>
           <Stack
             direction="row"
             justifyContent="space-between"
             alignItems="center"
+            boxShadow="0px 1px 3px rgba(0, 0, 0, 0.25)"
+            bgcolor="#FCFCFC"
+            padding="5px 10px"
+            borderRadius="10px 10px 0 0"
           >
             <Typography fontSize="0.9rem" color="#191919">
               عدد الحجوزات

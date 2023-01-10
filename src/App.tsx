@@ -12,6 +12,7 @@ import ReservationDetails from "./screens/reservations/details";
 import CustomizedSteppers from "./components/stepper";
 import Users from "./screens/users";
 import Employees from "./screens/employees";
+import ReservationLocations from "./screens/reservationLocations";
 
 function App() {
   // Create rtl cache
@@ -47,6 +48,7 @@ function App() {
             <Route path="/reservations" element={<Reservations />} />
             <Route path="/users" element={<Users />} />
             <Route path="/employees" element={<Employees />} />
+            <Route path="/locations" element={<ReservationLocations />} />
             {/* <Route path="/stepper" element={<CustomizedSteppers />} /> */}
           </Routes>
         </LayOut>

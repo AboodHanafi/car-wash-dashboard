@@ -30,7 +30,7 @@ const DashCard: React.FC<cardType> = ({ title, counter, color, shadow }) => {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            // gap: "15px",
+            gap: "5px",
           }}
         >
           <Typography color="#fff">{counter}</Typography>

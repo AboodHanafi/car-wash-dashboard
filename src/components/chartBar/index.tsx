@@ -11,7 +11,11 @@ const ChartBar = () => {
 
   return (
     <BarChart
-      style={{ backgroundColor: "#F6F6F6", fontSize: "12px" }}
+      style={{
+        backgroundColor: "#F6F6F6",
+        fontSize: "12px",
+        borderRadius: "0 0 10px 10px",
+      }}
       width={bigLabtob ? 280 : 400}
       height={280}
       data={data}
