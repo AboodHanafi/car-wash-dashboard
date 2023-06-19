@@ -13,9 +13,10 @@ import CustomizedSteppers from "./components/stepper";
 import Users from "./screens/users";
 import Employees from "./screens/employees";
 import ReservationLocations from "./screens/reservationLocations";
+import { useEffect } from "react";
+import CRUDRequests from "./API";
 
 function App() {
-  // Create rtl cache
   const cacheRtl = createCache({
     key: "muirtl",
     stylisPlugins: [prefixer, rtlPlugin],
@@ -36,6 +37,24 @@ function App() {
       fontWeightBold: 700,
     },
   });
+  const token = "207|shlkWhsII1LoVeEYgoA5WOXBD3QiLs0nvaB7WK8b";
+  useEffect(() => {
+    // Example usage
+    const fetchData = async () => {
+      try {
+        const response = await CRUDRequests.get("/users", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <CacheProvider value={cacheRtl}>
       <ThemeProvider theme={theme}>
@@ -43,9 +62,8 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/reservations" element={<Reservations />} />
+            <Route path="/reservations-form" element={<ReservationForm />} />
             <Route path="/reservations/:id" element={<ReservationDetails />} />
-
-            <Route path="/reservations" element={<Reservations />} />
             <Route path="/users" element={<Users />} />
             <Route path="/employees" element={<Employees />} />
             <Route path="/locations" element={<ReservationLocations />} />
