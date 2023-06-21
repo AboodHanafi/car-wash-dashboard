@@ -19,6 +19,8 @@ function ServicesList({ coupons }: Props) {
       flexDirection={'row'}
       flexWrap={'wrap'}
       gap={2}
+      marginBottom={3}
+      marginTop={2}
     >
       {renderedServicesList}
     </Box>

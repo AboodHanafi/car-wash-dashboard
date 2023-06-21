@@ -15,7 +15,7 @@ import {
 import { CustomButton } from '../../globalStyle';
 import { useNavigate } from 'react-router-dom';
 import UploadImage from '../../components/uploadImage';
-import Counter from '../../components/counter/Counter';
+import Counter from '../../components/counter';
 import Switch from '../../components/switch/Switch';
 
 const ServicesForm = () => {

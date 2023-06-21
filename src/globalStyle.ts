@@ -1,11 +1,11 @@
-import styled from "@emotion/styled";
-import { Button, TextField } from "@mui/material";
+import styled from '@emotion/styled';
+import { Button, TextField } from '@mui/material';
 
 export const CustomizedTextField = styled(TextField)`
   background-color: #fff;
   border-radius: 10px;
   /* width: 120px; */
-  border: "1px solid #DDDDDD" .MuiSvgIcon-root {
+  border: '1px solid #DDDDDD' .MuiSvgIcon-root {
     color: #191919;
   }
   .MuiFilledInput-root {
@@ -19,14 +19,14 @@ export const CustomizedTextField = styled(TextField)`
   }
 
   .MuiFilledInput-root::before {
-    border: "1px solid #DDDDDD";
+    border: '1px solid #DDDDDD';
   }
 
   .MuiFilledInput-root:after {
-    border: "1px solid #DDDDDD";
+    border: '1px solid #DDDDDD';
   }
   .MuiFilledInput-root:hover:not(.Mui-disabled):before {
-    border: "1px solid #DDDDDD"; /* background-color: #e7e0e0; */
+    border: '1px solid #DDDDDD'; /* background-color: #e7e0e0; */
   }
 
   .MuiFilledInput-root:hover {
@@ -59,5 +59,18 @@ export const CustomButton = styled(Button)`
   :hover {
     box-shadow: none;
     color: #000;
+  }
+`;
+
+export const CustomNumberField = styled(TextField)`
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Works for Firefox */
+  input[type='number'] {
+    -moz-appearance: textfield;
   }
 `;
