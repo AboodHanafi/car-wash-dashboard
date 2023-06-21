@@ -1,10 +1,10 @@
-import { useState, useEffect, ChangeEvent, useMemo } from 'react';
+import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import {
   Box,
   InputAdornment,
   FormControlLabel,
   FormGroup,
-  FormLabel,
+  FormControl,
   Radio,
   RadioGroup,
   Stack,
@@ -17,11 +17,15 @@ import { CustomButton, CustomNumberField } from '../../globalStyle';
 import { useNavigate } from 'react-router-dom';
 import Counter from '../../components/counter';
 import Switch from '../../components/switch/Switch';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 const CouponsForm = () => {
-  const [priceFlag, setPriceFlag] = useState(false);
-  const [payEarnestFlag, setPayEarnestFlag] = useState(false);
-  const [incPercentageFlag, setIncPercentageFlag] = useState(false);
+  const [activateDeactivateFlag, setActivateDeactivateFlag] = useState(false);
+  const [cutomerUsageTimesFlag, setCutomerUsageTimesFlag] = useState(false);
+  const [usageTimesFlag, setUsageTimesFlag] = useState(false);
+  const [expirationDateFlag, setExpirationDateFlag] = useState(false);
   const [allServicesFlag, setAllServicesFlag] = useState(false);
   const [employeesTypesFlag, setEmployeesTypesFlag] = useState(false);
 
@@ -62,6 +66,14 @@ const CouponsForm = () => {
     });
   };
 
+  const handleSubmitCoupon = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.target as HTMLFormElement);
+    const data = Object.fromEntries(formData);
+    console.log(data);
+  };
+
   useEffect(() => {
     let key: keyof typeof services;
     for (key in services) {
@@ -97,6 +109,8 @@ const CouponsForm = () => {
             minWidth: '250px',
           }}
         >
+          {/* <form onSubmit={handleSubmitCoupon}> */}
+          {/* <FormControl sx={{ width: '100%' }}> */}
           <Typography fontWeight={500}>رمز الكوبون (الكود)</Typography>
           <TextField placeholder='ادخل رمز الكوبون' />
           <Typography
@@ -273,7 +287,10 @@ const CouponsForm = () => {
                     onChange={() => {
                       setEmployeesTypesFlag(true);
                       for (const key in employeesTypes) {
-                        setEmployeesTypes(prev => ({ ...prev, [key]: true }));
+                        setEmployeesTypes(prev => ({
+                          ...prev,
+                          [key]: true,
+                        }));
                       }
                     }}
                   />
@@ -288,7 +305,10 @@ const CouponsForm = () => {
                     onChange={() => {
                       setEmployeesTypesFlag(false);
                       for (const key in employeesTypes) {
-                        setEmployeesTypes(prev => ({ ...prev, [key]: false }));
+                        setEmployeesTypes(prev => ({
+                          ...prev,
+                          [key]: false,
+                        }));
                       }
                     }}
                   />
@@ -343,90 +363,107 @@ const CouponsForm = () => {
           {/* End employees section */}
           <FormControlLabel
             control={
-              <Switch onChange={handleSwitch(setPriceFlag)} sx={{ m: 1 }} />
+              <Switch
+                onChange={handleSwitch(setUsageTimesFlag)}
+                sx={{ m: 1 }}
+              />
             }
-            label='تحديد اقصى عدد مرات الاستخدام'
+            label={
+              <Typography fontWeight={600}>
+                تحديد اقصى عدد مرات الاستخدام
+              </Typography>
+            }
           />
-          <Box style={{ marginRight: '2rem', marginTop: '0.4rem' }}>
-            <Typography fontWeight={500}>
-              اقصى عدد مرات استخدام الكوبون
-            </Typography>
-            <Counter />
-          </Box>
+          {usageTimesFlag && (
+            <Box style={{ marginRight: '2rem', marginTop: '0.4rem' }}>
+              <Typography fontWeight={500}>
+                اقصى عدد مرات استخدام الكوبون
+              </Typography>
+              <Counter />
+            </Box>
+          )}
 
           <FormControlLabel
             control={
-              <Switch onChange={handleSwitch(setPriceFlag)} sx={{ m: 1 }} />
+              <Switch
+                onChange={handleSwitch(setCutomerUsageTimesFlag)}
+                sx={{ m: 1 }}
+              />
             }
-            label='تحديد اقصى عدد مرات الاستخدام للعميل الواحد'
+            label={
+              <Typography fontWeight={600}>
+                تحديد اقصى عدد مرات الاستخدام للعميل الواحد
+              </Typography>
+            }
           />
-          <Box style={{ marginRight: '2rem', marginTop: '0.4rem' }}>
-            <Typography fontWeight={500}>
-              أقصى عدد مرات استخدام الكوبون للعميل الواحد
-            </Typography>
-            <Counter />
-          </Box>
+          {cutomerUsageTimesFlag && (
+            <Box style={{ marginRight: '2rem', marginTop: '0.4rem' }}>
+              <Typography fontWeight={500}>
+                أقصى عدد مرات استخدام الكوبون للعميل الواحد
+              </Typography>
+              <Counter />
+            </Box>
+          )}
           <FormControlLabel
             control={
-              <Switch onChange={handleSwitch(setPriceFlag)} sx={{ m: 1 }} />
+              <Switch
+                onChange={handleSwitch(setExpirationDateFlag)}
+                sx={{ m: 1 }}
+              />
             }
-            label='تحديد تاريخ صلاحية لتطبيق الكوبون'
+            label={
+              <Typography fontWeight={600}>
+                تحديد تاريخ صلاحية لتطبيق الكوبون
+              </Typography>
+            }
           />
           <Box
-            style={{ marginRight: '2rem', marginTop: '0.4rem', width: '100%' }}
+            style={{
+              marginRight: '2rem',
+              marginTop: '0.4rem',
+              width: '100%',
+            }}
           >
-            <Typography fontWeight={500}>ينتهي بتاريخ </Typography>
-            <TextField placeholder='حدد التاريخ' />
+            {expirationDateFlag && (
+              <>
+                <Typography fontWeight={500}>ينتهي بتاريخ </Typography>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    slotProps={{ textField: { size: 'small' } }}
+                    sx={{
+                      paddingTop: '0.4rem',
+                    }}
+                  />
+                </LocalizationProvider>
+              </>
+            )}
           </Box>
           <FormControlLabel
             control={
-              <Switch onChange={handleSwitch(setPriceFlag)} sx={{ m: 1 }} />
+              <Switch
+                onChange={handleSwitch(setActivateDeactivateFlag)}
+                sx={{ m: 1 }}
+              />
             }
-            label='وضع سعر على الخدمة'
+            label={
+              <Typography fontWeight={600}>تفعيل الكوبون او تعطيله </Typography>
+            }
           />
-          {priceFlag && (
-            <>
-              <TextField placeholder='سعر الخدمة' />
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={payEarnestFlag}
-                    onChange={handleSwitch(setPayEarnestFlag)}
-                    sx={{ m: 1 }}
-                  />
-                }
-                label='دفع عربون عند الحجز'
-              />
-              {payEarnestFlag && <TextField placeholder='نسبة العربون' />}
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={incPercentageFlag}
-                    onChange={handleSwitch(setIncPercentageFlag)}
-                    sx={{ m: 1 }}
-                  />
-                }
-                label='زيادة السعر عند اختيار موعد قريب'
-              />
-              {incPercentageFlag && <TextField placeholder='نسبة الزيادة' />}
-            </>
-          )}
-          <FormLabel id='demo-row-radio-buttons-group-label'>
-            المجحوعة ( اختياري)
-          </FormLabel>
-          <TextField placeholder='اسم المجموعة' />
+
           <Box style={{ marginRight: 'auto' }}>
             <CustomButton
+              type='submit'
               style={{
                 backgroundColor: theme.palette.primary.main,
                 color: '#fff',
                 marginLeft: '0.3rem',
               }}
             >
-              حفظ الخدمة
+              حفظ ونشر
             </CustomButton>
 
             <CustomButton
+              type='button'
               style={{
                 backgroundColor: '#E6E6E6',
                 color: theme.palette.primary.main,
@@ -435,6 +472,8 @@ const CouponsForm = () => {
               إلغاء
             </CustomButton>
           </Box>
+          {/* </FormControl> */}
+          {/* </form> */}
         </Stack>
       </Stack>
     </Stack>

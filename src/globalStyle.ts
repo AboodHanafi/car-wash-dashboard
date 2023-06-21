@@ -69,7 +69,7 @@ export const CustomNumberField = styled(TextField)`
     margin: 0;
   }
 
-  /* Works for Firefox */
+  /* For Firefox */
   input[type='number'] {
     -moz-appearance: textfield;
   }
