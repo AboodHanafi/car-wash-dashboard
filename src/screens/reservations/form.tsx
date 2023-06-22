@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction, ChangeEvent } from 'react';
 import {
   Box,
   Checkbox,
@@ -13,8 +14,40 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { CustomButton } from '../../globalStyle';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+
+type CutsomerData = {
+  name: string;
+  tel: string;
+  address: string;
+  resDate: Date;
+  resHoure: string;
+};
+type ModCarData = { carBrand: string; carModel: string; carColor: string };
+type ExtraServices = { pedals: boolean; redolent: boolean };
 
 const ReservationForm = () => {
+  const [extraServices, setExtraServices] = useState<ExtraServices>(
+    {} as ExtraServices,
+  );
+  const [resCutsomerData, setResCutsomerData] = useState<CutsomerData>(
+    {} as CutsomerData,
+  );
+  const [resCarData, setResCarData] = useState<ModCarData>({} as ModCarData);
+
+  const handleChangeInput =
+    (
+      setState:
+        | Dispatch<SetStateAction<CutsomerData>>
+        | Dispatch<SetStateAction<ModCarData>>,
+    ) =>
+    (event: ChangeEvent<HTMLInputElement>) => {
+      setState((prev: any) => ({
+        ...prev,
+        [event.target.name]: event.target.value,
+      }));
+    };
+
   const navigate = useNavigate();
   const theme = useTheme();
   return (
@@ -34,22 +67,45 @@ const ReservationForm = () => {
             gap: 1,
           }}
         >
-          <TextField id='standard-basic' label='الأسم' variant='standard' />
+          <TextField
+            id='standard-basic'
+            label='الأسم'
+            variant='standard'
+            name='name'
+            onChange={handleChangeInput(setResCutsomerData)}
+            value={resCutsomerData.name}
+          />
           <TextField
             id='standard-basic'
             label='رقم الهاتف'
             variant='standard'
+            name='tel'
+            onChange={handleChangeInput(setResCutsomerData)}
+            value={resCutsomerData.tel}
           />
-          <TextField id='standard-basic' label='العنوان' variant='standard' />
+          <TextField
+            id='standard-basic'
+            label='العنوان'
+            variant='standard'
+            name='address'
+            onChange={handleChangeInput(setResCutsomerData)}
+            value={resCutsomerData.address}
+          />
           <TextField
             id='standard-basic'
             label='تاريخ الحجز'
             variant='standard'
+            name='resDate'
+            onChange={handleChangeInput(setResCutsomerData)}
+            value={resCutsomerData.resDate}
           />
           <TextField
             id='standard-basic'
             label='ساعة الحجز'
             variant='standard'
+            name='resHoure'
+            onChange={handleChangeInput(setResCutsomerData)}
+            value={resCutsomerData.resHoure}
           />
         </Box>
         <Stack
@@ -74,16 +130,25 @@ const ReservationForm = () => {
               id='standard-basic'
               label='ماركة السيارة'
               variant='standard'
+              name='carBrand'
+              onChange={handleChangeInput(setResCarData)}
+              value={resCarData.carBrand}
             />
             <TextField
               id='standard-basic'
               label='موديل السيارة'
               variant='standard'
+              name='carModel'
+              onChange={handleChangeInput(setResCarData)}
+              value={resCarData.carModel}
             />
             <TextField
               id='standard-basic'
               label='لون السيارة'
               variant='standard'
+              name='carColor'
+              onChange={handleChangeInput(setResCarData)}
+              value={resCarData.carColor}
             />
           </Box>
           <Box
@@ -109,6 +174,13 @@ const ReservationForm = () => {
                   <Checkbox
                     icon={<CheckCircleOutlineIcon />}
                     checkedIcon={<CheckCircleIcon />}
+                    checked={extraServices?.pedals}
+                    onChange={e =>
+                      setExtraServices({
+                        ...extraServices,
+                        pedals: !extraServices.pedals,
+                      })
+                    }
                   />
                 }
                 label='تلبيس دعاسات'
@@ -118,6 +190,13 @@ const ReservationForm = () => {
                   <Checkbox
                     icon={<CheckCircleOutlineIcon />}
                     checkedIcon={<CheckCircleIcon />}
+                    checked={extraServices?.redolent}
+                    onChange={e =>
+                      setExtraServices({
+                        ...extraServices,
+                        redolent: !extraServices.redolent,
+                      })
+                    }
                   />
                 }
                 label='فواحة عطرية'

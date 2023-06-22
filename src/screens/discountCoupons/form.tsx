@@ -4,7 +4,6 @@ import {
   InputAdornment,
   FormControlLabel,
   FormGroup,
-  FormControl,
   Radio,
   RadioGroup,
   Stack,
@@ -442,7 +441,9 @@ const CouponsForm = () => {
             control={
               <Switch
                 onChange={handleSwitch(setActivateDeactivateFlag)}
+                checked={activateDeactivateFlag}
                 sx={{ m: 1 }}
+                name='activateDeactivate'
               />
             }
             label={

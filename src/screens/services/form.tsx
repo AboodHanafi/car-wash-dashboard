@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import {
   Box,
-  Checkbox,
+  InputAdornment,
   FormControlLabel,
-  FormGroup,
   FormLabel,
   Radio,
   RadioGroup,
@@ -12,8 +11,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { CustomButton } from '../../globalStyle';
-import { useNavigate } from 'react-router-dom';
+import { CustomButton, CustomNumberField } from '../../globalStyle';
 import UploadImage from '../../components/uploadImage';
 import Counter from '../../components/counter';
 import Switch from '../../components/switch/Switch';
@@ -22,7 +20,6 @@ const ServicesForm = () => {
   const [priceFlag, setPriceFlag] = useState(false);
   const [payEarnestFlag, setPayEarnestFlag] = useState(false);
   const [incPercentageFlag, setIncPercentageFlag] = useState(false);
-  const navigate = useNavigate();
   const theme = useTheme();
 
   const handleSwitch =
@@ -77,7 +74,17 @@ const ServicesForm = () => {
           />
           {priceFlag && (
             <>
-              <TextField placeholder='سعر الخدمة' />
+              <CustomNumberField
+                name='servicePrice'
+                placeholder='سعر الخدمة'
+                id='standard-adornment-weight'
+                InputProps={{
+                  type: 'number',
+                  endAdornment: (
+                    <InputAdornment position='end'>ريال سعودي</InputAdornment>
+                  ),
+                }}
+              />
               <FormControlLabel
                 control={
                   <Switch
@@ -88,7 +95,19 @@ const ServicesForm = () => {
                 }
                 label='دفع عربون عند الحجز'
               />
-              {payEarnestFlag && <TextField placeholder='نسبة العربون' />}
+              {payEarnestFlag && (
+                <CustomNumberField
+                  name='payEarnest'
+                  placeholder='العربون'
+                  id='standard-adornment-weight'
+                  InputProps={{
+                    type: 'number',
+                    endAdornment: (
+                      <InputAdornment position='end'>ريال سعودي</InputAdornment>
+                    ),
+                  }}
+                />
+              )}
               <FormControlLabel
                 control={
                   <Switch
@@ -99,7 +118,19 @@ const ServicesForm = () => {
                 }
                 label='زيادة السعر عند اختيار موعد قريب'
               />
-              {incPercentageFlag && <TextField placeholder='نسبة الزيادة' />}
+              {incPercentageFlag && (
+                <CustomNumberField
+                  name='incPercentage'
+                  placeholder='نسبة الزيادة'
+                  id='standard-adornment-weight'
+                  InputProps={{
+                    type: 'number',
+                    endAdornment: (
+                      <InputAdornment position='end'>%</InputAdornment>
+                    ),
+                  }}
+                />
+              )}
             </>
           )}
           <FormLabel id='demo-row-radio-buttons-group-label'>
@@ -121,7 +152,7 @@ const ServicesForm = () => {
               label='مجموع جديدة'
             />
           </RadioGroup>
-          <TextField placeholder='اسم المجموعة' />
+          <TextField name='groupName' placeholder='اسم المجموعة' />
           <Box style={{ marginRight: 'auto' }}>
             <CustomButton
               style={{

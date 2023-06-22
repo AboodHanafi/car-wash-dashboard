@@ -15,6 +15,7 @@ import { CustomButton, CustomizedTextField } from '../../globalStyle';
 import CRUDRequsests from '../../API';
 import { useEffect, useState } from 'react';
 import { CouponsType } from '../../types';
+import { token } from '../../utils/global-var';
 
 function DiscountCoupons() {
   const [coupons, setCoupons] = useState<CouponsType[]>();
@@ -25,7 +26,7 @@ function DiscountCoupons() {
   const fetchServices = async () => {
     const { data } = await CRUDRequsests.get('/coupons', {
       headers: {
-        Authorization: `Bearer 207|shlkWhsII1LoVeEYgoA5WOXBD3QiLs0nvaB7WK8b`,
+        Authorization: `Bearer ${token}`,
       },
     });
     setCoupons(data.data);

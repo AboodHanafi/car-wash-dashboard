@@ -45,6 +45,7 @@ function App() {
     },
   });
   const token = '207|shlkWhsII1LoVeEYgoA5WOXBD3QiLs0nvaB7WK8b';
+  sessionStorage.setItem('car-wash-token', token);
   useEffect(() => {
     // Example usage
     const fetchData = async () => {
