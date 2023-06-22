@@ -9,7 +9,7 @@ const uploader = Uploader({
 });
 
 // Configuration options: https://upload.io/uploader#customize
-const options = { multi: true };
+const options = { multi: false };
 
 function UploadImage() {
   const theme = useTheme();
