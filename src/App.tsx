@@ -19,6 +19,7 @@ import { useEffect } from 'react';
 import CRUDRequests from './API';
 import Services from './screens/services';
 import CouponsForm from './screens/discountCoupons/form';
+import { ConfirmProvider } from 'material-ui-confirm';
 
 function App() {
   const cacheRtl = createCache({
@@ -66,6 +67,7 @@ function App() {
   return (
     <CacheProvider value={cacheRtl}>
       <ThemeProvider theme={theme}>
+        <ConfirmProvider>
         <LayOut>
           <Routes>
             <Route path='/' element={<HomePage />} />
@@ -83,6 +85,7 @@ function App() {
             {/* <Route path="/stepper" element={<CustomizedSteppers />} /> */}
           </Routes>
         </LayOut>
+        </ConfirmProvider>
       </ThemeProvider>
     </CacheProvider>
   );

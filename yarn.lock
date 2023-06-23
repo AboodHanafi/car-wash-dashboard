@@ -1662,7 +1662,7 @@
   dependencies:
     "@babel/runtime" "^7.20.6"
 
-"@mui/material@^5.0.0", "@mui/material@^5.13.5", "@mui/material@^5.4.1", "@mui/material@^5.8.6":
+"@mui/material@^5.0.0", "@mui/material@^5.13.5", "@mui/material@^5.4.1", "@mui/material@^5.8.6", "@mui/material@>= 5.0.0":
   "integrity" "sha512-eMay+Ue1OYXOFMQA5Aau7qbAa/kWHLAyi0McsbPTWssCbGehqkF6CIdPsfVGw6tlO+xPee1hUitphHJNL3xpOQ=="
   "resolved" "https://registry.npmjs.org/@mui/material/-/material-5.13.5.tgz"
   "version" "5.13.5"
@@ -6689,6 +6689,11 @@
   "version" "1.0.12"
   dependencies:
     "tmpl" "1.0.5"
+
+"material-ui-confirm@^3.0.9":
+  "integrity" "sha512-WEAEG9z4MfwojoUyQiAjrjl8378tYbGKfiwOKz3zHaQKyXcHnFktUmV7b+F+G0yVo8kYrEMk9Bw+HxhA/2Enlw=="
+  "resolved" "https://registry.npmjs.org/material-ui-confirm/-/material-ui-confirm-3.0.9.tgz"
+  "version" "3.0.9"
 
 "mdn-data@2.0.14":
   "integrity" "sha512-dn6wd0uw5GsdswPFfsgMp5NSB0/aDe6fK94YJV/AJDYXL6HVLWBsxeq7js7Ad+mU2K9LAlwpk6kN2D5mwCPVow=="
