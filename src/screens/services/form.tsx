@@ -53,7 +53,6 @@ const ServicesForm = () => {
             <UploadImage />
           </Box>
           <Typography fontWeight={500}>اسم او نوع الحجز</Typography>
-
           <TextField placeholder='اسم او نوع الحجز' />
           <Typography fontWeight={500}>المدة (بالدقائق)</Typography>
           <Counter />

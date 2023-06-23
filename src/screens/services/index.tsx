@@ -25,7 +25,7 @@ function Services() {
   }, []);
 
   return (
-    <Stack id='mainWrapper' pr='20px' spacing={2}>
+    <Stack id='mainWrapper' pr='20px' spacing={2} marginTop={1}>
       <Stack
         id='header'
         direction='row'

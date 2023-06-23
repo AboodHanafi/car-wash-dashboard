@@ -9,3 +9,9 @@ export type CouponsType = {
   coupon_code: string;
   number: string;
 };
+
+export type LocationsType = {
+  id: string;
+  employeesNumber: number;
+  locationName: string;
+};

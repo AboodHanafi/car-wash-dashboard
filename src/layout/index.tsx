@@ -5,14 +5,15 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 import NavBar from '../components/navBar';
 import SideBar from '../components/sideBar';
+import { useMediaQuery } from '@mui/material';
 
 const LayOut: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [open, setOpen] = React.useState(false);
+  const mobile = useMediaQuery('(min-width:400px)');
 
   const handleDrawerOpen = () => {
     setOpen(!open);
   };
-  // width={'100%'}
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -22,7 +23,8 @@ const LayOut: React.FC<React.PropsWithChildren> = ({ children }) => {
         component='main'
         sx={{
           flexGrow: 1,
-          paddingLeft: 3,
+          paddingLeft: mobile ? 3 : 1,
+          paddingBottom: mobile ? 0 : 3,
           paddingTop: 11,
           bgcolor: '#fff',
           overflow: 'auto',
