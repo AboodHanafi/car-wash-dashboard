@@ -1,6 +1,6 @@
 import React from 'react';
 import LocationItem from './locationItem';
-import { LocationsType } from '../../types';
+import { LocationsType } from '../../utils/types';
 import { Box } from '@mui/material';
 
 interface Props {

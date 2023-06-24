@@ -1,5 +1,7 @@
 import {
+  Alert,
   Autocomplete,
+  CircularProgress,
   FormLabel,
   Icon,
   IconButton,
@@ -11,29 +13,34 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import CouponsList from '../../components/couponsList';
-import { CustomButton, CustomizedTextField } from '../../globalStyle';
-import CRUDRequsests from '../../API';
-import { useEffect, useState } from 'react';
-import { CouponsType } from '../../types';
-import { token } from '../../utils/global-var';
+import { CustomButton } from '../../globalStyle';
+import useFetchCoupons from '../../hooks/use-fetchData';
 
 function DiscountCoupons() {
-  const [coupons, setCoupons] = useState<CouponsType[]>();
+  const { data: coupons, isLoading, error } = useFetchCoupons('/coupons');
   const bigLabtob = useMediaQuery('(max-width:1024px)');
   const navigate = useNavigate();
   const theme = useTheme();
 
-  const fetchServices = async () => {
-    const { data } = await CRUDRequsests.get('/coupons', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    setCoupons(data.data);
-  };
-  useEffect(() => {
-    fetchServices();
-  }, []);
+  let content: JSX.Element;
+  if (isLoading) {
+    content = <CircularProgress sx={{ mt: 12 }} />;
+  } else {
+    content = <CouponsList coupons={coupons} />;
+  }
+
+  if (error) {
+    content = (
+      <Alert
+        variant='outlined'
+        sx={{ mt: 12, fontWeight: 600, color: '#FF0000' }}
+        icon={false}
+        severity='error'
+      >
+        يوجد خطأ ما في جلب البيانات{' '}
+      </Alert>
+    );
+  }
 
   return (
     <Stack id='mainWrapper' pr='20px' spacing={2} marginTop={1}>
@@ -62,7 +69,7 @@ function DiscountCoupons() {
         justifyContent='space-between'
         alignItems='center'
       >
-        <CouponsList coupons={coupons || []} />
+        {content}
       </Stack>
     </Stack>
   );

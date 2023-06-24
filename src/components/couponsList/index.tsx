@@ -1,6 +1,6 @@
 import React from 'react';
 import CouponItem from './couponsItem';
-import { CouponsType } from '../../types';
+import { CouponsType } from '../../utils/types';
 import { Box } from '@mui/material';
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 }
 
 function ServicesList({ coupons }: Props) {
-  const renderedServicesList = coupons.map(coupon => (
+  const renderedServicesList = coupons?.map(coupon => (
     <CouponItem key={coupon.coupon_code} coupon={coupon} />
   ));
 

@@ -1,6 +1,8 @@
 import {
+  Alert,
   Autocomplete,
   Box,
+  CircularProgress,
   InputAdornment,
   Stack,
   Typography,
@@ -14,6 +16,8 @@ import LocationsChartBar from '../../components/locationsChartBar';
 import { useNavigate } from 'react-router-dom';
 import LocationsList from '../../components/locationsList';
 import LocationDialog from '../../components/locationDialog/LocationDialog';
+import useFetchLocation from '../../hooks/use-fetchData';
+
 interface autoType {
   label: string;
   id: number;
@@ -61,6 +65,8 @@ const DUMMY_LOCATIONS = [
   },
 ];
 const ReservationLocations = () => {
+  const { data: locations, isLoading, error } = useFetchLocation('/cities');
+
   const [open, setOpen] = useState(false);
   const [monthValue, setMonthValue] = useState<autoType | null>(Months[0]);
   const navigate = useNavigate();
@@ -74,6 +80,26 @@ const ReservationLocations = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  let content: JSX.Element;
+  if (isLoading) {
+    content = <CircularProgress sx={{ mt: 12 }} />;
+  } else {
+    content = <LocationsList locations={DUMMY_LOCATIONS} />;
+  }
+
+  if (error) {
+    content = (
+      <Alert
+        variant='outlined'
+        sx={{ mt: 12, fontWeight: 600, color: '#FF0000' }}
+        icon={false}
+        severity='error'
+      >
+        يوجد خطأ ما في جلب البيانات{' '}
+      </Alert>
+    );
+  }
 
   return (
     <Stack id='mainWrapper' spacing={3} pr='30px' marginTop={1}>
@@ -104,7 +130,7 @@ const ReservationLocations = () => {
         justifyContent='space-between'
         alignItems='center'
       >
-        <LocationsList locations={DUMMY_LOCATIONS || []} />
+        {content}
       </Stack>
       {/* <Stack id='header' spacing={1}>
         <Box

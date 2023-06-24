@@ -1,14 +1,13 @@
 import React from 'react';
-import { CouponsType, ServicesType } from '../../../utils/types';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Avatar } from '@mui/material';
 import { useTheme } from '@mui/material';
 import { Link } from 'react-router-dom';
-import SVGCoupon from '../../../assets/svg/SVGCoupon';
+import { EmployeesType } from '../../../../utils/types';
 interface Props {
-  coupon: CouponsType;
+  employee: EmployeesType;
 }
-function CouponItem({ coupon }: Props) {
-  const { coupon_code, number } = coupon;
+function EmployeeItem({ employee }: Props) {
+  const { id, name, location } = employee;
   const theme = useTheme();
   return (
     <Box
@@ -18,23 +17,23 @@ function CouponItem({ coupon }: Props) {
         width: '32%',
         minWidth: '20rem',
         padding: '1rem',
+        alignItems: 'center',
       }}
       display={'flex'}
       flexDirection={'column'}
       gap={2}
     >
-      <Link to={`/${coupon_code}`} style={{ textDecoration: 'none' }}>
+      <Avatar alt={name || ''} src='/static/images/avatar/1.jpg' />
+      <Link to={`/${id}`} style={{ textDecoration: 'none' }}>
         <Typography fontWeight={600} color={theme.palette.secondary.main}>
-          {coupon_code}
+          {name}
         </Typography>
       </Link>
       <Typography display={'flex'} alignItems={'center'} gap={1}>
-        <SVGCoupon />
-        تم استعماله{' '}
-        {+number > 10 || +number === 1 ? `${number} مرة` : `${number} مرات`}
+        {location}
       </Typography>
     </Box>
   );
 }
 
-export default CouponItem;
+export default EmployeeItem;

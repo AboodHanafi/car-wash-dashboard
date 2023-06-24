@@ -15,3 +15,8 @@ export type LocationsType = {
   employeesNumber: number;
   locationName: string;
 };
+export type EmployeesType = {
+  id: string;
+  name: string;
+  location: string;
+};

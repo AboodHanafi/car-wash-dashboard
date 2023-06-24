@@ -1,5 +1,5 @@
 import React from 'react';
-import { ServicesType } from '../../../types';
+import { ServicesType } from '../../../utils/types';
 import { Box, Typography } from '@mui/material';
 import { useTheme } from '@mui/material';
 import SVGTime from '../../../assets/svg/SVGTime';

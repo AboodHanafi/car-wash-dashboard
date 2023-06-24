@@ -1,6 +1,6 @@
 import React from 'react';
 import ServiceItem from './serviceItem';
-import { ServicesType } from '../../types';
+import { ServicesType } from '../../utils/types';
 import { Box } from '@mui/material';
 
 interface Props {

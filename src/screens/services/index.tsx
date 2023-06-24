@@ -4,7 +4,7 @@ import ServicesList from '../../components/servicesList';
 import { CustomButton } from '../../globalStyle';
 import CRUDRequsests from '../../API';
 import { useEffect, useState } from 'react';
-import { ServicesType } from '../../types';
+import { ServicesType } from '../../utils/types';
 import { token } from '../../utils/global-var';
 
 function Services() {

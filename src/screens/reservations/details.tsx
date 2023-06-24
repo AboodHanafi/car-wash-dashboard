@@ -45,7 +45,7 @@ const ReservationDetails = () => {
             color: '#191919',
             filter: 'drop-shadow(0px 1px 3px rgba(0, 0, 0, 0.25))',
           }}
-          startIcon={Icons.deleteIcon()}
+          startIcon={Icons.deleteIcon('#FF0000')}
           onClick={() => handleDelete(id)}
         >
           حذف الحجز

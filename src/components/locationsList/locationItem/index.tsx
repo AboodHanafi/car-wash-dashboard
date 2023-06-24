@@ -1,5 +1,5 @@
 import React from 'react';
-import { LocationsType } from '../../../types';
+import { LocationsType } from '../../../utils/types';
 import { Box, Typography } from '@mui/material';
 import { useTheme } from '@mui/material';
 import { Link } from 'react-router-dom';
