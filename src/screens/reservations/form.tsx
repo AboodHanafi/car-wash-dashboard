@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, ChangeEvent } from 'react';
+import { ChangeEvent } from 'react';
 import {
   Box,
   Checkbox,
@@ -15,43 +15,98 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { CustomButton } from '../../globalStyle';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { z, ZodType } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
+type ExtraServices = { pedals: boolean; redolent: boolean };
 type CutsomerData = {
   name: string;
   tel: string;
   address: string;
   resDate: Date;
   resHoure: string;
+  carData: { carBrand: string; carModel: string; carColor: string };
+  extraServices: ExtraServices;
 };
-type ModCarData = { carBrand: string; carModel: string; carColor: string };
-type ExtraServices = { pedals: boolean; redolent: boolean };
 
 const ReservationForm = () => {
-  const [extraServices, setExtraServices] = useState<ExtraServices>(
-    {} as ExtraServices,
-  );
-  const [resCutsomerData, setResCutsomerData] = useState<CutsomerData>(
-    {} as CutsomerData,
-  );
-  const [resCarData, setResCarData] = useState<ModCarData>({} as ModCarData);
+  const [resCutsomerData, setResCutsomerData] = useState<CutsomerData>({
+    name: '',
+    address: '',
+    tel: '',
+    resDate: new Date(),
+    resHoure: '',
+    carData: { carBrand: '', carColor: '', carModel: '' },
+    extraServices: { pedals: true, redolent: true },
+  });
 
-  const handleChangeInput =
-    (
-      setState:
-        | Dispatch<SetStateAction<CutsomerData>>
-        | Dispatch<SetStateAction<ModCarData>>,
-    ) =>
-    (event: ChangeEvent<HTMLInputElement>) => {
-      setState((prev: any) => ({
-        ...prev,
-        [event.target.name]: event.target.value,
-      }));
-    };
+  const schema: ZodType<CutsomerData> = z.object({
+    name: z
+      .string()
+      .min(2, 'يجب ادخال اسم الحجز')
+      .max(50, 'يجب ان يكون اسم الحجز اقل من 50 حرفا'),
+    address: z.string().min(2).max(100),
+    tel: z
+      .string()
+      .regex(
+        RegExp(/^((?:[+?0?0?966]+)(?:s?d{2})(?:s?d{7}))$/),
+        'الرجاء ادخال رقم صحيح',
+      ),
+    resDate: z.date(),
+    resHoure: z.string(),
+    carData: z.object({
+      carBrand: z.string().min(2).max(50),
+      carModel: z.string().min(2).max(50),
+      carColor: z.string().min(2).max(50),
+    }),
+    extraServices: z.object({
+      pedals: z.boolean(),
+      redolent: z.boolean(),
+    }),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CutsomerData>({
+    resolver: zodResolver(schema),
+  });
+
+  const handleChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+
+    setResCutsomerData(prev => {
+      let updatedData = { ...resCutsomerData };
+
+      if (name.includes('car')) {
+        updatedData = {
+          ...updatedData,
+          carData: { ...prev.carData, [name]: value },
+        };
+      } else if (name === 'pedals' || name === 'redolent') {
+        updatedData = {
+          ...updatedData,
+          extraServices: {
+            ...prev.extraServices,
+            [name]: !prev.extraServices[name],
+          },
+        };
+      } else {
+        updatedData = { ...updatedData, [name]: value };
+      }
+      return updatedData;
+    });
+  };
+  const submitData = (data: CutsomerData) => {
+    console.log(data);
+  };
 
   const navigate = useNavigate();
   const theme = useTheme();
   return (
-    <Stack spacing={2}>
+    <Stack spacing={2} component={'form'} onSubmit={handleSubmit(submitData)}>
       <Typography fontWeight={600}>حجز جديد</Typography>
       <Stack direction='row' flexWrap='wrap' gap={3} pr='20px'>
         <Box
@@ -71,32 +126,43 @@ const ReservationForm = () => {
             id='standard-basic'
             label='الأسم'
             variant='standard'
-            name='name'
-            onChange={handleChangeInput(setResCutsomerData)}
             value={resCutsomerData.name}
+            {...register('name', {
+              onChange: handleChangeInput,
+            })}
           />
+          {errors.name && (
+            <Typography color={'#FF0000'}>{errors.name.message}</Typography>
+          )}
+          {/* <Typography>{errors.name?.message} </Typography> */}
+
           <TextField
             id='standard-basic'
             label='رقم الهاتف'
             variant='standard'
-            name='tel'
-            onChange={handleChangeInput(setResCutsomerData)}
             value={resCutsomerData.tel}
+            {...register('tel', {
+              onChange: handleChangeInput,
+            })}
           />
+          <Typography color={'#FF0000'}>{errors.tel?.message} </Typography>
+
           <TextField
             id='standard-basic'
             label='العنوان'
             variant='standard'
-            name='address'
-            onChange={handleChangeInput(setResCutsomerData)}
             value={resCutsomerData.address}
+            {...register('address', {
+              onChange: handleChangeInput,
+            })}
           />
+          <Typography color={'#FF0000'}>{errors.address?.message}</Typography>
           <TextField
             id='standard-basic'
             label='تاريخ الحجز'
             variant='standard'
             name='resDate'
-            onChange={handleChangeInput(setResCutsomerData)}
+            onChange={handleChangeInput}
             value={resCutsomerData.resDate}
           />
           <TextField
@@ -104,7 +170,7 @@ const ReservationForm = () => {
             label='ساعة الحجز'
             variant='standard'
             name='resHoure'
-            onChange={handleChangeInput(setResCutsomerData)}
+            onChange={handleChangeInput}
             value={resCutsomerData.resHoure}
           />
         </Box>
@@ -131,24 +197,24 @@ const ReservationForm = () => {
               label='ماركة السيارة'
               variant='standard'
               name='carBrand'
-              onChange={handleChangeInput(setResCarData)}
-              value={resCarData.carBrand}
+              onChange={handleChangeInput}
+              value={resCutsomerData.carData.carBrand}
             />
             <TextField
               id='standard-basic'
               label='موديل السيارة'
               variant='standard'
               name='carModel'
-              onChange={handleChangeInput(setResCarData)}
-              value={resCarData.carModel}
+              onChange={handleChangeInput}
+              value={resCutsomerData.carData.carModel}
             />
             <TextField
               id='standard-basic'
               label='لون السيارة'
               variant='standard'
               name='carColor'
-              onChange={handleChangeInput(setResCarData)}
-              value={resCarData.carColor}
+              onChange={handleChangeInput}
+              value={resCutsomerData.carData.carColor}
             />
           </Box>
           <Box
@@ -172,15 +238,11 @@ const ReservationForm = () => {
               <FormControlLabel
                 control={
                   <Checkbox
+                    name='pedals'
                     icon={<CheckCircleOutlineIcon />}
                     checkedIcon={<CheckCircleIcon />}
-                    checked={extraServices?.pedals}
-                    onChange={e =>
-                      setExtraServices({
-                        ...extraServices,
-                        pedals: !extraServices.pedals,
-                      })
-                    }
+                    checked={resCutsomerData.extraServices.pedals}
+                    onChange={handleChangeInput}
                   />
                 }
                 label='تلبيس دعاسات'
@@ -188,15 +250,11 @@ const ReservationForm = () => {
               <FormControlLabel
                 control={
                   <Checkbox
+                    name='redolent'
                     icon={<CheckCircleOutlineIcon />}
                     checkedIcon={<CheckCircleIcon />}
-                    checked={extraServices?.redolent}
-                    onChange={e =>
-                      setExtraServices({
-                        ...extraServices,
-                        redolent: !extraServices.redolent,
-                      })
-                    }
+                    checked={resCutsomerData.extraServices.redolent}
+                    onChange={handleChangeInput}
                   />
                 }
                 label='فواحة عطرية'
@@ -210,6 +268,7 @@ const ReservationForm = () => {
                 color: '#fff',
                 width: '50%',
               }}
+              type='submit'
             >
               حجز
             </CustomButton>
