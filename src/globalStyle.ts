@@ -15,7 +15,7 @@ export const CustomizedTextField = styled(TextField)`
   }
   .MuiOutlinedInput-input {
     padding: 10px;
-    font-size: 0.7rem;
+    font-size: 1rem;
   }
 
   .MuiFilledInput-root::before {
@@ -68,7 +68,10 @@ export const CustomNumberField = styled(TextField)`
     -webkit-appearance: none;
     margin: 0;
   }
-
+  .MuiOutlinedInput-input {
+    padding: 10px;
+    font-size: 1rem;
+  }
   /* For Firefox */
   input[type='number'] {
     -moz-appearance: textfield;

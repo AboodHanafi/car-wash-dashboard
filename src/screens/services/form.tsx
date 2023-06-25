@@ -11,7 +11,11 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { CustomButton, CustomNumberField } from '../../globalStyle';
+import {
+  CustomButton,
+  CustomNumberField,
+  CustomizedTextField,
+} from '../../globalStyle';
 import UploadImage from '../../components/uploadImage';
 import Counter from '../../components/counter';
 import Switch from '../../components/switch/Switch';
@@ -53,12 +57,12 @@ const ServicesForm = () => {
             <UploadImage />
           </Box>
           <Typography fontWeight={500}>اسم او نوع الحجز</Typography>
-          <TextField placeholder='اسم او نوع الحجز' />
+          <CustomizedTextField placeholder='اسم او نوع الحجز' />
           <Typography fontWeight={500}>المدة (بالدقائق)</Typography>
           <Counter />
 
           <Typography fontWeight={500}>الوصف (اختياري)</Typography>
-          <TextField
+          <CustomizedTextField
             placeholder='هذا النص هو مثال لنص قد يحل في نفس المساحة'
             multiline
             rows={4}
@@ -151,7 +155,7 @@ const ServicesForm = () => {
               label='مجموع جديدة'
             />
           </RadioGroup>
-          <TextField name='groupName' placeholder='اسم المجموعة' />
+          <CustomizedTextField name='groupName' placeholder='اسم المجموعة' />
           <Box style={{ marginRight: 'auto' }}>
             <CustomButton
               style={{

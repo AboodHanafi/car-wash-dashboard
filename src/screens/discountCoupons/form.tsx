@@ -12,7 +12,11 @@ import {
   useTheme,
   Checkbox,
 } from '@mui/material';
-import { CustomButton, CustomNumberField } from '../../globalStyle';
+import {
+  CustomButton,
+  CustomNumberField,
+  CustomizedTextField,
+} from '../../globalStyle';
 import { useNavigate } from 'react-router-dom';
 import Counter from '../../components/counter';
 import Switch from '../../components/switch/Switch';
@@ -25,8 +29,8 @@ const CouponsForm = () => {
   const [cutomerUsageTimesFlag, setCutomerUsageTimesFlag] = useState(false);
   const [usageTimesFlag, setUsageTimesFlag] = useState(false);
   const [expirationDateFlag, setExpirationDateFlag] = useState(false);
-  const [allServicesFlag, setAllServicesFlag] = useState(false);
   const [employeesTypesFlag, setEmployeesTypesFlag] = useState(false);
+  const [allServicesFlag, setAllServicesFlag] = useState(false);
 
   const [services, setServices] = useState({
     bigCars: false,
@@ -111,7 +115,7 @@ const CouponsForm = () => {
           {/* <form onSubmit={handleSubmitCoupon}> */}
           {/* <FormControl sx={{ width: '100%' }}> */}
           <Typography fontWeight={500}>رمز الكوبون (الكود)</Typography>
-          <TextField placeholder='ادخل رمز الكوبون' />
+          <CustomizedTextField placeholder='ادخل رمز الكوبون' />
           <Typography
             fontSize={10}
             color={'#aaa'}

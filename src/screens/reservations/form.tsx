@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import { CustomButton } from '../../globalStyle';
+import { CustomButton, CustomizedTextField } from '../../globalStyle';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { z, ZodType } from 'zod';
@@ -122,10 +122,9 @@ const ReservationForm = () => {
             gap: 1,
           }}
         >
-          <TextField
+          <CustomizedTextField
             id='standard-basic'
             label='الأسم'
-            variant='standard'
             value={resCutsomerData.name}
             {...register('name', {
               onChange: handleChangeInput,
@@ -136,10 +135,9 @@ const ReservationForm = () => {
           )}
           {/* <Typography>{errors.name?.message} </Typography> */}
 
-          <TextField
+          <CustomizedTextField
             id='standard-basic'
             label='رقم الهاتف'
-            variant='standard'
             value={resCutsomerData.tel}
             {...register('tel', {
               onChange: handleChangeInput,
@@ -147,28 +145,25 @@ const ReservationForm = () => {
           />
           <Typography color={'#FF0000'}>{errors.tel?.message} </Typography>
 
-          <TextField
+          <CustomizedTextField
             id='standard-basic'
             label='العنوان'
-            variant='standard'
             value={resCutsomerData.address}
             {...register('address', {
               onChange: handleChangeInput,
             })}
           />
           <Typography color={'#FF0000'}>{errors.address?.message}</Typography>
-          <TextField
+          <CustomizedTextField
             id='standard-basic'
             label='تاريخ الحجز'
-            variant='standard'
             name='resDate'
             onChange={handleChangeInput}
             value={resCutsomerData.resDate}
           />
-          <TextField
+          <CustomizedTextField
             id='standard-basic'
             label='ساعة الحجز'
-            variant='standard'
             name='resHoure'
             onChange={handleChangeInput}
             value={resCutsomerData.resHoure}
@@ -192,26 +187,23 @@ const ReservationForm = () => {
               gap: 1,
             }}
           >
-            <TextField
+            <CustomizedTextField
               id='standard-basic'
               label='ماركة السيارة'
-              variant='standard'
               name='carBrand'
               onChange={handleChangeInput}
               value={resCutsomerData.carData.carBrand}
             />
-            <TextField
+            <CustomizedTextField
               id='standard-basic'
               label='موديل السيارة'
-              variant='standard'
               name='carModel'
               onChange={handleChangeInput}
               value={resCutsomerData.carData.carModel}
             />
-            <TextField
+            <CustomizedTextField
               id='standard-basic'
               label='لون السيارة'
-              variant='standard'
               name='carColor'
               onChange={handleChangeInput}
               value={resCutsomerData.carData.carColor}

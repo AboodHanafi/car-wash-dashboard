@@ -14,18 +14,25 @@ import Image from '../../components/image';
 import { Icons } from '../../assets';
 import BoxShadow from '../../components/boxShadow';
 import MoreMenu from '../../components/moreMenu';
+import EmployeeInfo from './tabs/EmployeeInfo';
+import WorkingTimes from './tabs/WorkingTimes';
+import Vacations from './tabs/Vacations';
+import { useParams } from 'react-router-dom';
 
 const EmployeesDetails = () => {
   const [value, setValue] = React.useState('1');
+  const id = useParams();
 
-  const { data: employee, isLoading, error } = uesFetchEmployee('/bikers/1');
+  const { data: employee, isLoading, error } = uesFetchEmployee(`/bikers/1`);
+
+  if (!isLoading) console.log('employee data: ', employee);
+
   if (isLoading) {
     return <CircularProgress sx={{ mt: 5, mr: 5 }} />;
   }
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-  console.log('employee data: ', employee);
 
   return (
     <Stack id='mainWrapper' spacing={2}>
@@ -146,9 +153,15 @@ const EmployeesDetails = () => {
                   />
                 </TabList>
               </Box>
-              <TabPanel value='1'>Item One</TabPanel>
-              <TabPanel value='2'>Item Two</TabPanel>
-              <TabPanel value='3'>Item Three</TabPanel>
+              <TabPanel value='1'>
+                <EmployeeInfo />
+              </TabPanel>
+              <TabPanel value='2'>
+                <WorkingTimes />
+              </TabPanel>
+              <TabPanel value='3'>
+                <Vacations />
+              </TabPanel>
             </TabContext>
           </Box>
         </Fragment>
