@@ -1,12 +1,14 @@
 import React from 'react';
 import { Box, Typography, Avatar } from '@mui/material';
 import { useTheme } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { EmployeesType } from '../../../../utils/types';
 interface Props {
   employee: EmployeesType;
 }
 function EmployeeItem({ employee }: Props) {
+  const { pathname } = useLocation();
+
   const { id, name, location } = employee;
   const theme = useTheme();
   return (
@@ -24,7 +26,7 @@ function EmployeeItem({ employee }: Props) {
       gap={2}
     >
       <Avatar alt={name || ''} src='/static/images/avatar/1.jpg' />
-      <Link to={`/${id}`} style={{ textDecoration: 'none' }}>
+      <Link to={`${pathname}/${id}`} style={{ textDecoration: 'none' }}>
         <Typography fontWeight={600} color={theme.palette.secondary.main}>
           {name}
         </Typography>

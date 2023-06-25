@@ -46,12 +46,12 @@ const ReservationForm = () => {
       .string()
       .min(2, 'يجب ادخال اسم الحجز')
       .max(50, 'يجب ان يكون اسم الحجز اقل من 50 حرفا'),
-    address: z.string().min(2).max(100),
+    address: z.string().min(2, 'الرجاء ادخال العنوان').max(100),
     tel: z
       .string()
       .regex(
         RegExp(/^((?:[+?0?0?966]+)(?:s?d{2})(?:s?d{7}))$/),
-        'الرجاء ادخال رقم صحيح',
+        'الرجاء ادخال رقم هاتف صحيح',
       ),
     resDate: z.date(),
     resHoure: z.string(),

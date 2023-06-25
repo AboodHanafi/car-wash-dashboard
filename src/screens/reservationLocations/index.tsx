@@ -16,7 +16,7 @@ import LocationsChartBar from '../../components/locationsChartBar';
 import { useNavigate } from 'react-router-dom';
 import LocationsList from '../../components/locationsList';
 import LocationDialog from '../../components/locationDialog/LocationDialog';
-import useFetchLocation from '../../hooks/use-fetchData';
+import useFetchLocation from '../../hooks/use-fetch-data';
 
 interface autoType {
   label: string;

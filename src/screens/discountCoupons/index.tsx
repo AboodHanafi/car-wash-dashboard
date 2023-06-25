@@ -14,7 +14,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import CouponsList from '../../components/couponsList';
 import { CustomButton } from '../../globalStyle';
-import useFetchCoupons from '../../hooks/use-fetchData';
+import useFetchCoupons from '../../hooks/use-fetch-data';
 
 function DiscountCoupons() {
   const { data: coupons, isLoading, error } = useFetchCoupons('/coupons');

@@ -14,7 +14,7 @@ import {
 import { CustomButton, CustomizedTextField } from '../../globalStyle';
 import { useNavigate } from 'react-router-dom';
 import EmployeesTable from '../../components/employees';
-import useFetchEmployees from '../../hooks/use-fetchData';
+import useFetchEmployees from '../../hooks/use-fetch-data';
 import EmployeesList from './employeesList';
 
 const Employees = () => {

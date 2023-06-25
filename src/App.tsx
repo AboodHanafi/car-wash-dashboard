@@ -20,6 +20,7 @@ import CRUDRequests from './API';
 import Services from './screens/services';
 import CouponsForm from './screens/discountCoupons/form';
 import { ConfirmProvider } from 'material-ui-confirm';
+import EmployeesDetails from './screens/employees/details';
 
 function App() {
   const cacheRtl = createCache({
@@ -68,23 +69,28 @@ function App() {
     <CacheProvider value={cacheRtl}>
       <ThemeProvider theme={theme}>
         <ConfirmProvider>
-        <LayOut>
-          <Routes>
-            <Route path='/' element={<HomePage />} />
-            <Route path='/reservations' element={<Reservations />} />
-            <Route path='/reservations-form' element={<ReservationForm />} />
-            <Route path='/reservations/:id' element={<ReservationDetails />} />
-            <Route path='/users' element={<Users />} />
-            <Route path='/employees' element={<Employees />} />
-            <Route path='/services' element={<Services />} />
-            <Route path='/services-form' element={<ServicesForm />} />
+          <LayOut>
+            <Routes>
+              <Route path='/' element={<HomePage />} />
+              <Route path='/reservations' element={<Reservations />} />
+              <Route path='/reservations-form' element={<ReservationForm />} />
+              <Route
+                path='/reservations/:id'
+                element={<ReservationDetails />}
+              />
+              <Route path='/users' element={<Users />} />
+              <Route path='/employees' element={<Employees />} />
+              <Route path='/employees/:id' element={<EmployeesDetails />} />
+              <Route path='/services' element={<Services />} />
+              <Route path='/services-form' element={<ServicesForm />} />
 
-            <Route path='/locations' element={<ReservationLocations />} />
-            <Route path='/discount-coupons' element={<DiscountCoupons />} />
-            <Route path='/coupons-form' element={<CouponsForm />} />
-            {/* <Route path="/stepper" element={<CustomizedSteppers />} /> */}
-          </Routes>
-        </LayOut>
+              <Route path='/locations' element={<ReservationLocations />} />
+
+              <Route path='/discount-coupons' element={<DiscountCoupons />} />
+              <Route path='/coupons-form' element={<CouponsForm />} />
+              {/* <Route path="/stepper" element={<CustomizedSteppers />} /> */}
+            </Routes>
+          </LayOut>
         </ConfirmProvider>
       </ThemeProvider>
     </CacheProvider>
