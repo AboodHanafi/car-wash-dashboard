@@ -18,7 +18,7 @@ import {
 } from '../../globalStyle';
 import UploadImage from '../../components/uploadImage';
 import Counter from '../../components/counter';
-import Switch from '../../components/switch/Switch';
+import Switch from '../../components/switch';
 
 const ServicesForm = () => {
   const [priceFlag, setPriceFlag] = useState(false);

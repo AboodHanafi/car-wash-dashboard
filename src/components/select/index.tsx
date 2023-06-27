@@ -9,7 +9,7 @@ import {
 
 interface Props {
   options: string[];
-  label: string;
+  label?: string;
 }
 const Select = ({ options, label }: Props) => {
   const [age, setAge] = useState('');
@@ -18,19 +18,27 @@ const Select = ({ options, label }: Props) => {
     setAge(event.target.value as string);
   };
 
-  const renderedOptions = options.map(option => (
-    <MenuItem value={option}>{option}</MenuItem>
+  const renderedOptions = options.map((option, index) => (
+    <MenuItem key={index} value={option}>
+      {option}
+    </MenuItem>
   ));
   return (
     <FormControl fullWidth>
-      <InputLabel id='demo-simple-select-label'>{label}</InputLabel>
+      {label && <InputLabel id='demo-simple-select-label'>{label}</InputLabel>}
       <MUISelect
-        labelId='demo-simple-select-label'
         id='demo-simple-select'
         value={age}
+        displayEmpty
+        labelId='demo-simple-select-label'
         label={label}
         onChange={handleChange}
       >
+        {!label && (
+          <MenuItem disabled value={''}>
+            <em style={{ color: '#ccc' }}>حدد الساعة ...</em>
+          </MenuItem>
+        )}
         {renderedOptions}
       </MUISelect>
     </FormControl>

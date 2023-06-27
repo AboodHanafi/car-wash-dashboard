@@ -19,7 +19,7 @@ import {
 } from '../../globalStyle';
 import { useNavigate } from 'react-router-dom';
 import Counter from '../../components/counter';
-import Switch from '../../components/switch/Switch';
+import Switch from '../../components/switch';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';

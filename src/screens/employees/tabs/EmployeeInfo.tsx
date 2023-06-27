@@ -1,7 +1,6 @@
-import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
 import {
   Box,
-  InputAdornment,
   FormControlLabel,
   FormGroup,
   Radio,
@@ -9,11 +8,11 @@ import {
   Stack,
   TextField,
   Typography,
-  useTheme,
   Checkbox,
 } from '@mui/material';
-import { CustomizedTextField } from '../../../globalStyle';
+import Switch from '../../../components/switch';
 import Select from '../../../components/select';
+import { CustomizedTextField } from '../../../globalStyle';
 
 type EmpInfo = { name: string; description: string; employees: string[] };
 
@@ -169,8 +168,8 @@ function EmployeeInfo() {
         ]}
       />
 
-      <Typography fontWeight={500}>اعدادت الرسائل</Typography>
       <Typography fontWeight={400}>
+        <Typography fontWeight={500}>اعدادت الرسائل</Typography>
         من يمكنه تلقي تنبيهات طلبات الحجز ( تنبيهات الالغاء او التذكير)
       </Typography>
       <RadioGroup
@@ -186,6 +185,12 @@ function EmployeeInfo() {
         <FormControlLabel value='employee' control={<Radio />} label='الموظف' />
         <FormControlLabel value='both' control={<Radio />} label='كلاهما' />
       </RadioGroup>
+
+      <Typography fontWeight={400}>اعدادات الموقع الالكتروني</Typography>
+      <FormControlLabel
+        control={<Switch sx={{ m: 1 }} />}
+        label={<Typography fontWeight={600}>اظهاره في الموقع </Typography>}
+      />
     </Stack>
   );
 }

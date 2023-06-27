@@ -5,7 +5,6 @@ import {
   Typography,
   CircularProgress,
   Tab,
-  Switch,
   FormControlLabel,
 } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
@@ -18,6 +17,7 @@ import EmployeeInfo from './tabs/EmployeeInfo';
 import WorkingTimes from './tabs/WorkingTimes';
 import Vacations from './tabs/Vacations';
 import { useParams } from 'react-router-dom';
+import Switch from '../../components/switch';
 
 const EmployeesDetails = () => {
   const [value, setValue] = React.useState('1');
