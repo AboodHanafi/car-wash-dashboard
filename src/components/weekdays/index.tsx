@@ -1,6 +1,6 @@
 import { Checkbox, FormControlLabel, Grid } from '@mui/material';
 import { Item } from '../gridItem';
-import { WorkDays } from '../../screens/employees/tabs/WorkingTimes';
+import { WorkDays } from '../../utils/types';
 
 interface Props {
   onWorkDaysChange: (day: string) => void;

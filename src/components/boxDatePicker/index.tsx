@@ -1,19 +1,22 @@
 import { useContext } from 'react';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import CustomDateRangePicker from '../dateRangePicker';
 import { Icons } from '../../assets';
 import BoxShadow from '../boxShadow';
-import ContextVacation from '../../context/context-vacation';
+import ContextVacation from '../../context/context-employee';
+import DeleteButton from '../deleteButton';
 
-const BoxDatePicker = ({ id }: { id: Number }) => {
+const BoxDatePicker = ({ id }: { id: number }) => {
   const { deleteVacation } = useContext(ContextVacation);
+
+  const handleDeleteVacation = (id: number) => {
+    deleteVacation(id);
+  };
 
   return (
     <BoxShadow>
       <CustomDateRangePicker />
-      <Button onClick={() => deleteVacation(Number(id))}>
-        {Icons.deleteIcon('#FF0000')}
-      </Button>
+      <DeleteButton deleteHandler={() => handleDeleteVacation(id)} />
     </BoxShadow>
   );
 };

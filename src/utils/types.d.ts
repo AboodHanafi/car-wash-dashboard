@@ -20,3 +20,4 @@ export type EmployeesType = {
   name: string;
   location: string;
 };
+export type WorkDays = { day: string; isworking: boolean };
