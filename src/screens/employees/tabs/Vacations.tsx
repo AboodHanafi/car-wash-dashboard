@@ -12,16 +12,16 @@ import {
   Grid,
   Button,
 } from '@mui/material';
-import BoxShadow from '../../../components/boxShadow';
+import BoxShadow from '../../../components/boxBorder';
 import CustomDateRangePicker from '../../../components/dateRangePicker';
 import { Icons } from '../../../assets';
 import { CustomButton } from '../../../globalStyle';
 import CustomAddButton from '../../../components/addButton';
-import BoxDatePicker from '../../../components/myBox';
+import BoxDatePicker from '../../../components/boxDatePicker';
 
 function Vacations() {
-  const [vacationNumber, setVacationNumber] = useState(1);
   const [vacationList, setVacationList] = useState<JSX.Element[]>();
+  const [vacationNumber, setVacationNumber] = useState(1);
   const handleAddNewVacation = () => {
     setVacationNumber(prev => prev + 1);
   };

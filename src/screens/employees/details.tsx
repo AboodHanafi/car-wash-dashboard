@@ -11,7 +11,7 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 import uesFetchEmployee from '../../hooks/use-fetch-data';
 import Image from '../../components/image';
 import { Icons } from '../../assets';
-import BoxShadow from '../../components/boxShadow';
+import BoxBorder from '../../components/boxBorder';
 import MoreMenu from '../../components/moreMenu';
 import EmployeeInfo from './tabs/EmployeeInfo';
 import WorkingTimes from './tabs/WorkingTimes';
@@ -75,7 +75,7 @@ const EmployeesDetails = () => {
                 </Box>
 
                 <Stack display={'flex'} flexDirection={'row'} gap={2}>
-                  <BoxShadow>
+                  <BoxBorder>
                     <Typography
                       fontWeight={600}
                       fontSize={'1.2rem'}
@@ -84,8 +84,8 @@ const EmployeesDetails = () => {
                       {employee.reservations.length}
                     </Typography>
                     <Typography>عدد الحجوزات</Typography>
-                  </BoxShadow>
-                  <BoxShadow>
+                  </BoxBorder>
+                  <BoxBorder>
                     <Typography
                       fontWeight={600}
                       fontSize={'1.2rem'}
@@ -94,8 +94,8 @@ const EmployeesDetails = () => {
                       {employee.reservations.length}
                     </Typography>
                     <Typography>المبالغ المحصلة</Typography>
-                  </BoxShadow>
-                  <BoxShadow>
+                  </BoxBorder>
+                  <BoxBorder>
                     <Typography
                       fontWeight={600}
                       fontSize={'1.2rem'}
@@ -104,7 +104,7 @@ const EmployeesDetails = () => {
                       {employee.reservations.length}
                     </Typography>
                     <Typography>التقييم</Typography>
-                  </BoxShadow>
+                  </BoxBorder>
                 </Stack>
               </Box>
               <MoreMenu

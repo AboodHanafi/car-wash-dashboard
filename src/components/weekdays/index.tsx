@@ -1,24 +1,25 @@
-import {
-  Box,
-  Checkbox,
-  Container,
-  FormControlLabel,
-  Grid,
-} from '@mui/material';
-import React from 'react';
-import { weekdays } from '../../utils/global-var';
+import { Checkbox, FormControlLabel, Grid } from '@mui/material';
 import { Item } from '../gridItem';
+import { WorkDays } from '../../screens/employees/tabs/WorkingTimes';
 
-function Weekdays() {
-  const renderedDays = weekdays.map(day => (
-    <Grid item xs>
-      <Item>
-        <FormControlLabel control={<Checkbox />} label={day} />
+interface Props {
+  onWorkDaysChange: (day: string) => void;
+  workDays: WorkDays[];
+}
+function Weekdays({ onWorkDaysChange, workDays }: Props) {
+  const renderedDays = workDays.map(curDay => (
+    <Grid item xs style={{ paddingTop: 0, marginRight: '1.5rem' }}>
+      <Item style={{ padding: 0 }}>
+        <FormControlLabel
+          checked={curDay.isworking}
+          control={<Checkbox onChange={() => onWorkDaysChange(curDay.day)} />}
+          label={curDay.day}
+        />
       </Item>
     </Grid>
   ));
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={1} style={{ marginTop: 0 }}>
       {renderedDays}
     </Grid>
   );

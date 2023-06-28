@@ -1,4 +1,4 @@
-export const token = sessionStorage.getItem('car-wash-token');
+export const token = localStorage.getItem('car-wash-token');
 
 export const weekdays = [
   'السبت',

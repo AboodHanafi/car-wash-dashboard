@@ -5,15 +5,20 @@ const BoxShadow: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <Box
       sx={{
-        border: '1px dotted #ccc',
-        borderRadius: '6px',
-        padding: '0.6rem',
-        width: '12rem',
-        mt: 3,
+        boxShadow: 1,
+        gap: 4,
+        bgcolor: theme => (theme.palette.mode === 'dark' ? '#101010' : '#fff'),
+        color: theme =>
+          theme.palette.mode === 'dark' ? 'grey.300' : 'grey.800',
+        p: 1,
+        borderRadius: 2,
+        textAlign: 'center',
+        fontSize: '0.875rem',
+        fontWeight: '700',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
       }}
-      display={'flex'}
-      flexDirection={'column'}
-      gap={0.5}
     >
       {children}
     </Box>
