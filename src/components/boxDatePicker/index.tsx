@@ -1,23 +1,21 @@
-import { memo } from 'react';
+import { useContext } from 'react';
 import { Button } from '@mui/material';
 import CustomDateRangePicker from '../dateRangePicker';
 import { Icons } from '../../assets';
 import BoxShadow from '../boxShadow';
+import ContextVacation from '../../context/context-vacation';
 
-type Props = {
-  deleteVacation: (id: number) => void;
-};
+const BoxDatePicker = ({ id }: { id: Number }) => {
+  const { deleteVacation } = useContext(ContextVacation);
 
-const BoxDatePicker = memo(function BoxDatePicker({ deleteVacation }: Props) {
-  const keyNumber = Math.random();
   return (
     <BoxShadow>
       <CustomDateRangePicker />
-      <Button onClick={() => deleteVacation(keyNumber)}>
+      <Button onClick={() => deleteVacation(Number(id))}>
         {Icons.deleteIcon('#FF0000')}
       </Button>
     </BoxShadow>
   );
-});
+};
 
 export default BoxDatePicker;
