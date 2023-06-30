@@ -17,7 +17,7 @@ import { Item } from '../gridItem';
 import Select from '../select';
 import Switch from '../../components/switch';
 import Weekdays from '../weekdays';
-import useWorkingTimes from '../../context/context-employee';
+// import useWorkingTimes from '../../context/context-employee';
 import { Icons } from '../../assets';
 import { WorkDays } from '../../utils/types';
 import DeleteButton from '../deleteButton';
@@ -32,9 +32,12 @@ const WorkDaysData: WorkDays[] = [
   { day: 'الجمعة', isworking: false },
 ];
 
-function WorkingPeriod({ id }: { id: number }) {
-  const { deleteWorkingTime } = useContext(useWorkingTimes);
+interface Props {
+  id: string;
+  deleteWorkingTime: (id: string) => void;
+}
 
+function WorkingPeriod({ id, deleteWorkingTime }: Props) {
   const [allDays, setAllDays] = useState(false);
   const [workDays, setWorkDays] = useState<WorkDays[]>(WorkDaysData);
 
@@ -44,7 +47,7 @@ function WorkingPeriod({ id }: { id: number }) {
     );
     setWorkDays(updatedWorkDays);
   };
-  const handleDeleteWorkingTime = (id: number) => {
+  const handleDeleteWorkingTime = (id: string) => {
     deleteWorkingTime(id);
   };
 
@@ -114,7 +117,9 @@ function WorkingPeriod({ id }: { id: number }) {
         )}
 
         <Box style={{ marginRight: 'auto' }}>
-          <DeleteButton deleteHandler={() => handleDeleteWorkingTime(id)} />
+          <DeleteButton deleteHandler={() => handleDeleteWorkingTime(id)}>
+            حذف
+          </DeleteButton>
         </Box>
       </Stack>
     </BoxShadow>
