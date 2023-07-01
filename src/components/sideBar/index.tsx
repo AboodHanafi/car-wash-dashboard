@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useState } from 'react';
 import { Drawer } from './style';
 import {
   List,
@@ -7,6 +7,7 @@ import {
   ListItemIcon,
   ListItemText,
   Stack,
+  Tooltip,
   useTheme,
 } from '@mui/material';
 import { SVG, sideBarItems } from '../../assets';
@@ -20,6 +21,7 @@ const SideBar: React.FC<PropsType> = ({ open }) => {
   const { palette } = useTheme();
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const [tooltipNumber, setTooltipNumber] = useState(0);
   return (
     <Drawer variant='permanent' open={open}>
       <Stack alignItems={'center'} p={'30px 0'}>
@@ -78,29 +80,37 @@ const SideBar: React.FC<PropsType> = ({ open }) => {
       >
         {sideBarItems.map(item => (
           <ListItem key={item.id} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton
-              selected={item.path === pathname}
-              onClick={() => navigate(item.path ? item.path : '/')}
-              sx={{
-                minHeight: 35,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}
+            <Tooltip
+              title={item.name}
+              open={!open && item.id === tooltipNumber}
+              onMouseOver={() => setTooltipNumber(item.id)}
+              onMouseLeave={() => setTooltipNumber(-1)}
+              placement={'left'}
             >
-              <ListItemIcon
+              <ListItemButton
+                selected={item.path === pathname}
+                onClick={() => navigate(item.path ? item.path : '/')}
                 sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
+                  minHeight: 35,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
                 }}
               >
-                {item.icon}
-              </ListItemIcon>
-              <ListItemText
-                primary={item.name}
-                sx={{ opacity: open ? 1 : 0 }}
-              />
-            </ListItemButton>
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText
+                  primary={item.name}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            </Tooltip>
           </ListItem>
         ))}
       </List>

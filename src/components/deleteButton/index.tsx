@@ -9,7 +9,7 @@ interface Props {
 function DeleteButton({ deleteHandler, children }: Props) {
   return (
     <Button
-      sx={{ border: '1px solid #FF0000', width: '6rem' }}
+      sx={{ border: '1px solid #FF0000', minWidth: '6rem' }}
       onClick={deleteHandler}
     >
       {Icons.deleteIcon('#FF0000')}{' '}
