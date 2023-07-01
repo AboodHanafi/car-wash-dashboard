@@ -1,7 +1,8 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosResponse } from 'axios';
 type Config = Record<string, any>;
+
 const baseApi = axios.create({
-  baseURL: "https://car-wash.eltamiuz.net/api/dashboard/v1/",
+  baseURL: 'https://car-wash.eltamiuz.net/api/dashboard/v1',
 });
 
 const CRUDRequsests = {

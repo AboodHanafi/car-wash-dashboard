@@ -1,5 +1,7 @@
 import {
+  Alert,
   Autocomplete,
+  CircularProgress,
   FormLabel,
   Icon,
   IconButton,
@@ -8,39 +10,72 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
-} from "@mui/material";
-import { CustomButton, CustomizedTextField } from "../../globalStyle";
-import { Icons } from "../../assets";
-import { useNavigate } from "react-router-dom";
-import EmployeesTable from "../../components/employees";
+} from '@mui/material';
+import { CustomButton, CustomizedTextField } from '../../globalStyle';
+import { useNavigate } from 'react-router-dom';
+import EmployeesTable from '../../components/employees';
+import useFetchEmployees from '../../hooks/use-fetch-data';
+import EmployeesList from './employeesList';
 
 const Employees = () => {
-  const bigLabtob = useMediaQuery("(max-width:1024px)");
+  const { data: employees, isLoading, error } = useFetchEmployees('/users');
+
+  const bigLabtob = useMediaQuery('(max-width:1024px)');
   const navigate = useNavigate();
   const theme = useTheme();
 
-  return (
-    <Stack id="mainWrapper" pr="20px" spacing={2}>
-      <Stack
-        id="header"
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
+  let content: JSX.Element;
+  if (isLoading) {
+    content = <CircularProgress sx={{ mt: 12 }} />;
+  } else {
+    content = <EmployeesList employees={employees} />;
+  }
+
+  if (error) {
+    content = (
+      <Alert
+        variant='outlined'
+        sx={{ mt: 12, fontWeight: 600, color: '#FF0000' }}
+        icon={false}
+        severity='error'
       >
-        <Typography fontWeight="bold" fontSize="0.9rem" color="#191919">
+        يوجد خطأ ما في جلب البيانات{' '}
+      </Alert>
+    );
+  }
+
+  return (
+    <Stack id='mainWrapper' pr='20px' spacing={2} marginTop={1}>
+      <Stack
+        id='header'
+        direction='row'
+        justifyContent='space-between'
+        alignItems='center'
+      >
+        <Typography fontWeight='bold' fontSize='0.9rem' color='#191919'>
           الموظفين
         </Typography>
         <CustomButton
           style={{
             backgroundColor: theme.palette.primary.main,
-            color: "#fff",
+            color: '#fff',
           }}
-          onClick={() => navigate("/reservations-form")}
+          onClick={() => navigate('/reservations-form')}
         >
           إضافة موظف
         </CustomButton>
       </Stack>
+
       <Stack
+        id='main'
+        direction='column'
+        justifyContent='space-between'
+        alignItems='center'
+      >
+        {content}
+      </Stack>
+
+      {/* <Stack
         borderRadius="10px"
         direction="row"
         justifyContent="space-between"
@@ -153,7 +188,7 @@ const Employees = () => {
           >
             تصدير pdf
           </CustomButton>
-          {/* <CustomButton
+           <CustomButton
                 sx={{
                   color: "#404040",
                   bgcolor: "#FCFCFC",
@@ -164,12 +199,12 @@ const Employees = () => {
                 startIcon={Icons.pdfButton}
               >
                 تصدير excel
-              </CustomButton> */}
+              </CustomButton> 
         </Stack>
       </Stack>
       <Stack id="table">
         <EmployeesTable />
-      </Stack>
+      </Stack> */}
     </Stack>
   );
 };
