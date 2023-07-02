@@ -80,7 +80,7 @@ function NotificationDialog({
               onClick={onClose}
               type='submit'
             >
-              حفظ الخدمة
+              ارسال{' '}
             </CustomButton>
 
             <CustomButton
