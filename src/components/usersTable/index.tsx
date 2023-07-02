@@ -12,8 +12,11 @@ import { PropsWithChildren, useState } from 'react';
 import { Icons } from '../../assets';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { useFetchUsersQuery } from '../../app/store';
+import { useFetchUsersQuery, useDeleteUserByIdMutation } from '../../app/store';
 import LoadingSkeleton from '../loadingSkeleton';
+import { Nullable } from '../../utils/types';
+import useCustomConfirm from '../../hooks/use-custom-confirm';
+import NotificationDialog from '../notificationDialog';
 
 const columns: GridColDef[] = [
   {
@@ -170,49 +173,106 @@ const StyledTable = styled(DataGrid)(({ theme }) => ({
 }));
 
 const UsersTable = () => {
+  const [selectedUsers, setSelectedUsers] = useState<
+    {
+      name: string | undefined;
+      id: number | undefined;
+    }[]
+  >();
   const [open, setOpen] = useState(false);
+  const [isOpenNotification, setIsOpenNotification] = useState(false);
+  const [selectedRowId, setSelectedRowId] = useState<Nullable<number>>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-  const { data, isLoading, isSuccess, isError, status } =
-    useFetchUsersQuery('');
+  const { data, isLoading, isSuccess, isError, status } = useFetchUsersQuery();
+  const [deleteUser, results] = useDeleteUserByIdMutation();
+  const confirm = useCustomConfirm();
 
-  if (isSuccess) console.log('data: ', data.data);
+  // if (isSuccess) console.log('data: ', data.data);
 
   const [pageSize, setPageSize] = useState<number>(10);
   const [page, setPage] = useState<number>(0);
   const nvigate = useNavigate();
 
   const handleRowClick: GridEventListener<'rowClick'> = params => {
+    const id = params.row.id;
     // nvigate(`/reservations/${params.row.id}`);
-    console.log('reservations', `/reservations/${params.row.id}`);
+    setOpen(true);
+    setSelectedRowId(id);
+    // console.log('reservations', `/reservations/${id}`);
   };
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     setMousePosition({ x: event.clientX, y: event.clientY });
-    setOpen(true);
+  };
+  const handleSendNotification = () => {
+    setOpen(false);
+    setIsOpenNotification(true);
+
+    console.log('id send notification', selectedRowId);
   };
 
+  const handleDeleteUser = () => {
+    setOpen(false);
+    console.log('id delete', selectedRowId);
+    confirm(
+      selectedRowId!,
+      deleteUser,
+      'هل انت متاكد من حذف المستخدم صاحب الرقم ',
+    );
+  };
   const handleClose = () => {
     setOpen(false);
+  };
+  const handleOpenNotification = () => {
+    setIsOpenNotification(false);
+  };
+
+  const handleDeleteUserFromList = (id: number) => {
+    const filteredSelectedUsers = selectedUsers?.filter(user => user.id !== id);
+    setSelectedUsers(filteredSelectedUsers);
   };
   if (!isLoading) {
     return (
       <>
+        {isOpenNotification && (
+          <NotificationDialog
+            isOpen={isOpenNotification}
+            onClose={handleOpenNotification}
+            selectedUsers={selectedUsers!}
+            onDeleteUser={handleDeleteUserFromList}
+          />
+        )}
         <div onClick={handleClick}>
           <StyledTable
             rows={data?.data || []}
+            checkboxSelection
             columns={columns}
             page={page}
             onPageChange={(newPage: number) => setPage(newPage)}
             pageSize={pageSize}
             onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
             rowsPerPageOptions={[10, 20, 100]}
-            pagination
             disableSelectionOnClick
+            pagination
             onRowClick={handleRowClick}
             rowHeight={48}
             headerHeight={40}
             getRowClassName={() => 'paxton-table--row'}
+            onSelectionModelChange={selectionModel => {
+              const selectedRows = selectionModel.map(
+                rowNum => data?.data[Number(rowNum) - 1],
+              );
+              const selectedNames = selectedRows.map(row => ({
+                name: row?.name,
+                id: row?.id,
+              }));
+              console.log('selectedNames: ', selectedNames);
+              setSelectedUsers(selectedNames);
+              // const selectedIds = selectedRows.map(row => row?.id);
+              // if (selectedNames !== undefined && selectedIds !== undefined) {
+              // }
+            }}
           />
         </div>
         <Menu
@@ -220,15 +280,15 @@ const UsersTable = () => {
           anchorReference='anchorPosition'
           open={open}
           onClose={handleClose}
-          anchorPosition={{ top: mousePosition.y, left: mousePosition.x }}
+          anchorPosition={{ top: mousePosition.y, left: mousePosition.x - 76 }}
           MenuListProps={{
             'aria-labelledby': 'basic-button',
           }}
         >
-          <MenuItem onClick={handleClose}>
+          <MenuItem onClick={handleSendNotification}>
             {Icons.NotificationIcon()} &nbsp; ارسال اشعار
           </MenuItem>
-          <MenuItem onClick={handleClose}>
+          <MenuItem onClick={handleDeleteUser}>
             {Icons.deleteIcon('#FF0000')} &nbsp; حذف المستخدم
           </MenuItem>
         </Menu>

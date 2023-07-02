@@ -40,7 +40,7 @@ const reservationStatus = [
   },
 ];
 const Users = () => {
-  const { data: users, isLoading, isSuccess, isError } = useFetchUsersQuery('');
+  const { data: users, isLoading, isSuccess, isError } = useFetchUsersQuery();
   const [status, setStatus] = useState<autoType | null>(reservationStatus[0]);
   const bigLabtob = useMediaQuery('(max-width:1024px)');
   const navigate = useNavigate();

@@ -21,3 +21,5 @@ export type EmployeesType = {
   location: string;
 };
 export type WorkDays = { day: string; isworking: boolean };
+
+export type Nullable<T> = T | null;

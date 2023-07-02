@@ -25,7 +25,7 @@ export const usersApi = createApi({
     },
   }),
   endpoints: builder => ({
-    fetchUsers: builder.query<Users, string>({
+    fetchUsers: builder.query<Users, void>({
       query: () => {
         return {
           method: 'GET',
