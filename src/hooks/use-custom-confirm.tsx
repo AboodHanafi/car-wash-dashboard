@@ -13,9 +13,9 @@ function useCustomConfirm() {
     confirm({
       description: (
         <Typography
-          fontWeight={600}
+          fontWeight={500}
           color={'#000'}
-        >{`${confirmMsg} ${confirmationId}؟`}</Typography>
+        >{`${confirmMsg} (${confirmationId}) ؟`}</Typography>
       ),
       cancellationText: 'لا',
       confirmationText: (
@@ -29,7 +29,7 @@ function useCustomConfirm() {
       buttonOrder: ['confirm', 'cancel'],
       dialogProps: {
         sx: {
-          width: '25rem',
+          width: '26rem',
           margin: 'auto',
         },
       },

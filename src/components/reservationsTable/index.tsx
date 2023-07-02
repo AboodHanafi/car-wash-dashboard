@@ -4,6 +4,7 @@ import { PropsWithChildren, useState } from 'react';
 import { Icons } from '../../assets';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { useFetchReservationsQuery } from '../../app/store';
 
 function getStatusColor(status: number): string {
   let color = '';
@@ -140,7 +141,8 @@ const LoadingSkeleton = () => (
     ))}
   </Box>
 );
-const ReservationsTable = ({ data }: { data?: any }) => {
+const ReservationsTable = () => {
+  const { data: reservations, error, isLoading } = useFetchReservationsQuery();
   const [pageSize, setPageSize] = useState<number>(10);
   const [page, setPage] = useState<number>(0);
   const nvigate = useNavigate();
@@ -152,7 +154,7 @@ const ReservationsTable = ({ data }: { data?: any }) => {
   if (!false) {
     return (
       <StyledTable
-        rows={data}
+        rows={reservations?.data || []}
         columns={columns}
         page={page}
         onPageChange={(newPage: number) => setPage(newPage)}

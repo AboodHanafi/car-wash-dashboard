@@ -46,7 +46,7 @@ export const reservationsApi = createApi({
     },
   }),
   endpoints: builder => ({
-    fetchReservations: builder.query<Reservations, string>({
+    fetchReservations: builder.query<Reservations, void>({
       query: () => {
         return {
           method: 'GET',

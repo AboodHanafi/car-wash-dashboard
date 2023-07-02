@@ -23,11 +23,7 @@ interface autoType {
   id: number;
 }
 const Reservations = () => {
-  const {
-    data: reservations,
-    error,
-    isLoading,
-  } = useFetchReservationsQuery('reservations');
+  const { data: reservations, error, isLoading } = useFetchReservationsQuery();
 
   // const { data } = useFetchReservationsQuery();
   if (!isLoading && reservations !== undefined)
@@ -231,11 +227,7 @@ const Reservations = () => {
         </Stack>
       </Stack>
       <Stack id='table'>
-        {isLoading ? (
-          <LoadingSkeleton />
-        ) : (
-          <ReservationsTable data={reservations?.data} />
-        )}
+        {isLoading ? <LoadingSkeleton /> : <ReservationsTable />}
       </Stack>
     </Stack>
   );

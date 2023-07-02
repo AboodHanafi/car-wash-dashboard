@@ -75,7 +75,7 @@ const EmployeesDetails = () => {
                 </Box>
 
                 <Stack display={'flex'} flexDirection={'row'} gap={2}>
-                  <BoxBorder>
+                  <BoxBorder mt='1rem'>
                     <Typography
                       fontWeight={600}
                       fontSize={'1.2rem'}
@@ -85,7 +85,7 @@ const EmployeesDetails = () => {
                     </Typography>
                     <Typography>عدد الحجوزات</Typography>
                   </BoxBorder>
-                  <BoxBorder>
+                  <BoxBorder mt='1rem'>
                     <Typography
                       fontWeight={600}
                       fontSize={'1.2rem'}
@@ -95,7 +95,7 @@ const EmployeesDetails = () => {
                     </Typography>
                     <Typography>المبالغ المحصلة</Typography>
                   </BoxBorder>
-                  <BoxBorder>
+                  <BoxBorder mt='1rem'>
                     <Typography
                       fontWeight={600}
                       fontSize={'1.2rem'}
