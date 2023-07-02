@@ -19,7 +19,7 @@ import DeleteButton from '../../components/deleteButton';
 import useFetchReservations from '../../hooks/use-fetch-data';
 import {
   useFetchReservationByIdQuery,
-  useDeleteReservationMutation,
+  useDeleteReservationByIdMutation,
 } from '../../app/store';
 
 type Id = string | number | undefined;
@@ -27,7 +27,7 @@ type Id = string | number | undefined;
 const ReservationDetails = () => {
   const [open, setOpen] = useState(false);
   let { id } = useParams();
-  const [deleteReservation, result] = useDeleteReservationMutation();
+  const [deleteReservation, result] = useDeleteReservationByIdMutation();
 
   const { data: reservation, isLoading } = useFetchReservationByIdQuery(
     String(id),

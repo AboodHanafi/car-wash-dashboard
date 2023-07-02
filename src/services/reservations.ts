@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootState } from '../app/store';
-import { token } from '../utils/global-var';
+import { baseUrl, token } from '../utils/global-var';
 
 type Reservation = {
   id: number;
@@ -38,7 +38,7 @@ export type Reservations = {
 export const reservationsApi = createApi({
   reducerPath: 'reservationsApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://car-wash.eltamiuz.net/api/dashboard/v1/',
+    baseUrl,
     prepareHeaders: headers => {
       headers.set('authorization', `Bearer ${token}`);
 
@@ -62,8 +62,8 @@ export const reservationsApi = createApi({
         };
       },
     }),
-    deleteReservation: builder.mutation({
-      query: (id: string) => {
+    deleteReservationById: builder.mutation({
+      query: (id: number) => {
         return {
           method: 'POST',
           url: 'reservations/destroy/',
@@ -83,5 +83,5 @@ export const reservationsApi = createApi({
 export const {
   useFetchReservationsQuery,
   useFetchReservationByIdQuery,
-  useDeleteReservationMutation,
+  useDeleteReservationByIdMutation,
 } = reservationsApi;

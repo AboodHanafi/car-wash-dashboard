@@ -16,9 +16,11 @@ import { useNavigate } from 'react-router-dom';
 import EmployeesTable from '../../components/employees';
 import useFetchEmployees from '../../hooks/use-fetch-data';
 import EmployeesList from './employeesList';
+import { useFetchEmployeesQuery } from '../../app/store';
 
 const Employees = () => {
-  const { data: employees, isLoading, error } = useFetchEmployees('/users');
+  const { data: employees, isLoading, isError } = useFetchEmployeesQuery('');
+  // const { data: employees, isLoading, error } = useFetchEmployees('/users');
 
   const bigLabtob = useMediaQuery('(max-width:1024px)');
   const navigate = useNavigate();
@@ -27,11 +29,7 @@ const Employees = () => {
   let content: JSX.Element;
   if (isLoading) {
     content = <CircularProgress sx={{ mt: 12 }} />;
-  } else {
-    content = <EmployeesList employees={employees} />;
-  }
-
-  if (error) {
+  } else if (isError) {
     content = (
       <Alert
         variant='outlined'
@@ -42,6 +40,8 @@ const Employees = () => {
         يوجد خطأ ما في جلب البيانات{' '}
       </Alert>
     );
+  } else {
+    content = <EmployeesList employees={employees!} />;
   }
 
   return (

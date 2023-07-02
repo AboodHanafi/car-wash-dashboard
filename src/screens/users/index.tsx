@@ -15,6 +15,7 @@ import { Icons } from '../../assets';
 import ReservationsTable from '../../components/reservationsTable';
 import { useNavigate } from 'react-router-dom';
 import UsersTable from '../../components/usersTable';
+import { useFetchUsersQuery } from '../../app/store';
 
 interface autoType {
   label: string;
@@ -39,6 +40,7 @@ const reservationStatus = [
   },
 ];
 const Users = () => {
+  const { data: users, isLoading, isSuccess, isError } = useFetchUsersQuery('');
   const [status, setStatus] = useState<autoType | null>(reservationStatus[0]);
   const bigLabtob = useMediaQuery('(max-width:1024px)');
   const navigate = useNavigate();

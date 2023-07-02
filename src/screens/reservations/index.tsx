@@ -16,6 +16,7 @@ import ReservationsTable from '../../components/reservationsTable';
 import { useNavigate } from 'react-router-dom';
 import useFetchReservations from '../../hooks/use-fetch-data';
 import { useFetchReservationsQuery } from '../../services/reservations';
+import LoadingSkeleton from '../../components/loadingSkeleton';
 
 interface autoType {
   label: string;
@@ -230,7 +231,11 @@ const Reservations = () => {
         </Stack>
       </Stack>
       <Stack id='table'>
-        {!isLoading && <ReservationsTable data={reservations?.data} />}
+        {isLoading ? (
+          <LoadingSkeleton />
+        ) : (
+          <ReservationsTable data={reservations?.data} />
+        )}
       </Stack>
     </Stack>
   );
