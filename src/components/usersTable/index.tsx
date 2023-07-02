@@ -231,6 +231,9 @@ const UsersTable = () => {
   const handleDeleteUserFromList = (id: number) => {
     const filteredSelectedUsers = selectedUsers?.filter(user => user.id !== id);
     setSelectedUsers(filteredSelectedUsers);
+    if (filteredSelectedUsers?.length === 0) {
+      setIsOpenNotification(false);
+    }
   };
   if (!isLoading) {
     return (
