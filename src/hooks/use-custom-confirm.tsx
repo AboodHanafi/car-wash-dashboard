@@ -1,4 +1,4 @@
-import { Typography, Box } from '@mui/material';
+import { Typography, Box, Stack } from '@mui/material';
 import { useConfirm } from 'material-ui-confirm';
 import { Icons } from '../assets';
 
@@ -6,8 +6,9 @@ function useCustomConfirm() {
   const confirm = useConfirm();
 
   const onConfirmHandler = (
-    confirmMsg: string,
     confirmationId: string | number | undefined = '',
+    deletionFunc: any,
+    confirmMsg: string,
   ) => {
     confirm({
       description: (
@@ -20,7 +21,11 @@ function useCustomConfirm() {
       confirmationText: (
         <Typography sx={{ color: '#FF0000' }}>نعم حذف</Typography>
       ),
-      title: <Box textAlign={'center'}>{Icons.deleteIcon('#FF0000')}</Box>,
+      title: (
+        <Stack style={{ alignItems: 'center' }}>
+          {Icons.deleteIcon('#FF0000')}
+        </Stack>
+      ),
       buttonOrder: ['confirm', 'cancel'],
       dialogProps: {
         sx: {
@@ -35,11 +40,7 @@ function useCustomConfirm() {
         },
       },
     })
-      .then(() =>
-        console.log(
-          'Here you can delete what ever you want (Deletion Operation)',
-        ),
-      )
+      .then(() => deletionFunc(confirmationId))
       .catch(() => console.log('Deletion cancelled.'));
   };
 

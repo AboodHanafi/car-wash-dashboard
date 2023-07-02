@@ -133,6 +133,12 @@ const EmployeesDetails = () => {
                 }}
               >
                 <TabList
+                  TabIndicatorProps={{ sx: { display: 'none' } }}
+                  sx={{
+                    '& .MuiTabs-flexContainer': {
+                      flexWrap: 'wrap',
+                    },
+                  }}
                   onChange={handleChange}
                   aria-label='lab API tabs example'
                 >

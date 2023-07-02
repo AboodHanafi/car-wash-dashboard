@@ -1,7 +1,11 @@
+import { useEffect, useState } from 'react';
 import {
+  Alert,
   Box,
   Button,
+  CircularProgress,
   Rating,
+  Snackbar,
   Stack,
   Typography,
   useTheme,
@@ -11,34 +15,90 @@ import { Icons } from '../../assets';
 import CustomizedSteppers from '../../components/stepper';
 import { useParams } from 'react-router-dom';
 import useCustomConfirm from '../../hooks/use-custom-confirm';
+import DeleteButton from '../../components/deleteButton';
+import useFetchReservations from '../../hooks/use-fetch-data';
+import {
+  useFetchReservationByIdQuery,
+  useDeleteReservationByIdMutation,
+} from '../../app/store';
 
-type IdType = string | number | undefined;
+type Id = string | number | undefined;
+
 const ReservationDetails = () => {
+  const [open, setOpen] = useState(false);
   let { id } = useParams();
+  const [deleteReservation, result] = useDeleteReservationByIdMutation();
+
+  const { data: reservation, isLoading } = useFetchReservationByIdQuery(
+    String(id),
+  );
+  // if (!isLoading && reservation !== undefined)
+  //   console.log('useFetchReservationQuery data: ', reservation.data);
+
   const confirm = useCustomConfirm();
   const theme = useTheme();
 
-  const handleDelete = (id: IdType) => {
-    confirm('هل أنت متأكد من حذف هذا الحجز');
+  // const { data, error, isLoading } = useFetchReservations(
+  //   `/reservations/${id}`,
+  // );
+  const handleDelete = (id: Id) => {
+    // deleteReservation(String(id));
+    console.log('result: ', result);
+
+    confirm(id, deleteReservation, 'هل أنت متأكد من حذف هذا الحجز');
+  };
+
+  useEffect(() => {
+    if (result.isError || result.isSuccess) {
+      setOpen(true);
+    }
+  }, [result.isSuccess, result.isError]);
+  if (isLoading) {
+    return <CircularProgress />;
+  }
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string,
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
   };
   return (
     <Stack id='mainWrapper' spacing={2}>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
+        onClose={handleClose}
+      >
+        <Alert
+          onClose={handleClose}
+          severity={`${result.isSuccess ? 'success' : 'error'}`}
+          sx={{ width: '100%' }}
+        >
+          {result.isSuccess ? 'تم حذف الحجز' : 'حدث خطأ ما'}
+        </Alert>
+      </Snackbar>
+
       <Stack id='header'>
         <Stack direction='row' spacing={1}>
           <Typography fontWeight={600}>رقم الحجز</Typography>
           <Typography fontWeight='medium' color={theme.palette.primary.main}>
-            008
+            {reservation?.data.id}
           </Typography>
         </Stack>
         <Stack direction='row' spacing={1}>
           <Typography fontWeight={600}>حالة الحجز</Typography>
           <Typography fontWeight='medium' color='#FF9A00'>
-            قيد التنفيذ
+            {reservation?.data.status_string}
           </Typography>
         </Stack>
       </Stack>
       <Stack id='buttons' direction='row' spacing={2} alignItems='center'>
-        <Button
+        {/* <Button
           sx={{
             border: '1px solid #191919',
             borderRadius: '5px',
@@ -49,7 +109,10 @@ const ReservationDetails = () => {
           onClick={() => handleDelete(id)}
         >
           حذف الحجز
-        </Button>
+        </Button> */}
+        <DeleteButton deleteHandler={() => handleDelete(id)}>
+          حذف الحجز
+        </DeleteButton>
         <Button
           sx={{
             border: '1px solid #191919',
@@ -90,13 +153,13 @@ const ReservationDetails = () => {
           <Stack>
             <Typography fontWeight='medium'>الإسم</Typography>
             <Typography color={theme.palette.primary.main}>
-              إبراهيم جمال
+              {reservation?.data.user_name}{' '}
             </Typography>
           </Stack>
           <Stack>
             <Typography fontWeight='medium'>رقم الهاتف</Typography>
             <Typography color={theme.palette.primary.main}>
-              +236 659 425
+              {reservation?.data.user_phone}{' '}
             </Typography>
           </Stack>
           <Stack>
@@ -121,15 +184,21 @@ const ReservationDetails = () => {
         >
           <Stack>
             <Typography fontWeight='medium'>ماركة السيارة</Typography>
-            <Typography color={theme.palette.primary.main}>مرسيدس </Typography>
+            <Typography color={theme.palette.primary.main}>
+              {reservation?.data.car_brand}{' '}
+            </Typography>
           </Stack>
           <Stack>
             <Typography fontWeight='medium'> موديل السيارة</Typography>
-            <Typography color={theme.palette.primary.main}>جي كلاس</Typography>
+            <Typography color={theme.palette.primary.main}>
+              {reservation?.data.car_model}
+            </Typography>
           </Stack>
           <Stack>
             <Typography fontWeight='medium'> لون السيارة</Typography>
-            <Typography color={theme.palette.primary.main}>ابيض</Typography>
+            <Typography color={theme.palette.primary.main}>
+              {reservation?.data.color}
+            </Typography>
           </Stack>
         </Box>
         <Box
@@ -147,7 +216,16 @@ const ReservationDetails = () => {
         >
           <Stack>
             <Typography fontWeight='medium'> الخدمات</Typography>
-            <Typography color={theme.palette.primary.main}>
+
+            {reservation?.data.services.map(service => (
+              <Typography
+                key={service.service_name}
+                color={theme.palette.primary.main}
+              >
+                {service.service_name} ({service.service_cost + ' ريال '})
+              </Typography>
+            ))}
+            {/* <Typography color={theme.palette.primary.main}>
               خدمة توبابلز 32 ريال
             </Typography>
             <Typography color={theme.palette.primary.main}>
@@ -155,11 +233,13 @@ const ReservationDetails = () => {
             </Typography>
             <Typography color={theme.palette.primary.main}>
               فواحة عطرية 3 ريال
-            </Typography>
+            </Typography> */}
           </Stack>
           <Stack>
             <Typography fontWeight='medium'> سعر الحجز</Typography>
-            <Typography color={theme.palette.primary.main}>40.00</Typography>
+            <Typography color={theme.palette.primary.main}>
+              {reservation?.data.total}
+            </Typography>
           </Stack>
         </Box>
         <Box
@@ -178,12 +258,14 @@ const ReservationDetails = () => {
           <Stack>
             <Typography fontWeight='medium'> تاريخ الحجز</Typography>
             <Typography color={theme.palette.primary.main}>
-              السبت 11-2-2022
+              {reservation?.data.created_at}
             </Typography>
           </Stack>
           <Stack>
             <Typography fontWeight='medium'>ساعة الحجز</Typography>
-            <Typography color={theme.palette.primary.main}>11-30</Typography>
+            <Typography color={theme.palette.primary.main}>
+              {reservation?.data.time}
+            </Typography>
           </Stack>
         </Box>
         <Box
@@ -217,7 +299,9 @@ const ReservationDetails = () => {
           }}
         >
           <Typography fontWeight='medium'>اسم البايكر</Typography>
-          <Typography color={theme.palette.primary.main}>علي احمد</Typography>
+          <Typography color={theme.palette.primary.main}>
+            {reservation?.data.biker_name}
+          </Typography>
         </Box>
         <Box
           sx={{
@@ -232,7 +316,11 @@ const ReservationDetails = () => {
           }}
         >
           <Typography fontWeight='medium'> التقييم</Typography>
-          <Rating precision={0.5} value={3.5} readOnly />
+          <Rating
+            precision={0.5}
+            value={reservation?.data.rate.star_num}
+            readOnly
+          />
         </Box>
         <Box
           sx={{
@@ -249,7 +337,7 @@ const ReservationDetails = () => {
         >
           <Typography fontWeight='medium'> ملاحظات</Typography>
           <Typography color={theme.palette.primary.main}>
-            لا يوجد ملاحظات
+            {reservation?.data.rate.notes}
           </Typography>
         </Box>
       </Stack>

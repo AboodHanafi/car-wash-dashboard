@@ -2,14 +2,14 @@ import React from 'react';
 import { Box, Typography, Avatar } from '@mui/material';
 import { useTheme } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
-import { EmployeesType } from '../../../../utils/types';
+import { Employee } from '../../../../services/employees';
 interface Props {
-  employee: EmployeesType;
+  employee: Employee;
 }
 function EmployeeItem({ employee }: Props) {
   const { pathname } = useLocation();
 
-  const { id, name, location } = employee;
+  const { id, name, address, photo } = employee;
   const theme = useTheme();
   return (
     <Box
@@ -25,14 +25,14 @@ function EmployeeItem({ employee }: Props) {
       flexDirection={'column'}
       gap={2}
     >
-      <Avatar alt={name || ''} src='/static/images/avatar/1.jpg' />
+      <Avatar alt={name || ''} src={photo} />
       <Link to={`${pathname}/${id}`} style={{ textDecoration: 'none' }}>
         <Typography fontWeight={600} color={theme.palette.secondary.main}>
           {name}
         </Typography>
       </Link>
       <Typography display={'flex'} alignItems={'center'} gap={1}>
-        {location}
+        {address}
       </Typography>
     </Box>
   );

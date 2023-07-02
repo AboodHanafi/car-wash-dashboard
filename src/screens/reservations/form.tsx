@@ -6,10 +6,10 @@ import {
   FormGroup,
   FormLabel,
   Stack,
-  TextField,
   Typography,
   useTheme,
 } from '@mui/material';
+
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { CustomButton, CustomizedTextField } from '../../globalStyle';
@@ -18,6 +18,12 @@ import { useState } from 'react';
 import { z, ZodType } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { DatePicker, TimePicker } from '@mui/x-date-pickers';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import dayjs, { Dayjs } from 'dayjs';
+import { getPropName } from '../../utils/global-func';
+
+type Nullable<T> = T | null;
 
 type ExtraServices = { pedals: boolean; redolent: boolean };
 type CutsomerData = {
@@ -31,6 +37,8 @@ type CutsomerData = {
 };
 
 const ReservationForm = () => {
+  // const [time, setTime] = useState<Dayjs | null>(dayjs('2022-04-17T15:30'));
+
   const [resCutsomerData, setResCutsomerData] = useState<CutsomerData>({
     name: '',
     address: '',
@@ -44,21 +52,22 @@ const ReservationForm = () => {
   const schema: ZodType<CutsomerData> = z.object({
     name: z
       .string()
-      .min(2, 'يجب ادخال اسم الحجز')
+      .nonempty('يجب ادخال اسم الحجز')
+      .min(2)
       .max(50, 'يجب ان يكون اسم الحجز اقل من 50 حرفا'),
-    address: z.string().min(2, 'الرجاء ادخال العنوان').max(100),
+    address: z.string().nonempty('الرجاء ادخال العنوان').min(2).max(100),
     tel: z
       .string()
       .regex(
         RegExp(/^((?:[+?0?0?966]+)(?:s?d{2})(?:s?d{7}))$/),
         'الرجاء ادخال رقم هاتف صحيح',
       ),
-    resDate: z.date(),
+    resDate: z.date({ description: 'asdm' }),
     resHoure: z.string(),
     carData: z.object({
-      carBrand: z.string().min(2).max(50),
-      carModel: z.string().min(2).max(50),
-      carColor: z.string().min(2).max(50),
+      carBrand: z.string().min(2, 'الرجاء تعبئة هذا الحقل').max(50),
+      carModel: z.string().min(2, 'الرجاء تعبئة هذا الحقل').max(50),
+      carColor: z.string().min(2, 'الرجاء تعبئة هذا الحقل').max(50),
     }),
     extraServices: z.object({
       pedals: z.boolean(),
@@ -76,25 +85,25 @@ const ReservationForm = () => {
 
   const handleChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
+    const propName = getPropName(name);
 
     setResCutsomerData(prev => {
       let updatedData = { ...resCutsomerData };
-
-      if (name.includes('car')) {
+      if (propName.includes('car')) {
         updatedData = {
           ...updatedData,
-          carData: { ...prev.carData, [name]: value },
+          carData: { ...prev.carData, [propName]: value },
         };
-      } else if (name === 'pedals' || name === 'redolent') {
+      } else if (propName === 'pedals' || propName === 'redolent') {
         updatedData = {
           ...updatedData,
           extraServices: {
             ...prev.extraServices,
-            [name]: !prev.extraServices[name],
+            [propName]: !prev.extraServices[propName],
           },
         };
       } else {
-        updatedData = { ...updatedData, [name]: value };
+        updatedData = { ...updatedData, [propName]: value };
       }
       return updatedData;
     });
@@ -103,6 +112,14 @@ const ReservationForm = () => {
     console.log(data);
   };
 
+  const handleResTime = (time: string | null) => {
+    const hour = time?.toString();
+    console.log('hour: ', hour);
+    // setResCutsomerData({ ...resCutsomerData, resHoure: String(hour) });
+    // console.log('resCutsomerData: ', resCutsomerData);
+    // const formattedTime = format(String(time), 'HH:mm:ss');
+    // console.log('formattedTime: ', formattedTime);
+  };
   const navigate = useNavigate();
   const theme = useTheme();
   return (
@@ -154,20 +171,26 @@ const ReservationForm = () => {
             })}
           />
           <Typography color={'#FF0000'}>{errors.address?.message}</Typography>
-          <CustomizedTextField
-            id='standard-basic'
-            label='تاريخ الحجز'
-            name='resDate'
-            onChange={handleChangeInput}
-            value={resCutsomerData.resDate}
-          />
-          <CustomizedTextField
-            id='standard-basic'
-            label='ساعة الحجز'
-            name='resHoure'
-            onChange={handleChangeInput}
-            value={resCutsomerData.resHoure}
-          />
+
+          <>
+            <Typography fontWeight={500}>تاريخ الحجز</Typography>
+
+            <DatePicker
+              slotProps={{ textField: { size: 'small' } }}
+              sx={{
+                paddingTop: '0.4rem',
+              }}
+            />
+          </>
+          <Typography color={'#FF0000'}>{errors.resDate?.message} </Typography>
+
+          <DemoContainer components={['TimePicker']}>
+            <TimePicker
+              value={resCutsomerData.resHoure}
+              label='ساعة الحجز'
+              onChange={handleResTime}
+            />
+          </DemoContainer>
         </Box>
         <Stack
           spacing={2}
@@ -190,24 +213,32 @@ const ReservationForm = () => {
             <CustomizedTextField
               id='standard-basic'
               label='ماركة السيارة'
-              name='carBrand'
-              onChange={handleChangeInput}
               value={resCutsomerData.carData.carBrand}
+              {...register('carData.carBrand', {
+                onChange: handleChangeInput,
+              })}
             />
+            <Typography color={'#FF0000'}>{errors.address?.message}</Typography>
+
             <CustomizedTextField
               id='standard-basic'
               label='موديل السيارة'
-              name='carModel'
-              onChange={handleChangeInput}
               value={resCutsomerData.carData.carModel}
+              {...register('carData.carModel', {
+                onChange: handleChangeInput,
+              })}
             />
+            <Typography color={'#FF0000'}>{errors.address?.message}</Typography>
+
             <CustomizedTextField
               id='standard-basic'
               label='لون السيارة'
-              name='carColor'
-              onChange={handleChangeInput}
               value={resCutsomerData.carData.carColor}
+              {...register('carData.carColor', {
+                onChange: handleChangeInput,
+              })}
             />
+            <Typography color={'#FF0000'}>{errors.address?.message}</Typography>
           </Box>
           <Box
             sx={{

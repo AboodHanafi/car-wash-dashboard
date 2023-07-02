@@ -20,8 +20,6 @@ import {
 import { useNavigate } from 'react-router-dom';
 import Counter from '../../components/counter';
 import Switch from '../../components/switch';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 const CouponsForm = () => {
@@ -430,14 +428,13 @@ const CouponsForm = () => {
             {expirationDateFlag && (
               <>
                 <Typography fontWeight={500}>ينتهي بتاريخ </Typography>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    slotProps={{ textField: { size: 'small' } }}
-                    sx={{
-                      paddingTop: '0.4rem',
-                    }}
-                  />
-                </LocalizationProvider>
+
+                <DatePicker
+                  slotProps={{ textField: { size: 'small' } }}
+                  sx={{
+                    paddingTop: '0.4rem',
+                  }}
+                />
               </>
             )}
           </Box>
