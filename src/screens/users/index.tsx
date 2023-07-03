@@ -162,7 +162,7 @@ const Users = () => {
               borderRadius: '10px',
             }}
             fullWidth
-            startIcon={Icons.pdfButton}
+            startIcon={Icons.pdfButton()}
           >
             تصدير pdf
           </CustomButton>
