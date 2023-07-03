@@ -200,7 +200,7 @@ const Reservations = () => {
           mt='25px'
           minWidth='100px'
         >
-          <CustomButton
+          {/* <CustomButton
             sx={{
               color: '#404040',
               bgcolor: '#FCFCFC',
@@ -211,7 +211,7 @@ const Reservations = () => {
             startIcon={Icons.pdfButton}
           >
             تصدير pdf
-          </CustomButton>
+          </CustomButton> */}
           {/* <CustomButton
             sx={{
               color: "#404040",

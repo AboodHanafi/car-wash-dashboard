@@ -11,6 +11,7 @@ export const images = {
 };
 export const SVG: React.FC<SvgProps> = ({ width, height, children }) => (
   <svg
+    style={{ margin: '0 0.2rem' }}
     fill='none'
     xmlns='http://www.w3.org/2000/svg'
     width={width}

@@ -35,8 +35,26 @@ type SingleRes = {
 export type Reservations = {
   data: Reservation[];
 };
+
+export interface ServiceRequest {
+  user_id: number;
+  user_car_id: number;
+  services: ServiceItem[];
+  date: string;
+  time: string;
+  lat: string;
+  lon: string;
+  payment_method: number;
+}
+
+interface ServiceItem {
+  service_id: number;
+  qt: number;
+}
+
 export const reservationsApi = createApi({
   reducerPath: 'reservationsApi',
+  tagTypes: ['Reservation'],
   baseQuery: fetchBaseQuery({
     baseUrl,
     prepareHeaders: headers => {
@@ -62,6 +80,18 @@ export const reservationsApi = createApi({
         };
       },
     }),
+    addReservation: builder.mutation({
+      invalidatesTags: (result, error, reservation) => {
+        return [{ type: 'Reservation', reservation }];
+      },
+      query: (reservation: ServiceRequest) => {
+        return {
+          method: 'POST',
+          url: 'reservations/create',
+          body: reservation,
+        };
+      },
+    }),
     deleteReservationById: builder.mutation({
       query: (id: number) => {
         return {
@@ -84,4 +114,5 @@ export const {
   useFetchReservationsQuery,
   useFetchReservationByIdQuery,
   useDeleteReservationByIdMutation,
+  useAddReservationMutation,
 } = reservationsApi;

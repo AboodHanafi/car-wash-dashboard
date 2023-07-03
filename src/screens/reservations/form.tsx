@@ -20,10 +20,9 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DatePicker, TimePicker } from '@mui/x-date-pickers';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import dayjs, { Dayjs } from 'dayjs';
 import { getPropName } from '../../utils/global-func';
-
-type Nullable<T> = T | null;
+import { useAddReservationMutation } from '../../app/store';
+import { ServiceRequest } from '../../services/reservations';
 
 type ExtraServices = { pedals: boolean; redolent: boolean };
 type CutsomerData = {
@@ -37,6 +36,8 @@ type CutsomerData = {
 };
 
 const ReservationForm = () => {
+  const [addReservation, results] = useAddReservationMutation();
+
   // const [time, setTime] = useState<Dayjs | null>(dayjs('2022-04-17T15:30'));
 
   const [resCutsomerData, setResCutsomerData] = useState<CutsomerData>({
@@ -62,12 +63,20 @@ const ReservationForm = () => {
         RegExp(/^((?:[+?0?0?966]+)(?:s?d{2})(?:s?d{7}))$/),
         'الرجاء ادخال رقم هاتف صحيح',
       ),
-    resDate: z.date({ description: 'asdm' }),
+    resDate: z.date({ required_error: 'الرجاء ادخال التاريخ' }),
     resHoure: z.string(),
     carData: z.object({
-      carBrand: z.string().min(2, 'الرجاء تعبئة هذا الحقل').max(50),
-      carModel: z.string().min(2, 'الرجاء تعبئة هذا الحقل').max(50),
-      carColor: z.string().min(2, 'الرجاء تعبئة هذا الحقل').max(50),
+      carBrand: z
+        .string()
+        .nonempty('الرجاء ادخال ماركة السيارة')
+        .min(2)
+        .max(50),
+      carModel: z
+        .string()
+        .nonempty('الرجاء ادخال موديل السيارة')
+        .min(2)
+        .max(50),
+      carColor: z.string().nonempty('الرجاء ادخال لون السيارة').min(2).max(50),
     }),
     extraServices: z.object({
       pedals: z.boolean(),
@@ -109,6 +118,7 @@ const ReservationForm = () => {
     });
   };
   const submitData = (data: CutsomerData) => {
+    // addReservation(data);
     console.log(data);
   };
 
@@ -218,7 +228,9 @@ const ReservationForm = () => {
                 onChange: handleChangeInput,
               })}
             />
-            <Typography color={'#FF0000'}>{errors.address?.message}</Typography>
+            <Typography color={'#FF0000'}>
+              {errors.carData?.carBrand?.message}
+            </Typography>
 
             <CustomizedTextField
               id='standard-basic'
@@ -228,7 +240,9 @@ const ReservationForm = () => {
                 onChange: handleChangeInput,
               })}
             />
-            <Typography color={'#FF0000'}>{errors.address?.message}</Typography>
+            <Typography color={'#FF0000'}>
+              {errors.carData?.carModel?.message}
+            </Typography>
 
             <CustomizedTextField
               id='standard-basic'
@@ -238,7 +252,9 @@ const ReservationForm = () => {
                 onChange: handleChangeInput,
               })}
             />
-            <Typography color={'#FF0000'}>{errors.address?.message}</Typography>
+            <Typography color={'#FF0000'}>
+              {errors.carData?.carColor?.message}
+            </Typography>
           </Box>
           <Box
             sx={{
