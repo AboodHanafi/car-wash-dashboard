@@ -14,13 +14,17 @@ import {
   GridToolbarContainer,
   GridCsvExportOptions,
 } from '@mui/x-data-grid';
-import { PropsWithChildren, useRef, useState } from 'react';
+import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { Icons } from '../../assets';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useFetchReservationsQuery } from '../../app/store';
 import { jsPDF } from 'jspdf';
 import { position } from 'stylis';
+import { CustomButton } from '../../globalStyle';
+import { Reservations } from '../../services/reservations';
+import useSearch from '../../hooks/use-context-search';
+import { areValidDates } from '../../utils/global-func';
 
 function getStatusColor(status: number): string {
   let color = '';
@@ -60,7 +64,7 @@ const columns: GridColDef[] = [
   {
     field: 'created_at',
     headerName: 'تاريخ الحجز',
-    // minWidth: 150,
+    minWidth: 150,
   },
   {
     field: 'timer',
@@ -159,6 +163,7 @@ const LoadingSkeleton = () => (
 );
 
 const ReservationsTable = () => {
+  const { clientBikerTerm, dateRange, reservationStatus } = useSearch();
   const dataGridRef = useRef<any>(null);
   const { data: reservations, error, isLoading } = useFetchReservationsQuery();
   const [pageSize, setPageSize] = useState<number>(10);
@@ -168,6 +173,7 @@ const ReservationsTable = () => {
   const handleRowClick: GridEventListener<'rowClick'> = params => {
     nvigate(`/reservations/${params.row.id}`);
   };
+
   const handleExport = () => {
     const options: GridCsvExportOptions = {
       allColumns: true,
@@ -177,13 +183,58 @@ const ReservationsTable = () => {
     // dataGridRef.current?.exportDataGrid(options);
   };
 
+  let filteredReservations: any;
+
+  if (reservationStatus !== null && clientBikerTerm) {
+    filteredReservations = reservations?.data.filter(reservation => {
+      const { user_name, biker_name, status } = reservation;
+      if (
+        (reservationStatus === -1 && user_name.includes(clientBikerTerm)) ||
+        biker_name.includes(clientBikerTerm)
+      ) {
+        return true;
+      } else if (
+        (reservationStatus === status && user_name.includes(clientBikerTerm)) ||
+        biker_name.includes(clientBikerTerm)
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  } else if (clientBikerTerm && reservationStatus !== -1) {
+    filteredReservations = reservations?.data.filter(
+      reservation =>
+        reservation.user_name.includes(clientBikerTerm) ||
+        reservation.biker_name.includes(clientBikerTerm),
+    );
+  } else if (dateRange.startDate && dateRange.endDate) {
+    const millisecondsStart = Date.parse(dateRange.startDate);
+    const millisecondsEnd = Date.parse(dateRange.endDate);
+
+    filteredReservations = reservations?.data.filter(reservation => {
+      const millisecondsParsedDate = Date.parse(
+        reservation.created_at.split(' ')[0],
+      );
+      return (
+        millisecondsParsedDate >= millisecondsStart &&
+        millisecondsParsedDate <= millisecondsEnd
+      );
+    });
+  } else if (reservationStatus !== -1) {
+    filteredReservations = reservations?.data.filter(
+      reservation => reservation.status === reservationStatus,
+    );
+  }
+
+  // Resturn JSX
   if (isLoading) {
     return <LoadingSkeleton />;
   } else {
     return (
       <>
         <StyledTable
-          rows={reservations?.data || []}
+          rows={filteredReservations || reservations?.data}
           columns={columns}
           ref={dataGridRef}
           page={page}
@@ -209,9 +260,11 @@ const ReservationsTable = () => {
 function CustomToolbar() {
   return (
     <GridToolbarContainer sx={{ position: 'relative' }} lang='ar'>
-      <Button sx={{ border: '1px solid' }}>
-        {Icons.pdfButton} تصدير البيانات
-      </Button>
+      <CustomButton
+        sx={{ border: '1px solid', marginBottom: '1rem', color: '#333' }}
+      >
+        {Icons.pdfButton('#333')} تصدير البيانات
+      </CustomButton>
       <div style={{ opacity: '0', position: 'absolute' }}>
         <GridToolbarExport />
       </div>

@@ -5,6 +5,7 @@ import {
   IconButton,
   InputAdornment,
   Stack,
+  TextField,
   Typography,
   useMediaQuery,
   useTheme,
@@ -14,48 +15,36 @@ import { useEffect, useState } from 'react';
 import { Icons } from '../../assets';
 import ReservationsTable from '../../components/reservationsTable';
 import { useNavigate } from 'react-router-dom';
-import useFetchReservations from '../../hooks/use-fetch-data';
 import { useFetchReservationsQuery } from '../../services/reservations';
 import LoadingSkeleton from '../../components/loadingSkeleton';
+import { reservationStatus } from '../../utils/global-lists';
+import useSearch from '../../hooks/use-context-search';
+import CustomDateRangePicker from '../../components/dateRangePicker';
 
 interface autoType {
   label: string;
   id: number;
 }
+
 const Reservations = () => {
-  const { data: reservations, error, isLoading } = useFetchReservationsQuery();
+  const { handleReservationStatus } = useSearch();
 
-  // const { data } = useFetchReservationsQuery();
-  if (!isLoading && reservations !== undefined)
-    console.log('useFetchReservationsQuery data: ', reservations);
-  // const { data, error, isLoading } = useFetchReservations('/reservations');
-
-  // if (!isLoading) console.log('Reservations data: ', data[0].user_name);
-
-  useEffect(() => {}, []);
-  const reservationStatus = [
-    {
-      id: 0,
-      label: 'الكل',
-    },
-    {
-      id: 1,
-      label: 'قيد التنفيذ',
-    },
-    {
-      id: 2,
-      label: 'تم التنفيذ',
-    },
-    {
-      id: 3,
-      label: 'ملغي',
-    },
-  ];
+  const { isLoading } = useFetchReservationsQuery();
   const [status, setStatus] = useState<autoType | null>(reservationStatus[0]);
+  const { handleClientBikerTerm, handleDateRange, dateRange } = useSearch();
   const bigLabtob = useMediaQuery('(max-width:1024px)');
   const navigate = useNavigate();
   const theme = useTheme();
 
+  const handleChangeReservationStatus = (
+    event: React.SyntheticEvent<Element, Event>,
+    value: autoType | null,
+  ) => {
+    setStatus(value);
+    handleReservationStatus(Number(value?.id));
+  };
+
+  useEffect(() => {}, []);
   return (
     <Stack id='mainWrapper' pr='20px' spacing={2}>
       <Stack
@@ -99,11 +88,25 @@ const Reservations = () => {
           >
             تاريخ الحجز
           </FormLabel>
-          <Stack direction='row' alignItems='center'>
-            <CustomizedTextField fullWidth value={'16-12-2022'} />
-            <IconButton>{Icons.fromToDate}</IconButton>
-            <CustomizedTextField fullWidth value={'16-12-2022'} />
-          </Stack>
+          <CustomDateRangePicker onDateRangeChange={handleDateRange} />
+
+          {/*<Stack direction='row' alignItems='center'>
+            <CustomizedTextField
+              name='startDate'
+              onChange={handleDateRange}
+              fullWidth
+              value={dateRange.startDate}
+            />
+            <IconButton onClick={handleSearchByDateRange}>
+              {Icons.fromToDate}
+            </IconButton>
+            <CustomizedTextField
+              name='endDate'
+              onChange={handleDateRange}
+              fullWidth
+              value={dateRange.endDate}
+            />
+          </Stack> */}
         </Stack>
         <Stack
           id='status'
@@ -140,7 +143,7 @@ const Reservations = () => {
               }}
               disablePortal
               id='combo-box-demo'
-              size='small'
+              // size='medium'
               options={reservationStatus}
               getOptionLabel={(option: autoType) => option.label}
               ListboxProps={{
@@ -150,10 +153,12 @@ const Reservations = () => {
                 },
               }}
               value={status}
-              onChange={(e: any, value: autoType | null) => setStatus(value)}
+              size='small'
+              onChange={handleChangeReservationStatus}
               renderInput={(params: any) => (
                 <CustomizedTextField
-                  placeholder='status'
+                  // style={{ height: '2.6rem' }}
+                  placeholder='حالة الحجز'
                   {...params}
                   inputProps={{
                     ...params.inputProps,
@@ -189,6 +194,7 @@ const Reservations = () => {
                 ),
               }}
               placeholder='ابحث هنا'
+              onChange={e => handleClientBikerTerm(e.target.value)}
             />
           </Stack>
         </Stack>
