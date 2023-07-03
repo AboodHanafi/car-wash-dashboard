@@ -1,10 +1,26 @@
-import { Box, IconButton, Skeleton, Typography, styled } from '@mui/material';
-import { DataGrid, GridColDef, GridEventListener } from '@mui/x-data-grid';
-import { PropsWithChildren, useState } from 'react';
+import {
+  Box,
+  Button,
+  IconButton,
+  Skeleton,
+  Typography,
+  styled,
+} from '@mui/material';
+import {
+  DataGrid,
+  GridColDef,
+  GridEventListener,
+  GridToolbarExport,
+  GridToolbarContainer,
+  GridCsvExportOptions,
+} from '@mui/x-data-grid';
+import { PropsWithChildren, useRef, useState } from 'react';
 import { Icons } from '../../assets';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useFetchReservationsQuery } from '../../app/store';
+import { jsPDF } from 'jspdf';
+import { position } from 'stylis';
 
 function getStatusColor(status: number): string {
   let color = '';
@@ -141,7 +157,9 @@ const LoadingSkeleton = () => (
     ))}
   </Box>
 );
+
 const ReservationsTable = () => {
+  const dataGridRef = useRef<any>(null);
   const { data: reservations, error, isLoading } = useFetchReservationsQuery();
   const [pageSize, setPageSize] = useState<number>(10);
   const [page, setPage] = useState<number>(0);
@@ -150,29 +168,57 @@ const ReservationsTable = () => {
   const handleRowClick: GridEventListener<'rowClick'> = params => {
     nvigate(`/reservations/${params.row.id}`);
   };
+  const handleExport = () => {
+    const options: GridCsvExportOptions = {
+      allColumns: true,
+      fileName: 'reservations',
+      utf8WithBom: true,
+    };
+    // dataGridRef.current?.exportDataGrid(options);
+  };
 
-  if (!false) {
-    return (
-      <StyledTable
-        rows={reservations?.data || []}
-        columns={columns}
-        page={page}
-        onPageChange={(newPage: number) => setPage(newPage)}
-        pageSize={pageSize}
-        onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
-        rowsPerPageOptions={[10, 20, 100]}
-        pagination
-        disableSelectionOnClick
-        onRowClick={handleRowClick}
-        rowHeight={48}
-        headerHeight={40}
-        getRowClassName={() => 'paxton-table--row'}
-      />
-    );
-  } else {
+  if (isLoading) {
     return <LoadingSkeleton />;
+  } else {
+    return (
+      <>
+        <StyledTable
+          rows={reservations?.data || []}
+          columns={columns}
+          ref={dataGridRef}
+          page={page}
+          onPageChange={(newPage: number) => setPage(newPage)}
+          pageSize={pageSize}
+          onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
+          rowsPerPageOptions={[10, 20, 100]}
+          pagination
+          disableSelectionOnClick
+          onRowClick={handleRowClick}
+          rowHeight={48}
+          headerHeight={40}
+          getRowClassName={() => 'paxton-table--row'}
+          components={{
+            Toolbar: CustomToolbar,
+          }}
+        />
+      </>
+    );
   }
 };
+
+function CustomToolbar() {
+  return (
+    <GridToolbarContainer sx={{ position: 'relative' }} lang='ar'>
+      <Button sx={{ border: '1px solid' }}>
+        {Icons.pdfButton} تصدير البيانات
+      </Button>
+      <div style={{ opacity: '0', position: 'absolute' }}>
+        <GridToolbarExport />
+      </div>
+    </GridToolbarContainer>
+  );
+}
+
 export default ReservationsTable;
 
 /*

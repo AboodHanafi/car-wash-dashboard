@@ -5,7 +5,7 @@ import { CustomizedTextField } from '../../globalStyle';
 import DashCard from '../../components/dashboardCard';
 import BasicTable from '../../components/table';
 import ChartBar from '../../components/chartBar';
-import { useFetchUsersQuery } from '../../app/store';
+import { useFetchHomeInfoQuery } from '../../app/store';
 
 interface autoType {
   label: string;
@@ -13,7 +13,7 @@ interface autoType {
 }
 
 const HomePage = () => {
-  const { data, error, isLoading } = useFetchUsersQuery();
+  const { data, error, isLoading } = useFetchHomeInfoQuery();
 
   const [monthValue, setMonthValue] = useState<autoType | null>(Months[0]);
 
@@ -61,25 +61,25 @@ const HomePage = () => {
       <Stack direction='row' flexWrap='wrap' gap={2}>
         <DashCard
           title='الحجوزات'
-          counter={'66'}
+          counter={data?.data.reservations_count ?? 0}
           color='rgba(126, 77, 200, 0.65)'
           shadow='0px 2px 5px rgba(167, 134, 217, 0.5)'
         />
         <DashCard
           title='الحجوزات قيد التنفيذ'
-          counter={'32'}
+          counter={data?.data.reservations_current ?? 0}
           color='rgba(0, 128, 0, 0.64)'
           shadow='0px 2px 5px rgba(71, 163, 71, 0.5)'
         />
         <DashCard
           title='الحجوزات السابقة'
-          counter={'34'}
+          counter={data?.data.reservations_previous ?? 0}
           color='rgba(98, 112, 242, 0.64)'
           shadow='0px 2px 5px rgba(138, 148, 245, 0.5)'
         />
         <DashCard
           title='المدفوعات'
-          counter={'2000 ريال'}
+          counter={`${data?.data.reservations_count ?? 0} ريال`}
           color='rgba(255, 177, 57, 0.64)'
           shadow='0px 2px 5px rgba(254, 201, 120, 0.5)'
         />

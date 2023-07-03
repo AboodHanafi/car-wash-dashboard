@@ -25,6 +25,7 @@
     "flowbite": "^1.6.6",
     "flowbite-react": "^0.4.9",
     "formik": "^2.2.9",
+    "jspdf": "^2.5.1",
     "material-ui-confirm": "^3.0.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
