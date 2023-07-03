@@ -19,6 +19,7 @@ import { useFetchReservationsQuery } from '../../services/reservations';
 import LoadingSkeleton from '../../components/loadingSkeleton';
 import { reservationStatus } from '../../utils/global-lists';
 import useSearch from '../../hooks/use-context-search';
+import CustomDateRangePicker from '../../components/dateRangePicker';
 
 interface autoType {
   label: string;
@@ -26,6 +27,8 @@ interface autoType {
 }
 
 const Reservations = () => {
+  const { handleReservationStatus } = useSearch();
+
   const { isLoading } = useFetchReservationsQuery();
   const [status, setStatus] = useState<autoType | null>(reservationStatus[0]);
   const { handleClientBikerTerm, handleDateRange, dateRange } = useSearch();
@@ -38,9 +41,9 @@ const Reservations = () => {
     value: autoType | null,
   ) => {
     setStatus(value);
+    handleReservationStatus(Number(value?.id));
   };
 
-  const handleSearchByDateRange = () => {};
   useEffect(() => {}, []);
   return (
     <Stack id='mainWrapper' pr='20px' spacing={2}>
@@ -85,7 +88,9 @@ const Reservations = () => {
           >
             تاريخ الحجز
           </FormLabel>
-          <Stack direction='row' alignItems='center'>
+          <CustomDateRangePicker onDateRangeChange={handleDateRange} />
+
+          {/*<Stack direction='row' alignItems='center'>
             <CustomizedTextField
               name='startDate'
               onChange={handleDateRange}
@@ -101,7 +106,7 @@ const Reservations = () => {
               fullWidth
               value={dateRange.endDate}
             />
-          </Stack>
+          </Stack> */}
         </Stack>
         <Stack
           id='status'
@@ -228,11 +233,7 @@ const Reservations = () => {
         </Stack>
       </Stack>
       <Stack id='table'>
-        {isLoading ? (
-          <LoadingSkeleton />
-        ) : (
-          <ReservationsTable reservationsStatus={Number(status?.id)} />
-        )}
+        {isLoading ? <LoadingSkeleton /> : <ReservationsTable />}
       </Stack>
     </Stack>
   );

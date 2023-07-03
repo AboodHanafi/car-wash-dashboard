@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react';
 
-type DateRange = { startDate: string; endDate: string };
+export type DateRange = { startDate: string; endDate: string };
 
 interface SearchTerms {
   clientBikerTerm: string;
@@ -8,9 +8,7 @@ interface SearchTerms {
   dateRange: DateRange;
   handleClientBikerTerm: (term: string) => void;
   handleReservationStatus: (status: number) => void;
-  handleDateRange: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => void;
+  handleDateRange: (dates: DateRange) => void;
 }
 export const ContextSearch = createContext<SearchTerms>({} as SearchTerms);
 
@@ -25,16 +23,19 @@ export const ProviderSearch: React.FC<React.PropsWithChildren> = ({
   });
 
   const handleClientBikerTerm = (term: string) => {
+    setDateRange({ endDate: '', startDate: '' });
     setClientBikerTerm(term);
   };
+
   const handleReservationStatus = (status: number) => {
+    setDateRange({ endDate: '', startDate: '' });
     setReservationStatus(status);
   };
-  const handleDateRange = ({
-    target: { name, value },
-  }: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setDateRange(prev => ({ ...prev, [name]: value }));
+
+  const handleDateRange = (dates: DateRange) => {
+    setDateRange(dates);
   };
+
   const contextOperations = {
     clientBikerTerm,
     handleClientBikerTerm,

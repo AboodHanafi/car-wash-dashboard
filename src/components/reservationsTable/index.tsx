@@ -24,6 +24,7 @@ import { position } from 'stylis';
 import { CustomButton } from '../../globalStyle';
 import { Reservations } from '../../services/reservations';
 import useSearch from '../../hooks/use-context-search';
+import { areValidDates } from '../../utils/global-func';
 
 function getStatusColor(status: number): string {
   let color = '';
@@ -63,7 +64,7 @@ const columns: GridColDef[] = [
   {
     field: 'created_at',
     headerName: 'تاريخ الحجز',
-    // minWidth: 150,
+    minWidth: 150,
   },
   {
     field: 'timer',
@@ -161,12 +162,8 @@ const LoadingSkeleton = () => (
   </Box>
 );
 
-const ReservationsTable = ({
-  reservationsStatus,
-}: {
-  reservationsStatus: number;
-}) => {
-  const { clientBikerTerm, handleDateRange } = useSearch();
+const ReservationsTable = () => {
+  const { clientBikerTerm, dateRange, reservationStatus } = useSearch();
   const dataGridRef = useRef<any>(null);
   const { data: reservations, error, isLoading } = useFetchReservationsQuery();
   const [pageSize, setPageSize] = useState<number>(10);
@@ -188,17 +185,16 @@ const ReservationsTable = ({
 
   let filteredReservations: any;
 
-  if (reservationsStatus !== null && clientBikerTerm) {
+  if (reservationStatus !== null && clientBikerTerm) {
     filteredReservations = reservations?.data.filter(reservation => {
       const { user_name, biker_name, status } = reservation;
       if (
-        (reservationsStatus === -1 && user_name.includes(clientBikerTerm)) ||
+        (reservationStatus === -1 && user_name.includes(clientBikerTerm)) ||
         biker_name.includes(clientBikerTerm)
       ) {
         return true;
       } else if (
-        (reservationsStatus === status &&
-          user_name.includes(clientBikerTerm)) ||
+        (reservationStatus === status && user_name.includes(clientBikerTerm)) ||
         biker_name.includes(clientBikerTerm)
       ) {
         return true;
@@ -206,27 +202,39 @@ const ReservationsTable = ({
         return false;
       }
     });
-  } else if (clientBikerTerm) {
+  } else if (clientBikerTerm && reservationStatus !== -1) {
     filteredReservations = reservations?.data.filter(
       reservation =>
         reservation.user_name.includes(clientBikerTerm) ||
         reservation.biker_name.includes(clientBikerTerm),
     );
-  } else if (reservationsStatus) {
+  } else if (dateRange.startDate && dateRange.endDate) {
+    const millisecondsStart = Date.parse(dateRange.startDate);
+    const millisecondsEnd = Date.parse(dateRange.endDate);
+
+    filteredReservations = reservations?.data.filter(reservation => {
+      const millisecondsParsedDate = Date.parse(
+        reservation.created_at.split(' ')[0],
+      );
+      return (
+        millisecondsParsedDate >= millisecondsStart &&
+        millisecondsParsedDate <= millisecondsEnd
+      );
+    });
+  } else if (reservationStatus !== -1) {
     filteredReservations = reservations?.data.filter(
-      reservation => reservation.status === reservationsStatus,
+      reservation => reservation.status === reservationStatus,
     );
-  } else {
-    filteredReservations = null;
   }
 
+  // Resturn JSX
   if (isLoading) {
     return <LoadingSkeleton />;
   } else {
     return (
       <>
         <StyledTable
-          rows={filteredReservations || reservations?.data || []}
+          rows={filteredReservations || reservations?.data}
           columns={columns}
           ref={dataGridRef}
           page={page}

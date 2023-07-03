@@ -1,13 +1,19 @@
 import React, { memo, useState } from 'react';
 import Datepicker from 'react-tailwindcss-datepicker';
+import { DateRange } from '../../context/context-search';
 
-const CustomDateRangePicker = memo(function CustomDateRangePicker() {
+const CustomDateRangePicker = ({
+  onDateRangeChange,
+}: {
+  onDateRangeChange?: (dates: DateRange) => void;
+}) => {
   const [value, setValue] = useState({
     startDate: null,
     endDate: null,
   });
   const todayDate = new Date().toISOString().split('T')[0];
   const handleValueChange = (newValue: any) => {
+    if (onDateRangeChange) onDateRangeChange(newValue as DateRange);
     setValue(newValue);
   };
 
@@ -33,5 +39,5 @@ const CustomDateRangePicker = memo(function CustomDateRangePicker() {
       }}
     />
   );
-});
+};
 export default CustomDateRangePicker;
