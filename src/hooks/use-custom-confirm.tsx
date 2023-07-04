@@ -18,9 +18,7 @@ function useCustomConfirm() {
         >{`${confirmMsg} (${confirmationId}) ؟`}</Typography>
       ),
       cancellationText: 'لا',
-      confirmationText: (
-        <Typography sx={{ color: '#FF0000' }}>نعم حذف</Typography>
-      ),
+      confirmationText: <Typography sx={{ color: '#FF0000' }}>نعم</Typography>,
       title: (
         <Stack style={{ alignItems: 'center' }}>
           {Icons.deleteIcon('#FF0000')}
