@@ -45,7 +45,7 @@ function NotificationDialog({
             <Grid item xs={8}>
               <Item gap={2}>
                 {selectedUsers?.map(user => (
-                  <BoxBorder flexDirection='row' mb='1rem'>
+                  <BoxBorder key={user.id} flexDirection='row' mb='1rem'>
                     <Typography>{user.name}</Typography>
                     <Button onClick={() => onDeleteUser(Number(user.id))}>
                       {Icons.xIcon}

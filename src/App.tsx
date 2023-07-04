@@ -80,6 +80,10 @@ function App() {
               <Route path='/users' element={<Users />} />
               <Route path='/employees' element={<Employees />} />
               <Route path='/employees/:id' element={<EmployeesDetails />} />
+              <Route
+                path='//employee-form'
+                element={<div>لا يوجد واجهة اضافة موظف في ال figma</div>}
+              />
               <Route path='/services' element={<Services />} />
               <Route path='/services-form' element={<ServicesForm />} />
 
