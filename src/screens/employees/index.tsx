@@ -60,7 +60,7 @@ const Employees = () => {
             backgroundColor: theme.palette.primary.main,
             color: '#fff',
           }}
-          onClick={() => navigate('/reservations-form')}
+          onClick={() => navigate('/employee-form')}
         >
           إضافة موظف
         </CustomButton>

@@ -8,7 +8,7 @@ import {
   styled,
 } from '@mui/material';
 import { DataGrid, GridColDef, GridEventListener } from '@mui/x-data-grid';
-import { PropsWithChildren, useState } from 'react';
+import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { Icons } from '../../assets';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import { Navigate, useNavigate } from 'react-router-dom';
@@ -17,121 +17,6 @@ import LoadingSkeleton from '../loadingSkeleton';
 import { Nullable } from '../../utils/types';
 import useCustomConfirm from '../../hooks/use-custom-confirm';
 import NotificationDialog from '../notificationDialog';
-
-const columns: GridColDef[] = [
-  {
-    field: 'name',
-    headerName: 'الإسم',
-    minWidth: 200,
-  },
-
-  {
-    field: 'phone',
-    headerName: 'رقم الهاتف',
-    minWidth: 150,
-  },
-  {
-    field: 'payments',
-    headerName: 'المدفوعات',
-    minWidth: 200,
-  },
-  {
-    field: 'reservations_count',
-    headerName: ' عدد الحجوزات',
-    minWidth: 200,
-  },
-  {
-    field: 'أخرى',
-    renderCell: () => <IconButton size='small'>{Icons.moreIcon}</IconButton>,
-  },
-];
-
-const rows = [
-  {
-    id: 1,
-    name: 'ابراهيم جمال',
-    phone: '+236 659 425',
-    price: '35 ريال',
-    resrvationNumber: '10',
-  },
-  {
-    id: 2,
-    name: 'ابراهيم جمال',
-    phone: '+236 659 425',
-    price: '35 ريال',
-    resrvationNumber: '6',
-  },
-  {
-    id: 3,
-    name: 'ابراهيم جمال',
-    phone: '+236 659 425',
-    price: '35 ريال',
-    resrvationNumber: '5',
-  },
-  {
-    id: 4,
-    name: 'ابراهيم جمال',
-    phone: '+236 659 425',
-    price: '35 ريال',
-    resrvationNumber: '12',
-  },
-  {
-    id: 5,
-    name: 'ابراهيم جمال',
-    phone: '+236 659 425',
-    price: '35 ريال',
-    resrvationNumber: '3',
-  },
-  {
-    id: 6,
-    name: 'ابراهيم جمال',
-    phone: '+236 659 425',
-    price: '35 ريال',
-    resrvationNumber: '3',
-  },
-  {
-    id: 7,
-    name: 'ابراهيم جمال',
-    phone: '+236 659 425',
-    price: '35 ريال',
-    resrvationNumber: '16',
-  },
-  {
-    id: 8,
-    name: 'ابراهيم جمال',
-    phone: '+236 659 425',
-    price: '35 ريال',
-    resrvationNumber: '30',
-  },
-  {
-    id: 9,
-    name: 'ابراهيم جمال',
-    phone: '+236 659 425',
-    price: '35 ريال',
-    resrvationNumber: '21',
-  },
-  {
-    id: 10,
-    name: 'ابراهيم جمال',
-    phone: '+236 659 425',
-    price: '35 ريال',
-    resrvationNumber: '13',
-  },
-  {
-    id: 11,
-    name: 'ابراهيم جمال',
-    phone: '+236 659 425',
-    price: '35 ريال',
-    resrvationNumber: '23',
-  },
-  {
-    id: 12,
-    name: 'ابراهيم جمال',
-    phone: '+236 659 425',
-    price: '35 ريال',
-    resrvationNumber: '19',
-  },
-];
 
 interface PropType extends PropsWithChildren {
   onRowClick: () => void;
@@ -172,14 +57,17 @@ const StyledTable = styled(DataGrid)(({ theme }) => ({
   },
 }));
 
+type SelectedUsersList = {
+  name: string | undefined;
+  id: number | undefined;
+}[];
+
 const UsersTable = () => {
-  const [selectedUsers, setSelectedUsers] = useState<
-    {
-      name: string | undefined;
-      id: number | undefined;
-    }[]
-  >();
-  const [open, setOpen] = useState(false);
+  const [selectedUsers, setSelectedUsers] = useState<SelectedUsersList>();
+  const [selectedUsersClone, setSelectedUsersClone] =
+    useState<SelectedUsersList>();
+  const dataGridRef = useRef<any>(null);
+  const [showMenu, setShowMenu] = useState(false);
   const [isOpenNotification, setIsOpenNotification] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState<Nullable<number>>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -197,7 +85,7 @@ const UsersTable = () => {
   const handleRowClick: GridEventListener<'rowClick'> = params => {
     const id = params.row.id;
     // nvigate(`/reservations/${params.row.id}`);
-    setOpen(true);
+    // setShowMenu(true);
     setSelectedRowId(id);
     // console.log('reservations', `/reservations/${id}`);
   };
@@ -206,26 +94,29 @@ const UsersTable = () => {
     setMousePosition({ x: event.clientX, y: event.clientY });
   };
   const handleSendNotification = () => {
-    setOpen(false);
+    setShowMenu(false);
     setIsOpenNotification(true);
 
     console.log('id send notification', selectedRowId);
   };
 
   const handleDeleteUser = () => {
-    setOpen(false);
+    setShowMenu(false);
     console.log('id delete', selectedRowId);
     confirm(
       selectedRowId!,
       deleteUser,
-      'هل انت متاكد من حذف المستخدم صاحب الرقم ',
+      'هل انت متاكد من حظر المستخدم صاحب الرقم ',
     );
   };
+
   const handleClose = () => {
-    setOpen(false);
+    setShowMenu(false);
   };
-  const handleOpenNotification = () => {
+
+  const handleCloseNotification = () => {
     setIsOpenNotification(false);
+    setSelectedUsers(selectedUsersClone);
   };
 
   const handleDeleteUserFromList = (id: number) => {
@@ -233,15 +124,72 @@ const UsersTable = () => {
     setSelectedUsers(filteredSelectedUsers);
     if (filteredSelectedUsers?.length === 0) {
       setIsOpenNotification(false);
+      setSelectedUsers(selectedUsersClone);
     }
   };
+
+  const columns: GridColDef[] = [
+    {
+      field: 'name',
+      headerName: 'الإسم',
+      minWidth: 200,
+    },
+
+    {
+      field: 'phone',
+      headerName: 'رقم الهاتف',
+      minWidth: 150,
+    },
+    {
+      field: 'payments',
+      headerName: 'المدفوعات',
+      minWidth: 200,
+    },
+    {
+      field: 'reservations_count',
+      headerName: ' عدد الحجوزات',
+      minWidth: 200,
+    },
+    {
+      field: 'other',
+      headerName: 'أخرى',
+      maxWidth: 75,
+
+      renderCell: () => (
+        <IconButton onClick={() => setShowMenu(prev => !prev)} size='large'>
+          {Icons.moreIcon}
+        </IconButton>
+      ),
+    },
+  ];
+
+  const handleSelectionModelChange = (selectionModel: any) => {
+    const selectedRows = selectionModel.map(
+      (rowNum: any) => data?.data[Number(rowNum) - 1],
+    );
+    const selectedNames = selectedRows.map((row: any) => ({
+      name: row?.name,
+      id: row?.id,
+    }));
+    setSelectedUsers(selectedNames);
+    setSelectedUsersClone(selectedNames);
+  };
+
+  useEffect(() => {
+    if (selectedUsers?.length === 0) {
+      // handleSelectionModelChange(selectedUsers);
+
+      if (dataGridRef.current)
+        console.log('Number of selected rows:', dataGridRef.current);
+    }
+  }, [selectedUsers]);
   if (!isLoading) {
     return (
       <>
         {isOpenNotification && (
           <NotificationDialog
             isOpen={isOpenNotification}
-            onClose={handleOpenNotification}
+            onClose={handleCloseNotification}
             selectedUsers={selectedUsers!}
             onDeleteUser={handleDeleteUserFromList}
           />
@@ -251,6 +199,7 @@ const UsersTable = () => {
             rows={data?.data || []}
             checkboxSelection
             columns={columns}
+            ref={dataGridRef}
             page={page}
             onPageChange={(newPage: number) => setPage(newPage)}
             pageSize={pageSize}
@@ -258,30 +207,24 @@ const UsersTable = () => {
             rowsPerPageOptions={[10, 20, 100]}
             disableSelectionOnClick
             pagination
+            onCellClick={event =>
+              selectedUsers?.length === 0 || !selectedUsers
+                ? setSelectedUsers([{ id: event.row.id, name: event.row.name }])
+                : selectedUsers?.length === 1 &&
+                  selectedUsers[0].id !== event.row.id &&
+                  setSelectedUsers([{ id: event.row.id, name: event.row.name }])
+            }
             onRowClick={handleRowClick}
             rowHeight={48}
             headerHeight={40}
             getRowClassName={() => 'paxton-table--row'}
-            onSelectionModelChange={selectionModel => {
-              const selectedRows = selectionModel.map(
-                rowNum => data?.data[Number(rowNum) - 1],
-              );
-              const selectedNames = selectedRows.map(row => ({
-                name: row?.name,
-                id: row?.id,
-              }));
-              console.log('selectedNames: ', selectedNames);
-              setSelectedUsers(selectedNames);
-              // const selectedIds = selectedRows.map(row => row?.id);
-              // if (selectedNames !== undefined && selectedIds !== undefined) {
-              // }
-            }}
+            onSelectionModelChange={handleSelectionModelChange}
           />
         </div>
         <Menu
           id='basic-menu'
           anchorReference='anchorPosition'
-          open={open}
+          open={showMenu}
           onClose={handleClose}
           anchorPosition={{ top: mousePosition.y, left: mousePosition.x - 76 }}
           MenuListProps={{
@@ -292,7 +235,7 @@ const UsersTable = () => {
             {Icons.NotificationIcon()} &nbsp; ارسال اشعار
           </MenuItem>
           <MenuItem onClick={handleDeleteUser}>
-            {Icons.deleteIcon('#FF0000')} &nbsp; حذف المستخدم
+            {Icons.deleteIcon('#FF0000')} &nbsp; حظر المستخدم
           </MenuItem>
         </Menu>
       </>
