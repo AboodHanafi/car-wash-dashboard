@@ -46,7 +46,7 @@ const Reservations = () => {
 
   useEffect(() => {}, []);
   return (
-    <Stack id='mainWrapper' pr='20px' spacing={2}>
+    <Stack id='mainWrapper' pr='20px' spacing={2} marginTop={1}>
       <Stack
         id='header'
         direction='row'
@@ -125,16 +125,18 @@ const Reservations = () => {
           </FormLabel>
           <Stack spacing={1} direction='row'>
             <Autocomplete
+              clearIcon={false}
               fullWidth
               sx={{
                 // width: "150px",
                 '& .MuiAutocomplete-input': {
                   color: '#191919',
-                  fontWeight: 300,
-                  fontSize: '0.7rem',
+                  fontWeight: 200,
+                  fontSize: '0.9rem',
                 },
                 '&& .MuiSvgIcon-root': {
                   fontSize: '1rem',
+                  marginTop: '0.3rem',
                 },
                 '&& .MuiPopperUnstyled-root': {
                   backgroundColor: 'red',
@@ -143,7 +145,7 @@ const Reservations = () => {
               }}
               disablePortal
               id='combo-box-demo'
-              // size='medium'
+              size='small'
               options={reservationStatus}
               getOptionLabel={(option: autoType) => option.label}
               ListboxProps={{
@@ -153,7 +155,6 @@ const Reservations = () => {
                 },
               }}
               value={status}
-              size='small'
               onChange={handleChangeReservationStatus}
               renderInput={(params: any) => (
                 <CustomizedTextField

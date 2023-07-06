@@ -66,7 +66,6 @@ const UsersTable = () => {
   const [selectedUsers, setSelectedUsers] = useState<SelectedUsersList>();
   const [selectedUsersClone, setSelectedUsersClone] =
     useState<SelectedUsersList>();
-  const dataGridRef = useRef<any>(null);
   const [showMenu, setShowMenu] = useState(false);
   const [isOpenNotification, setIsOpenNotification] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState<Nullable<number>>(null);
@@ -175,14 +174,6 @@ const UsersTable = () => {
     setSelectedUsersClone(selectedNames);
   };
 
-  useEffect(() => {
-    if (selectedUsers?.length === 0) {
-      // handleSelectionModelChange(selectedUsers);
-
-      if (dataGridRef.current)
-        console.log('Number of selected rows:', dataGridRef.current);
-    }
-  }, [selectedUsers]);
   if (!isLoading) {
     return (
       <>
@@ -199,7 +190,6 @@ const UsersTable = () => {
             rows={data?.data || []}
             checkboxSelection
             columns={columns}
-            ref={dataGridRef}
             page={page}
             onPageChange={(newPage: number) => setPage(newPage)}
             pageSize={pageSize}
@@ -235,7 +225,7 @@ const UsersTable = () => {
             {Icons.NotificationIcon()} &nbsp; ارسال اشعار
           </MenuItem>
           <MenuItem onClick={handleDeleteUser}>
-            {Icons.deleteIcon('#FF0000')} &nbsp; حظر المستخدم
+            {Icons.deleteIcon('#FF0000')} &nbsp; حظر
           </MenuItem>
         </Menu>
       </>

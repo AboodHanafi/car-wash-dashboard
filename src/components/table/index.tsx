@@ -3,6 +3,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useState } from 'react';
 import { useFetchReservationsQuery } from '../../app/store';
 import LoadingSkeleton from '../loadingSkeleton';
+import { Data, Response } from '../../services/homeInfo';
 const columns: GridColDef[] = [
   {
     field: 'id',
@@ -30,98 +31,14 @@ const columns: GridColDef[] = [
     headerName: 'تاريخ الحجز',
     minWidth: 150,
   },
-  // {
-  //   field: "fullName",
-  //   headerName: "Full name",
-  //   description: "This column has a value getter and is not sortable.",
-  //   sortable: false,
-  //   width: 160,
-  //   valueGetter: (params: GridValueGetterParams) =>
-  //     `${params.row.firstName || ""} ${params.row.lastName || ""}`,
-  // },
 ];
 
-const rows = [
-  {
-    id: 1,
-    name: 'ابراهيم جمال',
-    reservationNum: '002',
-    mobileNum: '+236 659 425',
-    price: '35 ريال',
-    date: '14-2-2022',
-  },
-  {
-    id: 2,
-    name: 'ابراهيم جمال',
-    reservationNum: '002',
-    mobileNum: '+236 659 425',
-    price: '35 ريال',
-    date: '14-2-2022',
-  },
-  {
-    id: 3,
-    name: 'ابراهيم جمال',
-    reservationNum: '002',
-    mobileNum: '+236 659 425',
-    price: '35 ريال',
-    date: '14-2-2022',
-  },
-  {
-    id: 4,
-    name: 'ابراهيم جمال',
-    reservationNum: '002',
-    mobileNum: '+236 659 425',
-    price: '35 ريال',
-    date: '14-2-2022',
-  },
-  {
-    id: 5,
-    name: 'ابراهيم جمال',
-    reservationNum: '002',
-    mobileNum: '+236 659 425',
-    price: '35 ريال',
-    date: '14-2-2022',
-  },
-  {
-    id: 6,
-    name: 'ابراهيم جمال',
-    reservationNum: '002',
-    mobileNum: '+236 659 425',
-    price: '35 ريال',
-    date: '14-2-2022',
-  },
-  {
-    id: 7,
-    name: 'ابراهيم جمال',
-    reservationNum: '002',
-    mobileNum: '+236 659 425',
-    price: '35 ريال',
-    date: '14-2-2022',
-  },
-  {
-    id: 8,
-    name: 'ابراهيم جمال',
-    reservationNum: '002',
-    mobileNum: '+236 659 425',
-    price: '35 ريال',
-    date: '14-2-2022',
-  },
-  {
-    id: 9,
-    name: 'ابراهيم جمال',
-    reservationNum: '002',
-    mobileNum: '+236 659 425',
-    price: '35 ريال',
-    date: '14-2-2022',
-  },
-];
-export default function BasicTable() {
-  const {
-    data: reservations,
-    error,
-    isLoading,
-    isFetching,
-  } = useFetchReservationsQuery();
+export default function BasicTable({
+  reservations,
+}: {
+  reservations: Data | undefined;
+}) {
+  const { isLoading, isFetching } = useFetchReservationsQuery();
 
   const bigLabtob = useMediaQuery('(max-width:1024px)');
   const [pageSize, setPageSize] = useState<number>(10);
@@ -166,7 +83,7 @@ export default function BasicTable() {
   } else {
     return (
       <StyledTable
-        rows={reservations?.data || []}
+        rows={reservations?.reservations || []}
         columns={columns}
         page={page}
         onPageChange={(newPage: number) => setPage(newPage)}

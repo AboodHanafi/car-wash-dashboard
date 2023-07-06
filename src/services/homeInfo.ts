@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootState } from '../app/store';
 import { baseUrl, token } from '../utils/global-var';
+import { Nullable } from '../utils/types';
 
 interface Reservation {
   id: number;
@@ -47,7 +48,7 @@ interface Rate {
   notes: string;
 }
 
-interface Data {
+export interface Data {
   reservations_count: number;
   reservations_current: number;
   reservations_previous: number;
@@ -55,7 +56,7 @@ interface Data {
   reservations: Reservation[];
 }
 
-interface Response {
+export interface Response {
   status: boolean;
   errNum: string;
   msg: string;
@@ -80,7 +81,19 @@ export const homeApi = createApi({
         };
       },
     }),
+    fetchHomeInfoByMonth: builder.query<Response, string>({
+      query: (month: string) => {
+        return {
+          method: 'GET',
+          url: `home?month=${month}`,
+        };
+      },
+    }),
   }),
 });
 
-export const { useFetchHomeInfoQuery } = homeApi;
+export const {
+  useFetchHomeInfoQuery,
+  useLazyFetchHomeInfoByMonthQuery,
+  useFetchHomeInfoByMonthQuery,
+} = homeApi;

@@ -47,11 +47,25 @@ const Users = () => {
   const theme = useTheme();
 
   return (
-    <Stack id='mainWrapper' pr='20px' spacing={2}>
-      <Stack id='header' justifyContent='center'>
+    <Stack id='mainWrapper' pr='20px' spacing={2} marginTop={1}>
+      <Stack
+        id='header'
+        direction='row'
+        justifyContent='space-between'
+        alignItems='center'
+      >
         <Typography fontWeight='bold' fontSize='0.9rem' color='#191919'>
           المستخدمين
         </Typography>
+        <CustomButton
+          style={{
+            backgroundColor: theme.palette.primary.main,
+            color: '#fff',
+          }}
+          onClick={() => navigate('/reservations-form')}
+        >
+          مستخدم جديد
+        </CustomButton>
       </Stack>
       <Stack
         borderRadius='10px'
