@@ -1,6 +1,6 @@
 import { Autocomplete, Stack, Typography } from '@mui/material';
 import { Months } from '../../assets';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { CustomizedTextField } from '../../globalStyle';
 import DashCard from '../../components/dashboardCard';
 import BasicTable from '../../components/table';
@@ -10,8 +10,9 @@ import {
   useLazyFetchHomeInfoByMonthQuery,
 } from '../../app/store';
 import { Response } from '../../services/homeInfo';
+import { Nullable } from '../../utils/types';
 
-interface autoType {
+interface Month {
   label: string;
   id: number;
 }
@@ -19,12 +20,10 @@ interface autoType {
 const HomePage = () => {
   const { data } = useFetchHomeInfoQuery();
 
-  const [monthValue, setMonthValue] = useState<autoType | null>();
+  const [monthValue, setMonthValue] = useState<Nullable<Month>>(null);
   const [fetchHomeInfoByMonth, results] = useLazyFetchHomeInfoByMonthQuery();
 
-  let reservations: Response | undefined = results.data?.data
-    ? results.data
-    : data;
+  let reservations: Response | undefined = monthValue ? results.data : data;
 
   let charData = [
     { name: 'الاسبوع الرابع', حجز: 0 },
@@ -45,6 +44,15 @@ const HomePage = () => {
     );
     charData = clone;
   });
+
+  const handleChangeMonth = (
+    event: React.SyntheticEvent<Element, Event>,
+    value: Nullable<Month>,
+  ) => {
+    setMonthValue(value);
+    fetchHomeInfoByMonth(String(value?.id).padStart(2, '0'));
+  };
+
   return (
     <Stack spacing={2} marginTop={1}>
       <Stack
@@ -63,7 +71,6 @@ const HomePage = () => {
           '& .MuiAutocomplete-input': {
             color: '#191919',
             fontWeight: 400,
-            // fontSize: '0.9rem',
           },
           '&& .MuiPopperUnstyled-root': {
             backgroundColor: 'red',
@@ -82,10 +89,7 @@ const HomePage = () => {
           },
         }}
         value={monthValue}
-        onChange={(e: any, value: autoType | null) => {
-          setMonthValue(value);
-          fetchHomeInfoByMonth(String(value?.id).padStart(2, '0'));
-        }}
+        onChange={handleChangeMonth}
         renderInput={params => (
           <CustomizedTextField
             placeholder='حدد الشهر'
@@ -165,7 +169,7 @@ const HomePage = () => {
                 },
               }}
               value={monthValue}
-              onChange={(e: any, value: autoType | null) =>
+              onChange={(e: any, value: Month | null) =>
                 setMonthValue(value)
               }
               renderInput={params => (
