@@ -41,4 +41,8 @@ export {
   useDeleteUserByIdMutation,
 } from '../services/users';
 
-export { useFetchHomeInfoQuery } from '../services/homeInfo';
+export {
+  useFetchHomeInfoQuery,
+  useFetchHomeInfoByMonthQuery,
+  useLazyFetchHomeInfoByMonthQuery,
+} from '../services/homeInfo';
