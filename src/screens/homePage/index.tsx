@@ -19,8 +19,14 @@ interface Month {
 
 const HomePage = () => {
     const { data } = useFetchHomeInfoQuery();
-
-    const [monthValue, setMonthValue] = useState<Nullable<Month>>(null);
+    console.log({
+        label: Months[new Date().getMonth()].label,
+        id: new Date().getMonth() + 1,
+    });
+    const [monthValue, setMonthValue] = useState<Nullable<Month>>({
+        label: Months[new Date().getMonth()].label,
+        id: new Date().getMonth() + 1,
+    });
 
     const [fetchHomeInfoByMonth, results] = useLazyFetchHomeInfoByMonthQuery();
 
@@ -62,24 +68,12 @@ const HomePage = () => {
     ) => {
         setMonthValue(value);
         fetchHomeInfoByMonth(String(value?.id).padStart(2, '0'));
-        console.log('useEffect results: ', results);
     };
 
     useEffect(() => {
-        if (!monthValue) {
-            fetchHomeInfoByMonth(
-                String(new Date().getMonth() + 1).padStart(2, '0')
-            );
-        }
-    }, [monthValue]);
-
-    useEffect(() => {
-        if (results.data) {
-            getReservationsMonth(results.data.data.reservations);
-
-            console.log(results.data);
-        }
-    }, [results]);
+        const currentMonth = String(new Date().getMonth() + 1).padStart(2, '0');
+        fetchHomeInfoByMonth(currentMonth);
+    }, []);
 
     return (
         <Stack spacing={2} marginTop={1}>
@@ -107,6 +101,7 @@ const HomePage = () => {
                 disablePortal
                 id="combo-box-demo"
                 size="small"
+                clearIcon={false}
                 options={Months}
                 getOptionLabel={option => option.label}
                 ListboxProps={{
