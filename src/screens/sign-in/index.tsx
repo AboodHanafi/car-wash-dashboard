@@ -68,16 +68,15 @@ function SignIn() {
                 password: String(data.get('password')),
             });
         }
+    };
+
+    React.useEffect(() => {
         if (results.data?.status) {
             localStorage.setItem('car-wash-token', results.data.data.api_token);
             dispatch(authenticated());
             navigate('/');
         }
         console.log('results: ', results);
-    };
-
-    React.useEffect(() => {
-        console.log('auth resutls: ', results);
     }, [results]);
 
     return (
