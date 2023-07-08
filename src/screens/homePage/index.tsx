@@ -1,6 +1,6 @@
 import { Autocomplete, Stack, Typography } from '@mui/material';
 import { Months } from '../../assets';
-import { useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { CustomizedTextField } from '../../globalStyle';
 import DashCard from '../../components/dashboardCard';
 import BasicTable from '../../components/table';
@@ -9,7 +9,7 @@ import {
     useFetchHomeInfoQuery,
     useLazyFetchHomeInfoByMonthQuery,
 } from '../../app/store';
-import { Response } from '../../services/homeInfo';
+import { Reservation, Response } from '../../services/homeInfo';
 import { Nullable } from '../../utils/types';
 
 interface Month {
@@ -21,6 +21,7 @@ const HomePage = () => {
     const { data } = useFetchHomeInfoQuery();
 
     const [monthValue, setMonthValue] = useState<Nullable<Month>>(null);
+
     const [fetchHomeInfoByMonth, results] = useLazyFetchHomeInfoByMonthQuery();
 
     let reservations: Response | undefined = monthValue ? results.data : data;
@@ -32,32 +33,53 @@ const HomePage = () => {
         { weekNumber: 1, name: 'الاسبوع الأول', حجز: 0 },
     ];
 
-    reservations?.data.reservations.forEach((res, index) => {
-        const date = new Date(res.created_at.split(' ')[0]);
-        const firstDayOfMonth = new Date(
-            date.getFullYear(),
-            date.getMonth(),
-            1
-        );
-        const dayOfWeekFirstDay = firstDayOfMonth.getDay();
-        const dayOfMonth = date.getDate();
-        const offset = (dayOfWeekFirstDay + dayOfMonth - 1) % 7;
-        const weekOfMonth = Math.ceil((dayOfMonth + offset) / 7);
-        const clone = charData.map((item, index) =>
-            item.weekNumber !== weekOfMonth
-                ? item
-                : { ...item, حجز: item.حجز + 1 }
-        );
-        charData = clone;
-    });
-
+    const getReservationsMonth = (reservations: Reservation[]) => {
+        reservations.forEach((res, index) => {
+            const date = new Date(res.created_at.split(' ')[0]);
+            const firstDayOfMonth = new Date(
+                date.getFullYear(),
+                date.getMonth(),
+                1
+            );
+            const dayOfWeekFirstDay = firstDayOfMonth.getDay();
+            const dayOfMonth = date.getDate();
+            const offset = (dayOfWeekFirstDay + dayOfMonth - 1) % 7;
+            const weekOfMonth = Math.ceil((dayOfMonth + offset) / 7);
+            const clone = charData.map((item, index) =>
+                item.weekNumber !== weekOfMonth
+                    ? item
+                    : { ...item, حجز: item.حجز + 1 }
+            );
+            charData = clone;
+        });
+    };
+    if (results.data) {
+        getReservationsMonth(results.data.data.reservations);
+    }
     const handleChangeMonth = (
         event: React.SyntheticEvent<Element, Event>,
         value: Nullable<Month>
     ) => {
         setMonthValue(value);
         fetchHomeInfoByMonth(String(value?.id).padStart(2, '0'));
+        console.log('useEffect results: ', results);
     };
+
+    useEffect(() => {
+        if (!monthValue) {
+            fetchHomeInfoByMonth(
+                String(new Date().getMonth() + 1).padStart(2, '0')
+            );
+        }
+    }, [monthValue]);
+
+    useEffect(() => {
+        if (results.data) {
+            getReservationsMonth(results.data.data.reservations);
+
+            console.log(results.data);
+        }
+    }, [results]);
 
     return (
         <Stack spacing={2} marginTop={1}>
@@ -138,60 +160,63 @@ const HomePage = () => {
                     <BasicTable reservations={reservations?.data} />
                 </Stack>
                 <Stack>
-                    {monthValue && (
-                        <>
-                            <Stack
-                                direction="row"
-                                justifyContent="space-between"
-                                alignItems="center"
-                                boxShadow="0px 1px 3px rgba(0, 0, 0, 0.25)"
-                                bgcolor="#FCFCFC"
-                                padding="5px 10px"
-                                borderRadius="10px 10px 0 0">
-                                <Typography fontSize="0.9rem" color="#191919">
-                                    عدد الحجوزات
-                                </Typography>
-                                {/* <Autocomplete
-              sx={{
-                width: '150px',
-                '& .MuiAutocomplete-input': {
-                  color: '#191919',
-                  fontWeight: 400,
-                },
-                '&& .MuiPopperUnstyled-root': {
-                  backgroundColor: 'red',
-                  color: 'red',
-                },
-              }}
-              disablePortal
-              id='combo-box-demo'
-              size='small'
-              options={Months}
-              getOptionLabel={option => option.label}
-              ListboxProps={{
-                style: {
-                  fontSize: '0.9rem',
-                  color: '#191919',
-                },
-              }}
-              value={monthValue}
-              onChange={(e: any, value: Month | null) =>
-                setMonthValue(value)
-              }
-              renderInput={params => (
-                <CustomizedTextField
-                  placeholder='حدد الشهر'
-                  {...params}
-                  inputProps={{
-                    ...params.inputProps,
-                  }}
-                />
-              )}
-            /> */}
-                            </Stack>
-                            <ChartBar charData={charData} />
-                        </>
-                    )}
+                    <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        boxShadow="0px 1px 3px rgba(0, 0, 0, 0.25)"
+                        bgcolor="#FCFCFC"
+                        padding="5px 10px"
+                        borderRadius="10px 10px 0 0">
+                        <Typography fontSize="0.9rem" color="#191919">
+                            {monthValue?.label ? (
+                                <Fragment>
+                                    حجوزات شهر{' '}
+                                    <strong>{monthValue.label}</strong>
+                                </Fragment>
+                            ) : (
+                                'حجوزات الشهر الحالي'
+                            )}
+                        </Typography>
+                        {/* <Autocomplete
+                                    sx={{
+                                        width: '150px',
+                                        '& .MuiAutocomplete-input': {
+                                            color: '#191919',
+                                            fontWeight: 400,
+                                        },
+                                        '&& .MuiPopperUnstyled-root': {
+                                            backgroundColor: 'red',
+                                            color: 'red',
+                                        },
+                                    }}
+                                    disablePortal
+                                    id="combo-box-demo"
+                                    size="small"
+                                    options={Months}
+                                    getOptionLabel={option => option.label}
+                                    ListboxProps={{
+                                        style: {
+                                            fontSize: '0.9rem',
+                                            color: '#191919',
+                                        },
+                                    }}
+                                    value={monthValue}
+                                    onChange={(e: any, value: Month | null) =>
+                                        setMonthValue(value)
+                                    }
+                                    renderInput={params => (
+                                        <CustomizedTextField
+                                            placeholder="حدد الشهر"
+                                            {...params}
+                                            inputProps={{
+                                                ...params.inputProps,
+                                            }}
+                                        />
+                                    )}
+                                /> */}
+                    </Stack>
+                    <ChartBar charData={charData} />
                 </Stack>
             </Stack>
         </Stack>
