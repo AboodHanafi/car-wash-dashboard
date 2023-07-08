@@ -10,17 +10,19 @@ import Reservations from './screens/reservations';
 import ReservationForm from './screens/reservations/form';
 import ServicesForm from './screens/services/form';
 import ReservationDetails from './screens/reservations/details';
-import CustomizedSteppers from './components/stepper';
 import Users from './screens/users';
 import Employees from './screens/employees';
-import DiscountCoupons from './screens/discountCoupons';
+import Coupons from './screens/coupons';
 import ReservationLocations from './screens/reservationLocations';
 import { useEffect } from 'react';
 import CRUDRequests from './API';
 import Services from './screens/services';
-import CouponsForm from './screens/discountCoupons/form';
+import CouponsForm from './screens/coupons/form';
 import { ConfirmProvider } from 'material-ui-confirm';
 import EmployeesDetails from './screens/employees/details';
+import SignIn from './screens/sign-in';
+import SignUp from './screens/sign-up';
+import { token } from './utils/global-var';
 
 function App() {
     const cacheRtl = createCache({
@@ -46,79 +48,91 @@ function App() {
             fontWeightBold: 700,
         },
     });
-    const token = '207|shlkWhsII1LoVeEYgoA5WOXBD3QiLs0nvaB7WK8b';
-    localStorage.setItem('car-wash-token', token);
-    useEffect(() => {
-        // Example usage
-        const fetchData = async () => {
-            try {
-                const response = await CRUDRequests.get('/users', {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-            } catch (error) {
-                console.error(error);
-            }
-        };
+    // const token = '207|shlkWhsII1LoVeEYgoA5WOXBD3QiLs0nvaB7WK8b';
+    // localStorage.setItem('car-wash-token', token);
+    const isAuth = !!token;
+    // useEffect(() => {
+    //     // Example usage
+    //     const fetchData = async () => {
+    //         try {
+    //             const response = await CRUDRequests.get('/users', {
+    //                 headers: {
+    //                     Authorization: `Bearer ${token}`,
+    //                 },
+    //             });
+    //         } catch (error) {
+    //             console.error(error);
+    //         }
+    //     };
 
-        fetchData();
-    }, []);
+    //     fetchData();
+    // }, []);
     return (
         <CacheProvider value={cacheRtl}>
             <ThemeProvider theme={theme}>
                 <ConfirmProvider>
-                    <LayOut>
+                    {!isAuth && (
                         <Routes>
-                            <Route path="/" element={<HomePage />} />
-                            <Route
-                                path="/reservations"
-                                element={<Reservations />}
-                            />
-                            <Route
-                                path="/reservations/form"
-                                element={<ReservationForm />}
-                            />
-                            <Route
-                                path="/reservations/:id"
-                                element={<ReservationDetails />}
-                            />
-                            <Route path="/users" element={<Users />} />
-                            <Route path="/employees" element={<Employees />} />
-                            <Route
-                                path="/employees/:id"
-                                element={<EmployeesDetails />}
-                            />
-                            <Route
-                                path="/employees/form"
-                                element={
-                                    <div>
-                                        لا يوجد واجهة اضافة موظف في ال figma
-                                    </div>
-                                }
-                            />
-                            <Route path="/services" element={<Services />} />
-                            <Route
-                                path="/services/form"
-                                element={<ServicesForm />}
-                            />
-
-                            <Route
-                                path="/locations"
-                                element={<ReservationLocations />}
-                            />
-
-                            <Route
-                                path="/coupons"
-                                element={<DiscountCoupons />}
-                            />
-                            <Route
-                                path="/coupons/form"
-                                element={<CouponsForm />}
-                            />
-                            {/* <Route path="/stepper" element={<CustomizedSteppers />} /> */}
+                            <Route path="/signin" element={<SignIn />} />
+                            <Route path="/signup" element={<SignUp />} />
                         </Routes>
-                    </LayOut>
+                    )}
+                    {isAuth && (
+                        <LayOut>
+                            <Routes>
+                                <Route path="/" element={<HomePage />} />
+
+                                <Route
+                                    path="/reservations"
+                                    element={<Reservations />}
+                                />
+                                <Route
+                                    path="/reservations/form"
+                                    element={<ReservationForm />}
+                                />
+                                <Route
+                                    path="/reservations/:id"
+                                    element={<ReservationDetails />}
+                                />
+                                <Route path="/users" element={<Users />} />
+                                <Route
+                                    path="/employees"
+                                    element={<Employees />}
+                                />
+                                <Route
+                                    path="/employees/:id"
+                                    element={<EmployeesDetails />}
+                                />
+                                <Route
+                                    path="/employees/form"
+                                    element={
+                                        <div>
+                                            لا يوجد واجهة اضافة موظف في ال figma
+                                        </div>
+                                    }
+                                />
+                                <Route
+                                    path="/services"
+                                    element={<Services />}
+                                />
+                                <Route
+                                    path="/services/form"
+                                    element={<ServicesForm />}
+                                />
+
+                                <Route
+                                    path="/locations"
+                                    element={<ReservationLocations />}
+                                />
+
+                                <Route path="/coupons" element={<Coupons />} />
+                                <Route
+                                    path="/coupons/form"
+                                    element={<CouponsForm />}
+                                />
+                            </Routes>
+                        </LayOut>
+                    )}
                 </ConfirmProvider>
             </ThemeProvider>
         </CacheProvider>

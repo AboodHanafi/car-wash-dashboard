@@ -20,7 +20,6 @@ interface PropsType extends PropsWithChildren {
 const SideBar: React.FC<PropsType> = ({ open }) => {
     const { palette } = useTheme();
     const { pathname } = useLocation();
-    console.log('pathname: ', pathname);
     const navigate = useNavigate();
     const [tooltipNumber, setTooltipNumber] = useState(0);
     return (
@@ -93,9 +92,14 @@ const SideBar: React.FC<PropsType> = ({ open }) => {
                                 selected={
                                     item.path === `/${pathname.split('/')[1]}`
                                 }
-                                onClick={() =>
-                                    navigate(item.path ? item.path : '/')
-                                }
+                                onClick={() => {
+                                    if (item.path === '/signin') {
+                                        localStorage.removeItem(
+                                            'car-wash-token'
+                                        );
+                                    }
+                                    navigate(item.path ? item.path : '/');
+                                }}
                                 sx={{
                                     minHeight: 35,
                                     justifyContent: open ? 'initial' : 'center',
