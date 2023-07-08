@@ -23,81 +23,106 @@ import { ConfirmProvider } from 'material-ui-confirm';
 import EmployeesDetails from './screens/employees/details';
 
 function App() {
-  const cacheRtl = createCache({
-    key: 'muirtl',
-    stylisPlugins: [prefixer, rtlPlugin],
-  });
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: '#4C2784',
-        dark: '#1a0056',
-        light: '#7c52b4',
-      },
-      secondary: {
-        main: '#1975FF',
-      },
-    },
-    typography: {
-      fontFamily: 'Tajawal',
-      fontSize: 12,
-      fontWeightRegular: 400,
-      fontWeightMedium: 500,
-      fontWeightBold: 700,
-    },
-  });
-  const token = '207|shlkWhsII1LoVeEYgoA5WOXBD3QiLs0nvaB7WK8b';
-  localStorage.setItem('car-wash-token', token);
-  useEffect(() => {
-    // Example usage
-    const fetchData = async () => {
-      try {
-        const response = await CRUDRequests.get('/users', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    const cacheRtl = createCache({
+        key: 'muirtl',
+        stylisPlugins: [prefixer, rtlPlugin],
+    });
+    const theme = createTheme({
+        palette: {
+            primary: {
+                main: '#4C2784',
+                dark: '#1a0056',
+                light: '#7c52b4',
+            },
+            secondary: {
+                main: '#1975FF',
+            },
+        },
+        typography: {
+            fontFamily: 'Tajawal',
+            fontSize: 12,
+            fontWeightRegular: 400,
+            fontWeightMedium: 500,
+            fontWeightBold: 700,
+        },
+    });
+    const token = '207|shlkWhsII1LoVeEYgoA5WOXBD3QiLs0nvaB7WK8b';
+    localStorage.setItem('car-wash-token', token);
+    useEffect(() => {
+        // Example usage
+        const fetchData = async () => {
+            try {
+                const response = await CRUDRequests.get('/users', {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        };
 
-    fetchData();
-  }, []);
-  return (
-    <CacheProvider value={cacheRtl}>
-      <ThemeProvider theme={theme}>
-        <ConfirmProvider>
-          <LayOut>
-            <Routes>
-              <Route path='/' element={<HomePage />} />
-              <Route path='/reservations' element={<Reservations />} />
-              <Route path='/reservations-form' element={<ReservationForm />} />
-              <Route
-                path='/reservations/:id'
-                element={<ReservationDetails />}
-              />
-              <Route path='/users' element={<Users />} />
-              <Route path='/employees' element={<Employees />} />
-              <Route path='/employees/:id' element={<EmployeesDetails />} />
-              <Route
-                path='//employee-form'
-                element={<div>لا يوجد واجهة اضافة موظف في ال figma</div>}
-              />
-              <Route path='/services' element={<Services />} />
-              <Route path='/services-form' element={<ServicesForm />} />
+        fetchData();
+    }, []);
+    return (
+        <CacheProvider value={cacheRtl}>
+            <ThemeProvider theme={theme}>
+                <ConfirmProvider>
+                    <LayOut>
+                        <Routes>
+                            <Route path="/" element={<HomePage />} />
+                            <Route
+                                path="/reservations"
+                                element={<Reservations />}
+                            />
+                            <Route
+                                path="/reservations/form"
+                                element={<ReservationForm />}
+                            />
+                            <Route
+                                path="/reservations/:id"
+                                element={<ReservationDetails />}
+                            />
+                            <Route path="/users" element={<Users />} />
+                            <Route path="/employees" element={<Employees />} />
+                            <Route
+                                path="/employees/:id"
+                                element={<EmployeesDetails />}
+                            />
+                            <Route
+                                path="/employees/form"
+                                element={
+                                    <div>
+                                        لا يوجد واجهة اضافة موظف في ال figma
+                                    </div>
+                                }
+                            />
+                            <Route path="/services" element={<Services />} />
+                            <Route
+                                path="/services/form"
+                                element={<ServicesForm />}
+                            />
 
-              <Route path='/locations' element={<ReservationLocations />} />
+                            <Route
+                                path="/locations"
+                                element={<ReservationLocations />}
+                            />
 
-              <Route path='/discount-coupons' element={<DiscountCoupons />} />
-              <Route path='/coupons-form' element={<CouponsForm />} />
-              {/* <Route path="/stepper" element={<CustomizedSteppers />} /> */}
-            </Routes>
-          </LayOut>
-        </ConfirmProvider>
-      </ThemeProvider>
-    </CacheProvider>
-  );
+                            <Route
+                                path="/coupons"
+                                element={<DiscountCoupons />}
+                            />
+                            <Route
+                                path="/coupons/form"
+                                element={<CouponsForm />}
+                            />
+                            {/* <Route path="/stepper" element={<CustomizedSteppers />} /> */}
+                        </Routes>
+                    </LayOut>
+                </ConfirmProvider>
+            </ThemeProvider>
+        </CacheProvider>
+    );
 }
 
 export default App;
