@@ -1,15 +1,15 @@
 import {
-  Alert,
-  Autocomplete,
-  CircularProgress,
-  FormLabel,
-  Icon,
-  IconButton,
-  InputAdornment,
-  Stack,
-  Typography,
-  useMediaQuery,
-  useTheme,
+    Alert,
+    Autocomplete,
+    CircularProgress,
+    FormLabel,
+    Icon,
+    IconButton,
+    InputAdornment,
+    Stack,
+    Typography,
+    useMediaQuery,
+    useTheme,
 } from '@mui/material';
 import { CustomButton, CustomizedTextField } from '../../globalStyle';
 import { useNavigate } from 'react-router-dom';
@@ -19,63 +19,59 @@ import EmployeesList from './employeesList';
 import { useFetchEmployeesQuery } from '../../app/store';
 
 const Employees = () => {
-  const { data: employees, isLoading, isError } = useFetchEmployeesQuery('');
-  // const { data: employees, isLoading, error } = useFetchEmployees('/users');
+    const { data: employees, isLoading, isError } = useFetchEmployeesQuery('');
+    // const { data: employees, isLoading, error } = useFetchEmployees('/users');
 
-  const bigLabtob = useMediaQuery('(max-width:1024px)');
-  const navigate = useNavigate();
-  const theme = useTheme();
+    const bigLabtob = useMediaQuery('(max-width:1024px)');
+    const navigate = useNavigate();
+    const theme = useTheme();
 
-  let content: JSX.Element;
-  if (isLoading) {
-    content = <CircularProgress sx={{ mt: 12 }} />;
-  } else if (isError) {
-    content = (
-      <Alert
-        variant='outlined'
-        sx={{ mt: 12, fontWeight: 600, color: '#FF0000' }}
-        icon={false}
-        severity='error'
-      >
-        يوجد خطأ ما في جلب البيانات{' '}
-      </Alert>
-    );
-  } else {
-    content = <EmployeesList employees={employees!} />;
-  }
+    let content: JSX.Element;
+    if (isLoading) {
+        content = <CircularProgress sx={{ mt: 12 }} />;
+    } else if (isError) {
+        content = (
+            <Alert
+                variant="outlined"
+                sx={{ mt: 12, fontWeight: 600, color: '#FF0000' }}
+                icon={false}
+                severity="error">
+                يوجد خطأ ما في جلب البيانات{' '}
+            </Alert>
+        );
+    } else {
+        content = <EmployeesList employees={employees!} />;
+    }
 
-  return (
-    <Stack id='mainWrapper' pr='20px' spacing={2} marginTop={1}>
-      <Stack
-        id='header'
-        direction='row'
-        justifyContent='space-between'
-        alignItems='center'
-      >
-        <Typography fontWeight='bold' fontSize='0.9rem' color='#191919'>
-          الموظفين
-        </Typography>
-        <CustomButton
-          style={{
-            backgroundColor: theme.palette.primary.main,
-            color: '#fff',
-          }}
-          onClick={() => navigate('/employee-form')}
-        >
-          إضافة موظف
-        </CustomButton>
-      </Stack>
+    return (
+        <Stack id="mainWrapper" pr="20px" spacing={2} marginTop={1}>
+            <Stack
+                id="header"
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center">
+                <Typography fontWeight="bold" fontSize="0.9rem" color="#191919">
+                    الموظفين
+                </Typography>
+                <CustomButton
+                    style={{
+                        backgroundColor: theme.palette.primary.main,
+                        color: '#fff',
+                    }}
+                    onClick={() => navigate('/employees/form')}>
+                    إضافة موظف
+                </CustomButton>
+            </Stack>
 
-      <Stack
-        id='main'
-        direction='column'
-        justifyContent='space-between'
-        alignItems='center'
-      >
-        {content}
-      </Stack>
+            <Stack
+                id="main"
+                direction="column"
+                justifyContent="space-between"
+                alignItems="center">
+                {content}
+            </Stack>
 
-      {/* <Stack
+            {/* <Stack
         borderRadius="10px"
         direction="row"
         justifyContent="space-between"
@@ -205,8 +201,8 @@ const Employees = () => {
       <Stack id="table">
         <EmployeesTable />
       </Stack> */}
-    </Stack>
-  );
+        </Stack>
+    );
 };
 
 export default Employees;
