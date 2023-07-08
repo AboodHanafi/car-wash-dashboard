@@ -66,10 +66,12 @@ const HomePage = () => {
     };
 
     useEffect(() => {
-        fetchHomeInfoByMonth(
-            String(new Date().getMonth() + 1).padStart(2, '0')
-        );
-    }, []);
+        if (!monthValue) {
+            fetchHomeInfoByMonth(
+                String(new Date().getMonth() + 1).padStart(2, '0')
+            );
+        }
+    }, [monthValue]);
 
     useEffect(() => {
         if (results.data) {
