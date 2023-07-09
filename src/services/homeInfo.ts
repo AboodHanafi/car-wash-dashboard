@@ -2,8 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootState } from '../app/store';
 import { baseUrl, token } from '../utils/global-var';
 import { Nullable } from '../utils/types';
-import { useSelector } from 'react-redux';
-import useAuth from '../hooks/use-auth';
+
 export interface Reservation {
     id: number;
     number: string;
@@ -68,7 +67,10 @@ export const homeApi = createApi({
     reducerPath: 'homeApi',
     baseQuery: fetchBaseQuery({
         baseUrl,
-        prepareHeaders: usePrepareHeaders,
+        prepareHeaders: headers => {
+            headers.set('authorization', `Bearer ${token}`);
+            return headers;
+        },
     }),
     endpoints: builder => ({
         fetchHomeInfo: builder.query<Response, void>({
@@ -89,6 +91,14 @@ export const homeApi = createApi({
         }),
     }),
 });
+
+export const {
+    useFetchHomeInfoQuery,
+    useLazyFetchHomeInfoByMonthQuery,
+    useFetchHomeInfoByMonthQuery,
+} = homeApi;
+
+/*
 function usePrepareHeaders(headers: Headers) {
     const { token: api_token } = useAuth(); // Assuming useAuth provides the authentication token
 
@@ -101,3 +111,4 @@ export const {
     useLazyFetchHomeInfoByMonthQuery,
     useFetchHomeInfoByMonthQuery,
 } = homeApi;
+*/
