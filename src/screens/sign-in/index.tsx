@@ -74,9 +74,12 @@ function SignIn() {
         if (results.data?.status) {
             localStorage.setItem('car-wash-token', results.data.data.api_token);
             dispatch(authenticated());
+            console.log(
+                'results.data.data.api_token: ',
+                results.data.data.api_token
+            );
             navigate('/');
         }
-        console.log('results: ', results);
     }, [results]);
 
     return (

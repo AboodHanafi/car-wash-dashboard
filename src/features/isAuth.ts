@@ -1,15 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { token } from '../utils/global-var';
 
 interface CounterState {
     isAuth: boolean;
 }
 
 const initialState: CounterState = {
-    isAuth: false,
+    isAuth: !!token,
 };
 
 export const counterSlice = createSlice({
-    name: 'counter',
+    name: 'isAuth',
     initialState,
     reducers: {
         authenticated: (state): void => {
