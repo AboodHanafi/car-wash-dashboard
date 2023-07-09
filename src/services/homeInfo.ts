@@ -68,7 +68,6 @@ export const homeApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl,
         prepareHeaders: headers => {
-            console.log('Bearer token: ', token);
             headers.set('authorization', `Bearer ${token}`);
             return headers;
         },
