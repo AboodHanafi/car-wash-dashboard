@@ -71,11 +71,11 @@ const HomePage = () => {
 
     useEffect(() => {
         const currentMonth = String(new Date().getMonth() + 1).padStart(2, '0');
+        fetchHomeInfoByMonth(currentMonth);
         if (results.data) {
-            console.log('token:', token);
+            console.log('results.data:', results.data);
             getReservationsMonth(results.data.data.reservations);
         }
-        fetchHomeInfoByMonth(currentMonth);
     }, []);
 
     return (
