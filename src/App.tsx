@@ -23,6 +23,7 @@ import EmployeesDetails from './screens/employees/details';
 import SignIn from './screens/sign-in';
 import SignUp from './screens/sign-up';
 import { token } from './utils/global-var';
+import Protected from './components/protected';
 
 function App() {
     const cacheRtl = createCache({
@@ -80,7 +81,14 @@ function App() {
                     {isAuth && (
                         <LayOut>
                             <Routes>
-                                <Route path="/" element={<HomePage />} />
+                                <Route
+                                    path="/"
+                                    element={
+                                        <Protected isAuth={isAuth}>
+                                            <HomePage />
+                                        </Protected>
+                                    }
+                                />
 
                                 <Route
                                     path="/reservations"
@@ -88,20 +96,39 @@ function App() {
                                 />
                                 <Route
                                     path="/reservations/form"
-                                    element={<ReservationForm />}
+                                    element={
+                                        <Protected isAuth={isAuth}>
+                                            <ReservationForm />
+                                        </Protected>
+                                    }
                                 />
                                 <Route
                                     path="/reservations/:id"
                                     element={<ReservationDetails />}
                                 />
-                                <Route path="/users" element={<Users />} />
+                                <Route
+                                    path="/users"
+                                    element={
+                                        <Protected isAuth={isAuth}>
+                                            <Users />
+                                        </Protected>
+                                    }
+                                />
                                 <Route
                                     path="/employees"
-                                    element={<Employees />}
+                                    element={
+                                        <Protected isAuth={isAuth}>
+                                            <Employees />
+                                        </Protected>
+                                    }
                                 />
                                 <Route
                                     path="/employees/:id"
-                                    element={<EmployeesDetails />}
+                                    element={
+                                        <Protected isAuth={isAuth}>
+                                            <EmployeesDetails />
+                                        </Protected>
+                                    }
                                 />
                                 <Route
                                     path="/employees/form"
@@ -113,22 +140,38 @@ function App() {
                                 />
                                 <Route
                                     path="/services"
-                                    element={<Services />}
+                                    element={
+                                        <Protected isAuth={isAuth}>
+                                            <Services />
+                                        </Protected>
+                                    }
                                 />
                                 <Route
                                     path="/services/form"
-                                    element={<ServicesForm />}
+                                    element={
+                                        <Protected isAuth={isAuth}>
+                                            <ServicesForm />
+                                        </Protected>
+                                    }
                                 />
 
                                 <Route
                                     path="/locations"
-                                    element={<ReservationLocations />}
+                                    element={
+                                        <Protected isAuth={isAuth}>
+                                            <ReservationLocations />
+                                        </Protected>
+                                    }
                                 />
 
                                 <Route path="/coupons" element={<Coupons />} />
                                 <Route
                                     path="/coupons/form"
-                                    element={<CouponsForm />}
+                                    element={
+                                        <Protected isAuth={isAuth}>
+                                            <CouponsForm />
+                                        </Protected>
+                                    }
                                 />
                             </Routes>
                         </LayOut>
