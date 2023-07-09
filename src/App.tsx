@@ -24,8 +24,12 @@ import SignIn from './screens/sign-in';
 import SignUp from './screens/sign-up';
 import { token } from './utils/global-var';
 import Protected from './components/protected';
+import { useSelector } from 'react-redux';
+import { RootState } from './app/store';
 
 function App() {
+    const { isAuth } = useSelector((state: RootState) => state.auth);
+
     const cacheRtl = createCache({
         key: 'muirtl',
         stylisPlugins: [prefixer, rtlPlugin],
@@ -51,7 +55,7 @@ function App() {
     });
     // const token = '207|shlkWhsII1LoVeEYgoA5WOXBD3QiLs0nvaB7WK8b';
     // localStorage.setItem('car-wash-token', token);
-    const isAuth = !!token;
+    // const isAuth = !!token;
     // useEffect(() => {
     //     // Example usage
     //     const fetchData = async () => {
