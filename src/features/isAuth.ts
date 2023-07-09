@@ -1,23 +1,30 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { token } from '../utils/global-var';
 
-interface CounterState {
+interface AuthState {
     isAuth: boolean;
+    token: string;
 }
 
-const initialState: CounterState = {
+const initialState: AuthState = {
     isAuth: !!token,
+    token: '',
 };
 
 export const counterSlice = createSlice({
     name: 'isAuth',
     initialState,
     reducers: {
-        authenticated: (state): void => {
+        authenticated: (
+            state,
+            action: PayloadAction<Pick<AuthState, 'token'>>
+        ): void => {
             state.isAuth = true;
+            state.token = action.payload.token;
         },
         unAuthenticated: state => {
             state.isAuth = false;
+            state.token = '';
         },
     },
 });

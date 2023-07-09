@@ -6,7 +6,7 @@ interface Props {
     children: React.ReactNode;
 }
 function Protected({ children }: Props) {
-    const isAuth = useAuth();
+    const { isAuth } = useAuth();
     if (!isAuth) {
         return <Navigate to="/signin" replace />;
     }
