@@ -13,9 +13,15 @@ import { CustomButton, CustomizedTextField } from '../../globalStyle';
 import { Button } from '@mui/material';
 import { useLoginMutation } from '../../app/store';
 import axios from 'axios';
+import useAuth from '../../hooks/use-auth';
+import { useNavigate } from 'react-router-dom';
 
 function SignUp() {
     // const [loginHandler, results] = useLoginMutation();
+
+    const { isAuth } = useAuth();
+    const navigate = useNavigate();
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
