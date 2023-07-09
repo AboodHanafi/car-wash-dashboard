@@ -3,7 +3,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
+import { Link } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -16,26 +16,6 @@ import { authenticated } from '../../features/isAuth';
 // import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
-function Copyright(props: any) {
-    return (
-        <Typography
-            variant="body2"
-            color="text.secondary"
-            align="center"
-            {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
-
-// TODO remove, this demo shouldn't need to reset the theme.
-const defaultTheme = createTheme();
 
 function SignIn() {
     const navigate = useNavigate();
@@ -78,7 +58,9 @@ function SignIn() {
                 'results.data.data.api_token: ',
                 results.data.data.api_token
             );
-            navigate('/');
+            setTimeout(() => {
+                navigate('/');
+            }, 1500);
         }
     }, [results]);
 
@@ -149,6 +131,12 @@ function SignIn() {
                             sx={{ mt: 3, mb: 2 }}>
                             تسجيل الدخول{' '}
                         </Button>
+                    </Box>
+                    <Box display={'flex'} justifyContent={'center'} gap={1}>
+                        <Typography>ليس لديك حساب؟</Typography>
+                        <Link to={'/signup'} style={{ color: '#1975FF' }}>
+                            إنشاء حساب
+                        </Link>
                     </Box>
                 </Box>
             </Grid>
