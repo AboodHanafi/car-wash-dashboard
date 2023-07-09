@@ -72,10 +72,7 @@ function SignIn() {
 
     React.useEffect(() => {
         if (results.data?.status) {
-            localStorage.setItem(
-                'car-wash-token',
-                '446|BjuSRqgTZPqx5ES6yQeMcKbUHrqSGUDAkqIG1l9C'
-            );
+            localStorage.setItem('car-wash-token', results.data.data.api_token);
             dispatch(authenticated());
             console.log(
                 'results.data.data.api_token: ',
