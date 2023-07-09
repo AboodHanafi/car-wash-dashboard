@@ -88,7 +88,7 @@ function App() {
                                 <Route
                                     path="/"
                                     element={
-                                        <Protected isAuth={isAuth}>
+                                        <Protected>
                                             <HomePage />
                                         </Protected>
                                     }
@@ -101,7 +101,7 @@ function App() {
                                 <Route
                                     path="/reservations/form"
                                     element={
-                                        <Protected isAuth={isAuth}>
+                                        <Protected>
                                             <ReservationForm />
                                         </Protected>
                                     }
@@ -113,7 +113,7 @@ function App() {
                                 <Route
                                     path="/users"
                                     element={
-                                        <Protected isAuth={isAuth}>
+                                        <Protected>
                                             <Users />
                                         </Protected>
                                     }
@@ -121,7 +121,7 @@ function App() {
                                 <Route
                                     path="/employees"
                                     element={
-                                        <Protected isAuth={isAuth}>
+                                        <Protected>
                                             <Employees />
                                         </Protected>
                                     }
@@ -129,7 +129,7 @@ function App() {
                                 <Route
                                     path="/employees/:id"
                                     element={
-                                        <Protected isAuth={isAuth}>
+                                        <Protected>
                                             <EmployeesDetails />
                                         </Protected>
                                     }
@@ -145,7 +145,7 @@ function App() {
                                 <Route
                                     path="/services"
                                     element={
-                                        <Protected isAuth={isAuth}>
+                                        <Protected>
                                             <Services />
                                         </Protected>
                                     }
@@ -153,7 +153,7 @@ function App() {
                                 <Route
                                     path="/services/form"
                                     element={
-                                        <Protected isAuth={isAuth}>
+                                        <Protected>
                                             <ServicesForm />
                                         </Protected>
                                     }
@@ -162,7 +162,7 @@ function App() {
                                 <Route
                                     path="/locations"
                                     element={
-                                        <Protected isAuth={isAuth}>
+                                        <Protected>
                                             <ReservationLocations />
                                         </Protected>
                                     }
@@ -172,7 +172,7 @@ function App() {
                                 <Route
                                     path="/coupons/form"
                                     element={
-                                        <Protected isAuth={isAuth}>
+                                        <Protected>
                                             <CouponsForm />
                                         </Protected>
                                     }
