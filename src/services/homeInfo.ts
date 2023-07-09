@@ -1,3 +1,4 @@
+import { authApi } from './authentication';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootState } from '../app/store';
 import { baseUrl, token } from '../utils/global-var';
@@ -67,8 +68,11 @@ export const homeApi = createApi({
     reducerPath: 'homeApi',
     baseQuery: fetchBaseQuery({
         baseUrl,
-        prepareHeaders: headers => {
-            headers.set('authorization', `Bearer ${token}`);
+        prepareHeaders: (headers, { getState }) => {
+            const state: RootState = getState() as RootState;
+            const api_token = state.auth.token;
+
+            headers.set('authorization', `Bearer ${token || api_token}`);
             return headers;
         },
     }),
@@ -106,9 +110,4 @@ function usePrepareHeaders(headers: Headers) {
 
     return headers;
 }
-export const {
-    useFetchHomeInfoQuery,
-    useLazyFetchHomeInfoByMonthQuery,
-    useFetchHomeInfoByMonthQuery,
-} = homeApi;
 */

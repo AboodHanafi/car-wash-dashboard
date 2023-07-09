@@ -1,4 +1,4 @@
-import { createTheme, ThemeProvider } from '@mui/material';
+import { createTheme, ThemeProvider, Typography } from '@mui/material';
 import LayOut from './layout';
 import rtlPlugin from 'stylis-plugin-rtl';
 import { CacheProvider } from '@emotion/react';
@@ -179,6 +179,18 @@ function App() {
                                         <Protected>
                                             <CouponsForm />
                                         </Protected>
+                                    }
+                                />
+                                <Route
+                                    path="*"
+                                    element={
+                                        <Typography
+                                            textAlign={'center'}
+                                            fontWeight={600}
+                                            mt={4}
+                                            fontSize={'1.4rem'}>
+                                            هذه الصفحة غير متوفرة
+                                        </Typography>
                                     }
                                 />
                             </Routes>

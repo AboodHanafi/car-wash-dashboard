@@ -11,7 +11,6 @@ import {
 } from '../../app/store';
 import { Reservation, Response } from '../../services/homeInfo';
 import { Nullable } from '../../utils/types';
-import { token } from '../../utils/global-var';
 
 interface Month {
     label: string;
@@ -60,7 +59,9 @@ const HomePage = () => {
             charData = clone;
         });
     };
-
+    if (results.data) {
+        getReservationsMonth(results.data.data.reservations);
+    }
     const handleChangeMonth = (
         event: React.SyntheticEvent<Element, Event>,
         value: Nullable<Month>
@@ -71,13 +72,7 @@ const HomePage = () => {
 
     useEffect(() => {
         const currentMonth = String(new Date().getMonth() + 1).padStart(2, '0');
-        setTimeout(() => {
-            fetchHomeInfoByMonth(currentMonth);
-        }, 200);
-        console.log('results.data:', results.data);
-        if (results.data) {
-            getReservationsMonth(results.data.data.reservations);
-        }
+        fetchHomeInfoByMonth(currentMonth);
     }, []);
 
     return (

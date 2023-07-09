@@ -16,8 +16,10 @@ import { authenticated } from '../../features/isAuth';
 // import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import useAuth from '../../hooks/use-auth';
 
 function SignIn() {
+    const { isAuth } = useAuth();
     const navigate = useNavigate();
 
     const dispatch = useDispatch();
@@ -27,20 +29,6 @@ function SignIn() {
         event.preventDefault();
 
         const data = new FormData(event.currentTarget);
-        // const headers = {
-        //     'Content-Type': 'application/json',
-        // };
-        // const body = {
-        //     email: 'admin@admin.com',
-        //     password: 'password',
-        // };
-        // axios
-        //     .post(
-        //         'https://car-wash.eltamiuz.net/api/dashboard/v1/login',
-        //         body,
-        //         { headers: headers }
-        //     )
-        //     .then(res => console.log(res));
 
         if (data.get('email') && data.get('password')) {
             loginHandler({
