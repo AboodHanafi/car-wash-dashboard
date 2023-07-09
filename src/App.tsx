@@ -4,7 +4,7 @@ import rtlPlugin from 'stylis-plugin-rtl';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import { prefixer } from 'stylis';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import HomePage from './screens/homePage';
 import Reservations from './screens/reservations';
 import ReservationForm from './screens/reservations/form';
@@ -80,6 +80,10 @@ function App() {
                         <Routes>
                             <Route path="/signin" element={<SignIn />} />
                             <Route path="/signup" element={<SignUp />} />
+                            <Route
+                                path="*"
+                                element={<Navigate to={'signin'} />}
+                            />
                         </Routes>
                     )}
                     {isAuth && (
