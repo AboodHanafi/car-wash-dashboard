@@ -16,6 +16,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import useAuth from '../../hooks/use-auth';
 
 function SignIn() {
+    const { isAuth } = useAuth();
     const navigate = useNavigate();
 
     const [loginHandler, results] = useLoginMutation();

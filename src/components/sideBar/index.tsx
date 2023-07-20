@@ -12,12 +12,14 @@ import {
 } from '@mui/material';
 import { SVG, sideBarItems } from '../../assets';
 import { useLocation, useNavigate } from 'react-router-dom';
-
+import { useDispatch } from 'react-redux';
+import { unAuthenticated } from '../../features/isAuth';
 interface PropsType extends PropsWithChildren {
     open: boolean;
 }
 
 const SideBar: React.FC<PropsType> = ({ open }) => {
+    const dispatch = useDispatch();
     const { palette } = useTheme();
     const { pathname } = useLocation();
     const navigate = useNavigate();
@@ -93,12 +95,14 @@ const SideBar: React.FC<PropsType> = ({ open }) => {
                                     item.path === `/${pathname.split('/')[1]}`
                                 }
                                 onClick={() => {
-                                    if (item.path === '/signin') {
+                                    if (item.path === '/signout') {
                                         localStorage.removeItem(
                                             'car-wash-token'
                                         );
-                                    }
-                                    navigate(item.path ? item.path : '/');
+                                        dispatch(unAuthenticated());
+                                        navigate('/signin');
+                                    } else
+                                        navigate(item.path ? item.path : '/');
                                 }}
                                 sx={{
                                     minHeight: 35,
