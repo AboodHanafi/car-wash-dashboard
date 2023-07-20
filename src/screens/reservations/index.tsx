@@ -228,7 +228,7 @@ const Reservations = () => {
                 </Stack>
             </Stack>
             <Stack id="table">
-                {isLoading ? <LoadingSkeleton /> : <ReservationsTable />}
+                <ReservationsTable />
             </Stack>
         </Stack>
     );
