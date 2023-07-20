@@ -9,7 +9,6 @@ import authReducer from '../features/isAuth';
 export const store = configureStore({
     reducer: {
         auth: authReducer,
-
         [reservationsApi.reducerPath]: reservationsApi.reducer,
         [employeesApi.reducerPath]: employeesApi.reducer,
         [usersApi.reducerPath]: usersApi.reducer,

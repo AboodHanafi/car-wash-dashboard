@@ -7,11 +7,11 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-    isAuth: !!localStorage.getItem('car-wash-token')?.toString(),
+    isAuth: !!token,
     token: '',
 };
 
-export const counterSlice = createSlice({
+export const authSlice = createSlice({
     name: 'isAuth',
     initialState,
     reducers: {
@@ -30,6 +30,6 @@ export const counterSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { authenticated, unAuthenticated } = counterSlice.actions;
+export const { authenticated, unAuthenticated } = authSlice.actions;
 
-export default counterSlice.reducer;
+export default authSlice.reducer;

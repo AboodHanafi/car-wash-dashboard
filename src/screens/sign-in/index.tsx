@@ -13,12 +13,11 @@ import { useLoginMutation } from '../../app/store';
 // import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
-import useAuth from '../../hooks/use-auth';
+import { authenticated } from '../../features/isAuth';
 
 function SignIn() {
-    const { isAuth } = useAuth();
     const navigate = useNavigate();
-
+    const dispatch = useDispatch();
     const [loginHandler, results] = useLoginMutation();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -38,6 +37,7 @@ function SignIn() {
         console.log('results.data: ', results.data);
         if (results.data?.status) {
             localStorage.setItem('car-wash-token', results.data.data.api_token);
+            dispatch(authenticated({ token: results.data.data.api_token }));
             navigate('/');
         }
     }, [results]);
