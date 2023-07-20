@@ -23,9 +23,12 @@ import EmployeesDetails from './screens/employees/details';
 import SignIn from './screens/sign-in';
 import SignUp from './screens/sign-up';
 import Protected from './components/protected';
+import { RootState } from './app/store';
+import { useSelector } from 'react-redux';
 
 function App() {
-    const isAuth = localStorage.getItem('car-wash-token');
+    // const isAuth = localStorage.getItem('car-wash-token');
+    const { isAuth } = useSelector((state: RootState) => state.auth);
 
     const cacheRtl = createCache({
         key: 'muirtl',
