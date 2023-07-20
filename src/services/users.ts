@@ -3,64 +3,67 @@ import { RootState } from '../app/store';
 import { baseUrl, token } from '../utils/global-var';
 
 export interface User {
-  id: number;
-  name: string;
-  phone: string;
-  reservations_count: number;
-  payments?: number;
+    id: number;
+    name: string;
+    phone: string;
+    reservations_count: number;
+    payments?: number;
 }
 
 export interface Users {
-  data: User[];
+    data: User[];
 }
 
 export const usersApi = createApi({
-  reducerPath: 'usersApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl,
-    prepareHeaders: headers => {
-      headers.set('authorization', `Bearer ${token}`);
+    reducerPath: 'usersApi',
+    baseQuery: fetchBaseQuery({
+        baseUrl,
+        prepareHeaders: headers => {
+            headers.set(
+                'authorization',
+                `Bearer ${localStorage.getItem('car-wash-token')}`
+            );
 
-      return headers;
-    },
-  }),
-  endpoints: builder => ({
-    fetchUsers: builder.query<Users, void>({
-      query: () => {
-        return {
-          method: 'GET',
-          url: 'users',
-        };
-      },
+            return headers;
+        },
     }),
-    fetchUserById: builder.query({
-      query: (id: number) => {
-        return {
-          method: 'GET',
-          url: `users/${id}`,
-        };
-      },
+    endpoints: builder => ({
+        fetchUsers: builder.query<Users, void>({
+            query: () => {
+                return {
+                    method: 'GET',
+                    url: 'users',
+                };
+            },
+        }),
+        fetchUserById: builder.query({
+            query: (id: number) => {
+                return {
+                    method: 'GET',
+                    url: `users/${id}`,
+                };
+            },
+        }),
+        deleteUserById: builder.mutation({
+            query: (id: number) => {
+                return {
+                    method: 'POST',
+                    url: 'users',
+                    body: JSON.stringify({
+                        user_id: id,
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    responseType: 'json',
+                };
+            },
+        }),
     }),
-    deleteUserById: builder.mutation({
-      query: (id: number) => {
-        return {
-          method: 'POST',
-          url: 'users',
-          body: JSON.stringify({
-            user_id: id,
-          }),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          responseType: 'json',
-        };
-      },
-    }),
-  }),
 });
 
 export const {
-  useFetchUsersQuery,
-  useFetchUserByIdQuery,
-  useDeleteUserByIdMutation,
+    useFetchUsersQuery,
+    useFetchUserByIdQuery,
+    useDeleteUserByIdMutation,
 } = usersApi;

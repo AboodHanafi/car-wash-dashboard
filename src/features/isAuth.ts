@@ -7,7 +7,7 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-    isAuth: !!token,
+    isAuth: !!localStorage.getItem('car-wash-token')?.toString(),
     token: '',
 };
 

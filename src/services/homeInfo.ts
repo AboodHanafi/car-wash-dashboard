@@ -71,8 +71,10 @@ export const homeApi = createApi({
         prepareHeaders: (headers, { getState }) => {
             const state: RootState = getState() as RootState;
             const api_token = state.auth.token;
-
-            headers.set('authorization', `Bearer ${token || api_token}`);
+            headers.set(
+                'authorization',
+                `Bearer ${localStorage.getItem('car-wash-token') || api_token}`
+            );
             return headers;
         },
     }),
