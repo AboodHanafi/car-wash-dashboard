@@ -191,7 +191,7 @@ export const sideBarItems = [
     {
         id: 8,
         name: 'تسجيل خروج',
-        path: '/signout',
+        path: '/signin',
         icon: (
             <SVG width={24} height={24}>
                 <path
