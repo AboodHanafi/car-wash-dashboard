@@ -12,15 +12,12 @@ import {
 } from '@mui/material';
 import { SVG, sideBarItems } from '../../assets';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { unAuthenticated } from '../../features/isAuth';
 
 interface PropsType extends PropsWithChildren {
     open: boolean;
 }
 
 const SideBar: React.FC<PropsType> = ({ open }) => {
-    const dispatch = useDispatch();
     const { palette } = useTheme();
     const { pathname } = useLocation();
     const navigate = useNavigate();
@@ -100,7 +97,6 @@ const SideBar: React.FC<PropsType> = ({ open }) => {
                                         localStorage.removeItem(
                                             'car-wash-token'
                                         );
-                                        dispatch(unAuthenticated());
                                     }
                                     navigate(item.path ? item.path : '/');
                                 }}

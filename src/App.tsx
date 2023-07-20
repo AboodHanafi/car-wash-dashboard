@@ -22,13 +22,10 @@ import { ConfirmProvider } from 'material-ui-confirm';
 import EmployeesDetails from './screens/employees/details';
 import SignIn from './screens/sign-in';
 import SignUp from './screens/sign-up';
-import { token } from './utils/global-var';
 import Protected from './components/protected';
-import { useSelector } from 'react-redux';
-import { RootState } from './app/store';
 
 function App() {
-    const { isAuth } = useSelector((state: RootState) => state.auth);
+    const isAuth = localStorage.getItem('car-wash-token');
 
     const cacheRtl = createCache({
         key: 'muirtl',

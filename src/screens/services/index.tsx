@@ -6,6 +6,7 @@ import CRUDRequsests from '../../API';
 import { useEffect, useState } from 'react';
 import { ServicesType } from '../../utils/types';
 import { token } from '../../utils/global-var';
+import { store } from '../../app/store';
 
 function Services() {
     const [services, setServices] = useState<ServicesType[]>();
@@ -15,7 +16,9 @@ function Services() {
     const fetchServices = async () => {
         const { data } = await CRUDRequsests.get('/services', {
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${localStorage.getItem(
+                    'car-wash-token'
+                )}`,
             },
         });
         setServices(data.data);
