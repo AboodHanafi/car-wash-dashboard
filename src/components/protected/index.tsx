@@ -7,6 +7,7 @@ interface Props {
 }
 function Protected({ children }: Props) {
     const { isAuth } = useAuth();
+    console.log('isAuth Protected: ', isAuth);
     if (!isAuth) {
         return <Navigate to="/signin" replace />;
     }

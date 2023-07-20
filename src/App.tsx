@@ -14,8 +14,6 @@ import Users from './screens/users';
 import Employees from './screens/employees';
 import Coupons from './screens/coupons';
 import ReservationLocations from './screens/reservationLocations';
-import { useEffect } from 'react';
-import CRUDRequests from './API';
 import Services from './screens/services';
 import CouponsForm from './screens/coupons/form';
 import { ConfirmProvider } from 'material-ui-confirm';
@@ -29,6 +27,7 @@ import { useSelector } from 'react-redux';
 function App() {
     // const isAuth = localStorage.getItem('car-wash-token');
     const { isAuth } = useSelector((state: RootState) => state.auth);
+    console.log('isAuth: ', isAuth);
 
     const cacheRtl = createCache({
         key: 'muirtl',
