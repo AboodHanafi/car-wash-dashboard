@@ -4,9 +4,10 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import { CustomizedTextField } from '../../globalStyle';
+import { CustomButton, CustomizedTextField } from '../../globalStyle';
 import { Button } from '@mui/material';
 import axios from 'axios';
+import useAuth from '../../hooks/use-auth';
 import { useNavigate, Link } from 'react-router-dom';
 
 function SignUp() {
