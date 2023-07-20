@@ -10,17 +10,14 @@ import Typography from '@mui/material/Typography';
 import { CustomButton, CustomizedTextField } from '../../globalStyle';
 import { Button } from '@mui/material';
 import { useLoginMutation } from '../../app/store';
-import { authenticated } from '../../features/isAuth';
 // import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import useAuth from '../../hooks/use-auth';
 
 function SignIn() {
-    const { isAuth } = useAuth();
     const navigate = useNavigate();
 
-    const dispatch = useDispatch();
     const [loginHandler, results] = useLoginMutation();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -37,9 +34,9 @@ function SignIn() {
     };
 
     React.useEffect(() => {
+        console.log('results.data: ', results.data);
         if (results.data?.status) {
             localStorage.setItem('car-wash-token', results.data.data.api_token);
-            dispatch(authenticated({ token: results.data.data.api_token }));
             navigate('/');
         }
     }, [results]);

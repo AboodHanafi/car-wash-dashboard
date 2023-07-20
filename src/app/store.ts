@@ -4,11 +4,9 @@ import { employeesApi } from '../services/employees';
 import { usersApi } from '../services/users';
 import { homeApi } from '../services/homeInfo';
 import { authApi } from '../services/authentication';
-import authReducer from '../features/isAuth';
 
 export const store = configureStore({
     reducer: {
-        auth: authReducer,
         [reservationsApi.reducerPath]: reservationsApi.reducer,
         [employeesApi.reducerPath]: employeesApi.reducer,
         [usersApi.reducerPath]: usersApi.reducer,

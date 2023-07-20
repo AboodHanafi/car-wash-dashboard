@@ -13,7 +13,6 @@ import { useNavigate, Link } from 'react-router-dom';
 function SignUp() {
     // const [loginHandler, results] = useLoginMutation();
 
-    const { isAuth } = useAuth();
     const navigate = useNavigate();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
