@@ -93,7 +93,7 @@ const SideBar: React.FC<PropsType> = ({ open }) => {
                                     item.path === `/${pathname.split('/')[1]}`
                                 }
                                 onClick={() => {
-                                    if (item.path === '/signout') {
+                                    if (item.path === '/signin') {
                                         localStorage.removeItem(
                                             'car-wash-token'
                                         );
